@@ -2,25 +2,41 @@ package util;
 
 import java.util.ArrayList;
 
+/**
+ * Grilla o matriz en tres dimensiones
+ */
 public class Grilla3d {
     private final ArrayList<ArrayList<ArrayList<Object>>> grilla;
 
-    public Grilla3d(int layerCount, int rowCount, int colCount) {
-        this.grilla = generarGrilla(layerCount, rowCount, colCount);
+    public Grilla3d(int numeroDeFilas, int numeroDeColumnas, int numeroDeCapas) {
+        this.grilla = generarGrilla(numeroDeCapas, numeroDeFilas, numeroDeColumnas);
     }
 
-    private static ArrayList<ArrayList<ArrayList<Object>>> generarGrilla(int layerCount, int rowCount, int colCount) {
-        assert rowCount > 0 && layerCount > 0 && colCount > 0;
+    /**
+     * Genera un grilla de numeroDeFilas x numeroDeColumnas x numeroDeCapas
+     * @param numeroDeFilas
+     * @param numeroDeColumnas
+     * @param numeroDeCapas
+     * @return la grilla generada
+     */
+    private static ArrayList<ArrayList<ArrayList<Object>>> generarGrilla(int numeroDeFilas, int numeroDeColumnas, int numeroDeCapas) {
+        assert numeroDeFilas > 0 && numeroDeCapas > 0 && numeroDeColumnas > 0;
 
-        ArrayList<ArrayList<ArrayList<Object>>> layers = new ArrayList<>(layerCount);
-        for (int i = 0; i < layerCount; i++) {
-            layers.add(generarCapa(rowCount, colCount));
+        ArrayList<ArrayList<ArrayList<Object>>> layers = new ArrayList<>(numeroDeCapas);
+        for (int i = 0; i < numeroDeCapas; i++) {
+            layers.add(generarCapa(numeroDeFilas, numeroDeColumnas));
         }
         layers.trimToSize();
 
         return layers;
     }
 
+    /**
+     * Genera una capa, de una grilla, de numeroDeFilas x numeroDeColumnas
+     * @param numeroDeFilas
+     * @param numeroDeColumnas
+     * @return la capa generada
+     */
     private static ArrayList<ArrayList<Object>> generarCapa(int numeroDeFilas, int numeroDeColumnas) {
         assert numeroDeFilas > 0 && numeroDeColumnas > 0;
 
@@ -33,6 +49,11 @@ public class Grilla3d {
         return layer;
     }
 
+    /**
+     * Genera una fila, de una capa, de una grilla, de numeroDeColumnas
+     * @param numeroDeColumnas
+     * @return la fila generada
+     */
     private static ArrayList<Object> generarFila(int numeroDeColumnas) {
         assert numeroDeColumnas > 0;
 
@@ -45,12 +66,19 @@ public class Grilla3d {
         return row;
     }
 
-    public Object get(int indiceCapa, int indiceFila, int indiceColumna) {
-        assert indiceCapa >= 0 && indiceCapa < getNumeroDeCapas();
-        assert indiceFila >= 0 && indiceFila < getNumeroDeFilas();
-        assert indiceColumna >= 0 && indiceColumna < getNumeroDeColumnas();
+    /**
+     * Obtiene un objeto en la grilla
+     * @param capa Numero de capa
+     * @param fila Numero de fila
+     * @param columna Numero de columna
+     * @return el objeto en la posición capa, fila, columna
+     */
+    public Object get(int capa, int fila, int columna) {
+        assert capa >= 0 && capa < getNumeroDeCapas();
+        assert fila >= 0 && fila < getNumeroDeFilas();
+        assert columna >= 0 && columna < getNumeroDeColumnas();
 
-        return grilla.get(indiceCapa).get(indiceFila).get(indiceColumna);
+        return grilla.get(capa).get(fila).get(columna);
     }
 
     public int getNumeroDeCapas() {
