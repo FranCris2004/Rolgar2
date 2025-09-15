@@ -19,7 +19,29 @@ public class Posicion {
         return new Posicion(this.fila + movimientoFila, this.columna + movimientoColumna, this.profundidad + movimientoProfundidad);
     }
 
-    
 
+    // Getters
+    public int getFila() {
+        return fila;
+    }
 
+    public void setFila(int fila) {
+        this.fila = fila;
+    }
+
+    public int getProfundidad() {
+        return profundidad;
+    }
+
+    public void setProfundidad(int profundidad) {
+        this.profundidad = profundidad;
+    }
+
+    public int getColumna() {
+        return columna;
+    }
+
+    public void setColumna(int columna) {
+        this.columna = columna;
+    }
 }
