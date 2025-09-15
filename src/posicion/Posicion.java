@@ -19,6 +19,14 @@ public class Posicion {
         return new Posicion(this.fila + movimientoFila, this.columna + movimientoColumna, this.profundidad + movimientoProfundidad);
     }
 
+    public boolean adentroDelCasillero(int maxFilas, int maxColumnas, int maxProfundidad) {
+        if (this.fila >= 0 && this.columna >= 0 && this.profundidad >= 0 && this.fila < maxFilas && this.columna < maxColumnas && this.profundidad < maxProfundidad) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     // Getters
     public int getFila() {
