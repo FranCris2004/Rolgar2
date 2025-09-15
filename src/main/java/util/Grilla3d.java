@@ -14,9 +14,9 @@ public class Grilla3d {
 
     /**
      * Genera un grilla de numeroDeFilas x numeroDeColumnas x numeroDeCapas
-     * @param numeroDeFilas
-     * @param numeroDeColumnas
-     * @param numeroDeCapas
+     * @param numeroDeFilas Positivo
+     * @param numeroDeColumnas Positivo
+     * @param numeroDeCapas Positivo
      * @return la grilla generada
      */
     private static ArrayList<ArrayList<ArrayList<Object>>> generarGrilla(int numeroDeFilas, int numeroDeColumnas, int numeroDeCapas) {
@@ -33,8 +33,8 @@ public class Grilla3d {
 
     /**
      * Genera una capa, de una grilla, de numeroDeFilas x numeroDeColumnas
-     * @param numeroDeFilas
-     * @param numeroDeColumnas
+     * @param numeroDeFilas Positivo
+     * @param numeroDeColumnas Positivo
      * @return la capa generada
      */
     private static ArrayList<ArrayList<Object>> generarCapa(int numeroDeFilas, int numeroDeColumnas) {
@@ -51,7 +51,7 @@ public class Grilla3d {
 
     /**
      * Genera una fila, de una capa, de una grilla, de numeroDeColumnas
-     * @param numeroDeColumnas
+     * @param numeroDeColumnas Positivo
      * @return la fila generada
      */
     private static ArrayList<Object> generarFila(int numeroDeColumnas) {
