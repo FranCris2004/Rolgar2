@@ -32,4 +32,38 @@ public class Personaje {
     public void danhoRecibido(int danho){
         vida = Math.max(0, vida - danho); // (Usamos al 0 como tope inferior, no tendria sentido decir que se adeuda vida.)
     }
+
+    // GETTERS
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getVida() {
+        return vida;
+    }
+
+    public Posicion getPosicion() {
+        return posicion;
+    }
+
+    public double getFuerza() {
+        return fuerza;
+    }
+
+    public double getSalud() {
+        return salud;
+    }
+
+    // SETTERS
+    public void setPosicion(Posicion posicion) {
+        this.posicion = posicion;
+    }
+
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
+
+    public void setSalud(double salud) {
+        this.salud = salud;
+    }
 }
