@@ -23,5 +23,9 @@ public class Personaje {
         this.salud = salud;
     }
 
+    // Metodos
+    public boolean estaVivo() {
+        return vida > VALOR_NULO;
+    }
 
 }
