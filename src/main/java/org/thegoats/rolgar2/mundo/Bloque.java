@@ -1,26 +1,29 @@
-package bloque;
+package org.thegoats.rolgar2.mundo;
 
 public class Bloque {
-	private int posX, posY, posZ;
+	private Posicion posicion;
 	private int fallDamage;
 	private boolean isWalkable = true;
 	
 	/**
 	 * 
-	 * @param posX no negativo
-	 * @param posY no negativo
-	 * @param posZ no negativo
+	 * @param posicion disponible dentro del rango del mundo
 	 * @param fallDamage no negativo, danio al caer en este bloque
 	 * @param isWalkable si se puede caminar sobre este bloque
 	 */
-	public Bloque(int posX, int posY, int posZ, int fallDamage, boolean isWalkable) {
-		this.posX = posX;
-		this.posY = posY;
-		this.posZ = posZ;
+	public Bloque(Posicion posicion, int fallDamage, boolean isWalkable) {
+		setPosicion(posicion);
 		setFallDamage(fallDamage);
 		setIsWalkable(isWalkable);
 	}
 	
+	
+	public void setPosicion(Posicion posicion) {
+		if (posicion == null) {
+			throw new NullPointerException("La posicion debe ser no nula");
+		}
+		this.posicion = posicion;
+	}
 	
 	/**
 	 * 
