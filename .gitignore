@@ -2,6 +2,8 @@
 .*
 !.gitignore
 
+out/
+
 # Maven
 target
 /bin/
