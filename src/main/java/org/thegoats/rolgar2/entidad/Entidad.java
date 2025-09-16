@@ -7,7 +7,7 @@ import org.thegoats.rolgar2.mundo.Posicion;
  * ejemplos: personajes, cartas, trampas, etc
  */
 public class Entidad {
-    public org.thegoats.rolgar2.mundo.Posicion posicion;
+    private Posicion posicion;
 
     /**
      * @param posicionInicial No null
