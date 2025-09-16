@@ -27,7 +27,6 @@ public class Posicion {
         }
     }
 
-
     // Getters
     public int getFila() {
         return fila;
