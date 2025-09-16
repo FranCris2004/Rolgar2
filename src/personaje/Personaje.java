@@ -2,6 +2,7 @@ package personaje;
 
 import posicion.Posicion;
 
+
 public class Personaje {
 
     public int VALOR_NULO = 0;
@@ -28,4 +29,7 @@ public class Personaje {
         return vida > VALOR_NULO;
     }
 
+    public void danhoRecibido(int danho){
+        vida = Math.max(0, vida - danho); // (Usamos al 0 como tope inferior, no tendria sentido decir que se adeuda vida.)
+    }
 }
