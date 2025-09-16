@@ -21,6 +21,12 @@ public class Character extends Entity {
     //METODOS HEREDADOS (CLASE)--------------------------------------------------------------------------------
     //METODOS HEREDADOS (INTERFACE)----------------------------------------------------------------------------
     //METODOS DE CLASE ----------------------------------------------------------------------------------------
+
+    @Override
+    public String toString() {
+        return this.name + " Vida: " + this.health + "/" + this.maxHealth + " Daño: " + this.strength;
+    }
+
     //METODOS GENERALES ---------------------------------------------------------------------------------------
     //METODOS DE COMPORTAMIENTO -------------------------------------------------------------------------------
 
