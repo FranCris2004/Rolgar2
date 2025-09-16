@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Identificación del proyecto -->
-    <groupId>com.ejemplo</groupId>
-    <artifactId>mi-proyecto</artifactId>
+    <groupId>org.thegoats</groupId>
+    <artifactId>rolgar2</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <!-- Configuración de compilación -->

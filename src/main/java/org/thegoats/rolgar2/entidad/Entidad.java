@@ -1,13 +1,13 @@
-package entidad;
+package org.thegoats.rolgar2.entidad;
 
-import mundo.Posicion;
+import org.thegoats.rolgar2.mundo.Posicion;
 
 /**
  * Representa un objeto con posicion en el mundo
  * ejemplos: personajes, cartas, trampas, etc
  */
 public class Entidad {
-    public Posicion posicion;
+    public org.thegoats.rolgar2.mundo.Posicion posicion;
 
     /**
      * @param posicionInicial No null

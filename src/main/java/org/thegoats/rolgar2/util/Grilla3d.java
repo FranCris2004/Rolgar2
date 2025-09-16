@@ -1,4 +1,4 @@
-package util;
+package org.thegoats.rolgar2.util;
 
 import java.util.ArrayList;
 

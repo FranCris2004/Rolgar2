@@ -1,4 +1,4 @@
-package mundo;
+package org.thegoats.rolgar2.mundo;
 
 /**
  * Representa una posicion en el mundo
