@@ -16,6 +16,11 @@ public class Entity {
         setPosition(position);
     }
 
+
+    @Override
+    public String toString(){
+        return "Entity[position=" + this.position.toString() + "]";
+    }
     /**
      * @param position No null
      */
