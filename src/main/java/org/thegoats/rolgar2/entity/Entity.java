@@ -1,5 +1,6 @@
 package org.thegoats.rolgar2.entity;
 
+import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.world.Position;
 
 /**
@@ -46,10 +47,7 @@ public class Entity {
      * @param position No null
      */
     public void setPosition(Position position) {
-        if (position == null) {
-            throw new NullPointerException("'position' no debe ser null");
-        }
-
+        Assert.notNull(position, "'position' no debe ser null");
         this.position = position;
     }
 
