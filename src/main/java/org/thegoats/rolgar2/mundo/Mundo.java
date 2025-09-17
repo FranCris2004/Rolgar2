@@ -32,10 +32,16 @@ public class Mundo {
 //METODOS GENERALES ---------------------------------------------------------------------------------------
 //METODOS DE COMPORTAMIENTO -------------------------------------------------------------------------------
     public void agregarEntidad(Entidad entidad) {
+        grilla.set(
+                entidad.getPosicion().getCapa(),
+                entidad.getPosicion().getFila(),
+                entidad.getPosicion().getColumna()
 
+        );
 
     }
     public void moverEntidad(Entidad entidad) {
+
 
     }
     public void eliminarEntidad(Entidad entidad) {
