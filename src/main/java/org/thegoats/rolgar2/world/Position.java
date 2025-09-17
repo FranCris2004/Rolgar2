@@ -14,4 +14,10 @@ public record Position(int row, int column, int layer) {
         Assert.nonNegative(column, "'column' debe ser positivo o cero");
         Assert.nonNegative(layer, "'layer' debe ser positivo o cero");
     }
+
+    /**
+     * No es necesario implementar equals, toString y hashCode
+     * ya que el compilador implementa automaticamente estas
+     * tres funciones en todos los records
+     */
 }
