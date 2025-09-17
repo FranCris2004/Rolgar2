@@ -21,7 +21,7 @@ public class Block {
      * @return position No null
 	 */
 	public Position getPosition() {
-		return new Position(position.getRow(), position.getColumn(), position.getLayer());
+		return position;
 	}
 	
 	public boolean getIsWalkable() {
