@@ -1,4 +1,5 @@
 package org.thegoats.rolgar2.entity;
+
 public class Character extends Entity {
     //INTERFACES ----------------------------------------------------------------------------------------------
     //ENUMERADOS ----------------------------------------------------------------------------------------------
@@ -12,11 +13,7 @@ public class Character extends Entity {
     //ATRIBUTOS -----------------------------------------------------------------------------------------------
     //ATRIBUTOS TRANSITORIOS ----------------------------------------------------------------------------------
     //CONSTRUCTORES -------------------------------------------------------------------------------------------
-    private Character(){};
-
-    public Character(String name, int health, int maxHealth, int strength) {
-
-    }
+    private Character(){}
     //METODOS ABSTRACTOS --------------------------------------------------------------------------------------
     //METODOS HEREDADOS (CLASE)--------------------------------------------------------------------------------
     //METODOS HEREDADOS (INTERFACE)----------------------------------------------------------------------------
@@ -24,7 +21,8 @@ public class Character extends Entity {
 
     @Override
     public String toString() {
-        return this.name + " Vida: " + this.health + "/" + this.maxHealth + " Daño: " + this.strength;
+        return this.name + " Vida: " + this.health + "/" + this.maxHealth + " Daño: " + this.strength +
+                " Posicion: " +  this.position.toString();
     }
 
     //METODOS GENERALES ---------------------------------------------------------------------------------------
