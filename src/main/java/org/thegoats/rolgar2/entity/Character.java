@@ -115,8 +115,11 @@ public class Character extends Entity {
         this.health = health;
     }
 
+    /**
+     * @param maxHealth Debe ser mayor a 0
+     */
     private void setMaxHealth(int maxHealth) {
-        if(maxHealth < 0){
+        if(maxHealth <= 0){
             throw new IllegalArgumentException("La vida máxima debe ser mayor o igual a 0");
         }
         this.maxHealth = maxHealth;
