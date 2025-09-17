@@ -1,5 +1,6 @@
 package org.thegoats.rolgar2.entity;
 
+import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.world.Position;
 
 public class Character extends Entity {
@@ -67,9 +68,8 @@ public class Character extends Entity {
      * @param damage Debe ser mayor a 0
      */
     public void takeDamage(int damage){
-        if(damage <= 0){
-            throw new  IllegalArgumentException("El daño a recibir debe ser mayor a cero");
-        }
+        Assert.nonNegative(damage, "el daño recibido debe ser mayor o igual a cero");
+
         if(damage > this.health){
             setHealth(0);
         } else {
@@ -130,12 +130,8 @@ public class Character extends Entity {
      * @param name no nulo, sólo debe contener de 3 a 20 caracteres alfanuméricos, '.' , '-' y '_'
      */
     public void setName(String name) {
-        if(name == null){
-            throw new NullPointerException("El nombre no puede ser nulo");
-        }
-        if(name.matches("^[a-zA-Z0-9._-]{3,20}$")){
-            throw new IllegalArgumentException("El nombre sólo debe contener de 3 a 20 caracteres alfanuméricos, '.' , '-' y '_'");
-        }
+        Assert.notNull(name, "El nombre no puede ser nulo");
+        Assert.validName(name, "El nombre sólo debe contener de 3 a 20 caracteres alfanuméricos, '.' , '-' y '_'");
         this.name = name;
     }
 
@@ -143,8 +139,9 @@ public class Character extends Entity {
      * @param health Debe ser mayor o igual a 0
      */
     private void setHealth(int health) {
-        if(health < 0){
-            throw new IllegalArgumentException("La vida debe ser mayor o igual a 0");
+        // TODO: Implementar con Assert.inRange cuando este disponible
+        if(health < 0 || health > maxHealth){
+            throw new IllegalArgumentException("La vida debe ser mayor o igual a 0 y menor o igual a " + maxHealth);
         }
         this.health = health;
     }
@@ -153,9 +150,7 @@ public class Character extends Entity {
      * @param maxHealth Debe ser mayor a 0
      */
     private void setMaxHealth(int maxHealth) {
-        if(maxHealth <= 0){
-            throw new IllegalArgumentException("La vida máxima debe ser mayor a 0");
-        }
+        Assert.nonNegative(maxHealth, "La vida máxima debe ser mayor a 0");
         this.maxHealth = maxHealth;
     }
 
@@ -163,9 +158,7 @@ public class Character extends Entity {
      * @param strength Debe ser mayor o igual a 0
      */
     private void setStrength(int strength) {
-        if(strength < 0){
-            throw new IllegalArgumentException("La fuerza debe ser mayor o igual a 0");
-        }
+        Assert.nonNegative(strength, "La fuerza debe ser mayor a 0");
         this.strength = strength;
     }
 }
