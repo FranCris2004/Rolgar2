@@ -1,5 +1,7 @@
 package org.thegoats.rolgar2.entity;
 
+import org.thegoats.rolgar2.world.Position;
+
 public class Character extends Entity {
     //INTERFACES ----------------------------------------------------------------------------------------------
     //ENUMERADOS ----------------------------------------------------------------------------------------------
@@ -13,7 +15,22 @@ public class Character extends Entity {
     //ATRIBUTOS -----------------------------------------------------------------------------------------------
     //ATRIBUTOS TRANSITORIOS ----------------------------------------------------------------------------------
     //CONSTRUCTORES -------------------------------------------------------------------------------------------
-    private Character(){}
+
+    /**
+     *
+     * @param name no nulo, sólo debe contener de 3 a 20 caracteres alfanuméricos, '.' , '-' y '_'
+     * @param maxHealth Debe ser mayor a 0
+     * @param health Debe ser mayor o igual a 0
+     * @param strength Debe ser mayor o igual a 0
+     * @param position No null
+     */
+    protected Character(String name, int maxHealth, int health, int strength, Position position) {
+        super(position);
+        setName(name);
+        setMaxHealth(maxHealth); // Debe ser llamado antes que setHealth()
+        setHealth(health);
+        setStrength(strength);
+    }
     //METODOS ABSTRACTOS --------------------------------------------------------------------------------------
     //METODOS HEREDADOS (CLASE)--------------------------------------------------------------------------------
     //METODOS HEREDADOS (INTERFACE)----------------------------------------------------------------------------
@@ -120,7 +137,7 @@ public class Character extends Entity {
      */
     private void setMaxHealth(int maxHealth) {
         if(maxHealth <= 0){
-            throw new IllegalArgumentException("La vida máxima debe ser mayor o igual a 0");
+            throw new IllegalArgumentException("La vida máxima debe ser mayor a 0");
         }
         this.maxHealth = maxHealth;
     }
