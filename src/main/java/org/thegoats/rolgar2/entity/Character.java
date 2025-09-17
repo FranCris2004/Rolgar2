@@ -31,6 +31,9 @@ public abstract class Character extends Entity {
         setStrength(strength);
     }
     //METODOS ABSTRACTOS --------------------------------------------------------------------------------------
+
+    public abstract void doTurn();
+
     //METODOS HEREDADOS (CLASE)--------------------------------------------------------------------------------
 
     @Override
