@@ -2,13 +2,11 @@ package org.thegoats.rolgar2.world;
 
 /**
  * Representa una posicion en el mundo
+ * @param row No negativo
+ * @param column No negativo
+ * @param layer No negativo
  */
 public record Position(int row, int column, int layer) {
-    /**
-     * @param row No negativo
-     * @param column No negativo
-     * @param layer No negativo
-     */
     public Position {
         validateRow(row);
         validateColumn(column);
