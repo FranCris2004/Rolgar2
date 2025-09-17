@@ -28,7 +28,7 @@ public class Assert {
      * @param message Mensaje en caso de excepcion
      * @throws RuntimeException Si 'n' es negativo
      */
-    public static void nonNegative(long n, String message) {
+    public static void nonNegative(int n, String message) {
         if (n < 0) {
             throw new RuntimeException(message);
         }
@@ -39,7 +39,7 @@ public class Assert {
      * @param message Mensaje en caso de excepcion
      * @throws RuntimeException Si 'n' no es positivo
      */
-    public static void positive(double n, String message) {
+    public static void positive(int n, String message) {
         if (n <= 0) {
             throw new RuntimeException(message);
         }
