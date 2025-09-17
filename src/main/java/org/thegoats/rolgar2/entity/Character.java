@@ -10,7 +10,8 @@ public class Character extends Entity {
     //ATRIBUTOS DE CLASE --------------------------------------------------------------------------------------
     //ATRIBUTOS -----------------------------------------------------------------------------------------------
     private String name;
-    private int health, maxHealth;
+    private int health;
+    private int maxHealth;
     private int strength;
     //ATRIBUTOS TRANSITORIOS ----------------------------------------------------------------------------------
     //CONSTRUCTORES -------------------------------------------------------------------------------------------
