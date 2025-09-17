@@ -66,7 +66,7 @@ public abstract class Character extends Entity {
     //METODOS GENERALES ---------------------------------------------------------------------------------------
     //METODOS DE COMPORTAMIENTO -------------------------------------------------------------------------------
 
-    public void attack(Character other){
+    protected void attack(Character other){
         Assert.notNull(other, "'other' no debe ser null'");
         other.takeDamage(this.strength);
     }
