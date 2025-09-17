@@ -42,6 +42,25 @@ public class Character extends Entity {
                 " Posicion: " +  this.position.toString();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null){
+            return false;
+        }
+        if(obj == this) {
+            return true;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        Character other = (Character) obj;
+        return this.health == other.health &&
+                this.maxHealth == other.maxHealth &&
+                this.name.equals(other.name) &&
+                this.strength == other.strength &&
+                this.position.equals(other.position);
+    }
+
     //METODOS GENERALES ---------------------------------------------------------------------------------------
     //METODOS DE COMPORTAMIENTO -------------------------------------------------------------------------------
 
