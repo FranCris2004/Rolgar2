@@ -7,13 +7,13 @@ import org.thegoats.rolgar2.world.Position;
  * Representa un objeto con posicion en el mundo
  * ejemplos: personajes, cartas, trampas, etc
  */
-public class Entity {
-    public Position position;
+public abstract class Entity {
+    private Position position;
 
     /**
      * @param position No null
      */
-    public Entity(Position position) {
+    protected Entity(Position position) {
         setPosition(position);
     }
 
