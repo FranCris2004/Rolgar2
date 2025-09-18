@@ -48,6 +48,9 @@ public class Entity {
      */
     public void setPosition(Position position) {
         Assert.notNull(position, "'position' no debe ser null");
+
+        // TODO: Sincronizar la posicion de la entidad en la grilla del mundo
+
         this.position = position;
     }
 
