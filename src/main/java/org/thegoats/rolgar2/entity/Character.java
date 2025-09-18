@@ -61,7 +61,7 @@ public abstract class Character extends Entity {
                 this.maxHealth == other.maxHealth &&
                 this.name.equals(other.name) &&
                 this.strength == other.strength &&
-                this.getPosition().equals(other.getPosition());
+                super.equals(other);
     }
 
     //METODOS HEREDADOS (INTERFACE)----------------------------------------------------------------------------
