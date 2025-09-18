@@ -1,5 +1,7 @@
 package org.thegoats.rolgar2.util;
 
+import org.thegoats.rolgar2.world.Position;
+
 import java.util.ArrayList;
 
 /**
@@ -81,6 +83,16 @@ public class Grid3d {
         Assert.inRange(column, 0, getColumnCount(), "'column' debe ser mayor o cero y menor a igual a getColumnCount()");
         Assert.inRange(layer, 0, getLayerCount(), "'layer' debe ser mayor o igual a cero y menor a getLayerCount()");
         return grid.get(layer).get(row).get(column);
+    }
+
+    /**
+     * Obtiene un objeto en la posicion 'position' de la grilla
+     * @param position No null, debe ser una posicion valida
+     * @return El objeto en la posicion
+     */
+    public Object get(Position position) {
+        Assert.notNull(position, "'position' debe ser no null");
+        return get(position.row(), position.column(), position.layer());
     }
 
     public int getRowCount() {
