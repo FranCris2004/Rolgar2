@@ -69,4 +69,15 @@ public class Assert {
             throw new RuntimeException(message);
         }
     }
+
+    /**
+     * @param string No null, No vacío
+     * @param message Mensaje en caso de excepcion
+     * @throws RuntimeException Si 'string' es null o vacío
+     */
+    public static void notNullOrEmpty(String string, String message) {
+        if (string == null || string.isEmpty()) {
+            throw new RuntimeException(message);
+        }
+    }
 }
