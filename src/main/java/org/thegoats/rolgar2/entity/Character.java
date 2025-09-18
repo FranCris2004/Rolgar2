@@ -4,17 +4,10 @@ import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.world.Position;
 
 public abstract class Character extends Entity {
-    //INTERFACES ----------------------------------------------------------------------------------------------
-    //ENUMERADOS ----------------------------------------------------------------------------------------------
-    //CONSTANTES ----------------------------------------------------------------------------------------------
-    //ATRIBUTOS DE CLASE --------------------------------------------------------------------------------------
-    //ATRIBUTOS -----------------------------------------------------------------------------------------------
     private String name;
     private int health;
     private int maxHealth;
     private int strength;
-    //ATRIBUTOS TRANSITORIOS ----------------------------------------------------------------------------------
-    //CONSTRUCTORES -------------------------------------------------------------------------------------------
 
     /**
      *
@@ -31,11 +24,6 @@ public abstract class Character extends Entity {
         setHealth(health);
         setStrength(strength);
     }
-    //METODOS ABSTRACTOS --------------------------------------------------------------------------------------
-
-    public abstract void doTurn();
-
-    //METODOS HEREDADOS (CLASE)--------------------------------------------------------------------------------
 
     @Override
     public String toString() {
@@ -64,11 +52,6 @@ public abstract class Character extends Entity {
                 super.equals(other);
     }
 
-    //METODOS HEREDADOS (INTERFACE)----------------------------------------------------------------------------
-    //METODOS DE CLASE ----------------------------------------------------------------------------------------
-    //METODOS GENERALES ---------------------------------------------------------------------------------------
-    //METODOS DE COMPORTAMIENTO -------------------------------------------------------------------------------
-
     protected void attack(Character other){
         Assert.notNull(other, "'other' no debe ser null'");
         other.takeDamage(this.strength);
@@ -87,7 +70,7 @@ public abstract class Character extends Entity {
             setHealth(getHealth() - damage);
         }
     }
-    //METODOS DE CONSULTA DE ESTADO ---------------------------------------------------------------------------
+
     /**
      * @return True si el personaje esta vivo, False si esta muerto
      */
@@ -101,10 +84,6 @@ public abstract class Character extends Entity {
     public boolean isDead(){
         return !isAlive();
     }
-    //GETTERS REDEFINIDOS -------------------------------------------------------------------------------------
-    //GETTERS INICIALIZADOS -----------------------------------------------------------------------------------
-    //GETTERS COMPLEJOS ---------------------------------------------------------------------------------------
-    //GETTERS SIMPLES -----------------------------------------------------------------------------------------
 
     /**
      * @return EL nombre del personaje
@@ -133,9 +112,6 @@ public abstract class Character extends Entity {
     public int getStrength(){
         return this.strength;
     }
-
-    //SETTERS COMPLEJOS----------------------------------------------------------------------------------------
-    //SETTERS SIMPLES -----------------------------------------------------------------------------------------
 
     /**
      * @param name no nulo, sólo debe contener de 3 a 20 caracteres alfanuméricos, '.' , '-' y '_'
