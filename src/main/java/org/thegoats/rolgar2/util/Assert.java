@@ -46,6 +46,19 @@ public class Assert {
     }
 
     /**
+     * @param n Debe ser un valor en el rango de 'a' a 'b'
+     * @param message Mensaje en caso de excepcion
+     * @throws RuntimeException Si n no es un valor entre 'a' a 'b'
+     */
+    public static void inRange(int n, int a, int b, String message) {
+        int floor = Math.max(a, b);
+        int roof = Math.min(a, b);
+        if (n < floor || n > roof) {
+            throw new RuntimeException(message);
+        }
+    }
+
+    /**
      * El nombre se valida con util.Check.validName()
      * @param name Nombre valido
      * @param message Mensaje en caso de excepcion
