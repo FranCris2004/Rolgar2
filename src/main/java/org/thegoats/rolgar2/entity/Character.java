@@ -3,7 +3,7 @@ package org.thegoats.rolgar2.entity;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.world.Position;
 
-public class Character extends Entity {
+public abstract class Character extends Entity {
     //INTERFACES ----------------------------------------------------------------------------------------------
     //ENUMERADOS ----------------------------------------------------------------------------------------------
     //CONSTANTES ----------------------------------------------------------------------------------------------
@@ -31,6 +31,9 @@ public class Character extends Entity {
         setStrength(strength);
     }
     //METODOS ABSTRACTOS --------------------------------------------------------------------------------------
+
+    public abstract void doTurn();
+
     //METODOS HEREDADOS (CLASE)--------------------------------------------------------------------------------
 
     @Override
@@ -62,6 +65,11 @@ public class Character extends Entity {
     //METODOS DE CLASE ----------------------------------------------------------------------------------------
     //METODOS GENERALES ---------------------------------------------------------------------------------------
     //METODOS DE COMPORTAMIENTO -------------------------------------------------------------------------------
+
+    protected void attack(Character other){
+        Assert.notNull(other, "'other' no debe ser null'");
+        other.takeDamage(this.strength);
+    }
 
     /**
      * Si el daño es mayor a la vide, la setea en 0, sino la setea en this.health - damage
