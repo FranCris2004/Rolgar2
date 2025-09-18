@@ -1,5 +1,7 @@
 package org.thegoats.rolgar2.util;
 
+import org.thegoats.rolgar2.world.Position;
+
 import java.util.ArrayList;
 
 /**
@@ -93,5 +95,22 @@ public class Grid3d {
 
     public int getLayerCount() {
         return grid.size();
+    }
+
+    /**
+     * @return true si la posicion es valida, false si no lo es
+     */
+    public boolean isValidPosition(int row, int column, int layer) {
+        return row >= 0 && row < getRowCount()
+                && column >= 0 && column < getColumnCount()
+                && layer >= 0 && layer < getLayerCount();
+    }
+
+    /**
+     * @return true si la posicion es valida, false si no lo es o si es null
+     */
+    public boolean isValidPosition(Position position) {
+        return position != null
+                && isValidPosition(position.row(), position.column(), position.layer());
     }
 }
