@@ -14,7 +14,7 @@ public abstract class Entity {
      * @param position No null
      */
     protected Entity(Position position) {
-        setPosition(position);
+        move(position);
     }
 
     /** Compara la instancia invocadora con el objeto pasado por parametro
@@ -46,7 +46,7 @@ public abstract class Entity {
     /**
      * @param position No null
      */
-    public void setPosition(Position position) {
+    public void move(Position position) {
         Assert.notNull(position, "'position' no debe ser null");
 
         // TODO: Sincronizar la posicion de la entidad en la grilla del mundo
