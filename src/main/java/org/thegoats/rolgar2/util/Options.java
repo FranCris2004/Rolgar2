@@ -41,6 +41,7 @@ public final class Options {
     }
 
     public String[] getOptions() {
+        // se devuelve un clon para evitar la modificacion externa de de options
         return options.clone();
     }
 
