@@ -144,13 +144,10 @@ public abstract class Character extends Entity {
     }
 
     /**
-     * @param health Debe ser mayor o igual a 0
+     * @param health Debe ser mayor o igual a 0 y menor o igual a maxHealth
      */
     private void setHealth(int health) {
-        // TODO: Implementar con Assert.inRange cuando este disponible
-        if(health < 0 || health > maxHealth){
-            throw new IllegalArgumentException("La vida debe ser mayor o igual a 0 y menor o igual a " + maxHealth);
-        }
+        Assert.inRange(health,0, maxHealth, "'health' debe ser mayor o igual a o y menor o igual a " + maxHealth);
         this.health = health;
     }
 
