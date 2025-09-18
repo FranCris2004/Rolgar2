@@ -10,7 +10,8 @@ public abstract class Character extends Entity {
     //ATRIBUTOS DE CLASE --------------------------------------------------------------------------------------
     //ATRIBUTOS -----------------------------------------------------------------------------------------------
     private String name;
-    private int health, maxHealth;
+    private int health;
+    private int maxHealth;
     private int strength;
     //ATRIBUTOS TRANSITORIOS ----------------------------------------------------------------------------------
     //CONSTRUCTORES -------------------------------------------------------------------------------------------
@@ -38,8 +39,10 @@ public abstract class Character extends Entity {
 
     @Override
     public String toString() {
-        return this.name + " Vida: " + this.health + "/" + this.maxHealth + " Daño: " + this.strength +
-                " Posicion: " +  this.position.toString();
+        return String.format(
+                "Character[name=%s,health=%s,maxHealth=%s,strength=%s,position=%s]",
+                name, health, maxHealth, strength, position
+        );
     }
 
     @Override
