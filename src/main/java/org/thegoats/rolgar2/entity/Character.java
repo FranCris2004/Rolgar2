@@ -41,7 +41,7 @@ public abstract class Character extends Entity {
     public String toString() {
         return String.format(
                 "Character[name=%s,health=%s,maxHealth=%s,strength=%s,position=%s]",
-                name, health, maxHealth, strength, position
+                name, health, maxHealth, strength, this.getPosition()
         );
     }
 
@@ -61,7 +61,7 @@ public abstract class Character extends Entity {
                 this.maxHealth == other.maxHealth &&
                 this.name.equals(other.name) &&
                 this.strength == other.strength &&
-                this.position.equals(other.position);
+                this.getPosition().equals(other.getPosition());
     }
 
     //METODOS HEREDADOS (INTERFACE)----------------------------------------------------------------------------
