@@ -1,11 +1,9 @@
-package org.thegoats.rolgar2.mundo;
+package org.thegoats.rolgar2.world;
 
 import org.thegoats.rolgar2.entity.Entity;
 import org.thegoats.rolgar2.util.Grid3d;
-import org.thegoats.rolgar2.world.Block;
-import org.thegoats.rolgar2.world.Position;
 
-public class Mundo {
+public class World {
 
 
     //INTERFACES ----------------------------------------------------------------------------------------------
@@ -13,7 +11,7 @@ public class Mundo {
 //CONSTANTES ----------------------------------------------------------------------------------------------
 //ATRIBUTOS DE CLASE --------------------------------------------------------------------------------------
 
-    private Grid3d grilla3d;
+    private Grid3d grid;
 
 
     //ATRIBUTOS -----------------------------------------------------------------------------------------------
@@ -22,12 +20,12 @@ public class Mundo {
 
     /**
      *
-     * @param filas no negativo
-     * @param columnas no negativo
-     * @param capas no negativo
+     * @param rows no negativo
+     * @param columns no negativo
+     * @param layers no negativo
      */
-    public Mundo(int filas, int columnas, int capas) {
-        this.grilla3d = new Grid3d(filas, columnas, capas);
+    public World(int rows, int columns, int layers) {
+        this.grid = new Grid3d(rows, columns, layers);
     }
 
     //METODOS ABSTRACTOS --------------------------------------------------------------------------------------
@@ -41,10 +39,10 @@ public class Mundo {
      * @param position
      * @return devuelve falso si se va del limite, true si se mantiene en el limite
      */
-    public boolean estaEnLosLimites(Position position) {
-        return position.getRow() >= 0 && position.getRow() < grilla3d.getRowCount()
-                && position.getColumn() >= 0 && position.getColumn() < grilla3d.getColumnCount()
-                && position.getLayer() >= 0 && position.getLayer() < grilla3d.getLayerCount();
+    public boolean isInTheLimits(Position position) {
+        return position.getRow() >= 0 && position.getRow() < grid.getRowCount()
+                && position.getColumn() >= 0 && position.getColumn() < grid.getColumnCount()
+                && position.getLayer() >= 0 && position.getLayer() < grid.getLayerCount();
     }
 
 
@@ -53,8 +51,8 @@ public class Mundo {
      * @param position no null
      * @return devuelve true si esta ocupada la celda, false caso contrario
      */
-    public boolean esCeldaOcupada(Position position) {
-        Object contenido = grilla3d.get(
+    public boolean isFilled(Position position) {
+        Object contenido = grid.get(
                 position.getRow(),
                 position.getColumn(),
                 position.getLayer()
@@ -72,14 +70,30 @@ public class Mundo {
 
     /**
      * agrega una entidad que se le de en la posicion del bloque que se le de
-     * @param entidad no null
-     * @param block no null
+     * @param entity no null
+     * @param position no null
      */
-    public void agregarEntidad(Entity entidad, Block block) {
-        Position posicion = block.getPosition();
-            if (block.getIsWalkable()){
-                if(estaEnLosLimites(block.getPosition()) && !esCeldaOcupada(posicion)) {
-                    grilla3d.set(
+    public void addEntity(Entity entity,Position position) {
+
+            Object underCell = this.grid.get(position.getRow(), position.getColumn(), position.getLayer()-1);
+
+            if (underCell == null) {
+                throw new RuntimeException("La celda de abajo es nula");
+            }
+            if (!(underCell instanceof Block)) {
+                throw new RuntimeException("La celda de abajo no es un bloque");
+            }
+            if(!((Block) underCell).getIsWalkable()) {
+                throw new RuntimeException("El bloque de abajo no es caminable");
+            }
+
+
+
+                /**
+                 *
+
+                if(isInTheLimits(block.getPosition()) && !isFilled(posicion)) {
+                    grid.set(
                             posicion.getRow(),
                             posicion.getColumn(),
                             posicion.getLayer(),
@@ -97,7 +111,7 @@ public class Mundo {
             else{
                 System.out.println("el lugar donde quieres agregar la identidad no es caminable");
             }
-
+            */
 
     }
 
@@ -109,13 +123,13 @@ public class Mundo {
      */
     public void moverEntidad(Entity entidad,Block blockDestino) {
         Position newPosition = blockDestino.getPosition();
-        if(estaEnLosLimites(newPosition) && !esCeldaOcupada(newPosition)) {
+        if(isInTheLimits(newPosition) && !isFilled(newPosition)) {
             if(blockDestino.getIsWalkable()){
-                Object destino = grilla3d.get(newPosition.getRow(), newPosition.getColumn(), newPosition.getLayer());
+                Object destino = grid.get(newPosition.getRow(), newPosition.getColumn(), newPosition.getLayer());
 
-                grilla3d.set(entidad.getPosition().getRow(),entidad.getPosition().getColumn(),entidad.getPosition().getLayer(), null);
+                grid.set(entidad.getPosition().getRow(),entidad.getPosition().getColumn(),entidad.getPosition().getLayer(), null);
                 entidad.setPosition(newPosition);
-                grilla3d.set(newPosition.getRow(), newPosition.getColumn(), newPosition.getLayer(), entidad);
+                grid.set(newPosition.getRow(), newPosition.getColumn(), newPosition.getLayer(), entidad);
 
 
             }
@@ -137,7 +151,7 @@ public class Mundo {
      */
     public void eliminarEntidad(Entity entidad) {
         Position pos = entidad.getPosition();
-        grilla3d.set(pos.getRow(), pos.getColumn(), pos.getLayer(), null);
+        grid.set(pos.getRow(), pos.getColumn(), pos.getLayer(), null);
     }
 
 
