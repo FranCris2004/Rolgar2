@@ -11,6 +11,12 @@ public class Assert {
             throw new RuntimeException(message);
         }
     }
+    public static void isNull(Object o, String message) {
+        if (o != null) {
+            throw new RuntimeException(message);
+        }
+    }
+
 
     /**
      * @param n No cero
