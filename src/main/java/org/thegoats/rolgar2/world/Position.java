@@ -1,73 +1,44 @@
 package org.thegoats.rolgar2.world;
 
+import org.thegoats.rolgar2.util.Assert;
+
 /**
  * Representa una posicion en el mundo
+ * @param row No negativo
+ * @param column No negativo
+ * @param layer No negativo
  */
-public class Position {
-    private int row, column, layer;
-
-    /**
-     * Equivalente a Posicion(0, 0, 0)
-     */
-    public Position() {
-        this.row = 0;
-        this.column = 0;
-        this.layer = 0;
+public record Position(int row, int column, int layer) {
+    public Position {
+        Assert.nonNegative(row, "'row' debe ser positivo o cero");
+        Assert.nonNegative(column, "'column' debe ser positivo o cero");
+        Assert.nonNegative(layer, "'layer' debe ser positivo o cero");
     }
 
     /**
-     * @param row No negativo
-     * @param column No negativo
-     * @param layer No negativo
+     * Comprueba que dos posiciones sean adyacentes (se encuentra a un casillero de distancia)
+     * @param other No null
+     * @return true si 'this' y 'other' son adyacentes, false si no lo son
      */
-    public Position(int row, int column, int layer) {
-        setRow(row);
-        setColumn(column);
-        setLayer(layer);
-    }
+    public boolean isAdjacent(Position other) {
+        Assert.notNull(other, "'other' debe ser no null");
 
-    /**
-     * @param row No negativo
-     */
-    public void setRow(int row) {
-        if (row < 0) {
-            throw new IllegalArgumentException("'row' debe ser positivo o cero");
+        if (this.equals(other)) {
+            return false;
         }
 
-        this.row = row;
+        // abs es el valor absoluto
+        int dx = Math.abs(row - other.row);
+        int dy = Math.abs(column - other.column);
+        int dz = Math.abs(layer - other.layer);
+
+        // this y other son adyacentes si todas las diferencias están en [-1, 1]
+        return dx <= 1 && dy <= 1 && dz <= 1;
     }
 
     /**
-     * @param column No negativo
+     * No es necesario implementar equals, toString y hashCode
+     * ya que el compilador implementa automaticamente estas
+     * tres funciones en todos los records
      */
-    public void setColumn(int column) {
-        if (row < 0) {
-            throw new IllegalArgumentException("'column' debe ser positivo o cero");
-        }
-
-        this.column = column;
-    }
-
-    /**
-     * @param layer No negativo
-     */
-    public void setLayer(int layer) {
-        if (row < 0) {
-            throw new IllegalArgumentException("'layer' debe ser positivo o cero");
-        }
-
-        this.layer = layer;
-    }
-
-    public int getRow() {
-        return row;
-    }
-
-    public int getColumn() {
-        return column;
-    }
-
-    public int getLayer() {
-        return layer;
-    }
 }

@@ -1,5 +1,7 @@
 package org.thegoats.rolgar2.util;
 
+import org.thegoats.rolgar2.world.Position;
+
 import java.util.ArrayList;
 
 /**
@@ -20,7 +22,9 @@ public class Grid3d {
      * @return la grilla generada
      */
     private static ArrayList<ArrayList<ArrayList<Object>>> generateGrid(int rowCount, int columnCount, int layerCount) {
-        assert rowCount > 0 && layerCount > 0 && columnCount > 0;
+        Assert.positive(rowCount, "'rowCount' debe ser positivo");
+        Assert.positive(columnCount, "'columnCount' debe ser positivo");
+        Assert.positive(layerCount, "'layerCount' debe ser positivo");
 
         ArrayList<ArrayList<ArrayList<Object>>> layers = new ArrayList<>(layerCount);
         for (int i = 0; i < layerCount; i++) {
@@ -38,7 +42,8 @@ public class Grid3d {
      * @return la capa generada
      */
     private static ArrayList<ArrayList<Object>> generateLayer(int rowCount, int columnCount) {
-        assert rowCount > 0 && columnCount > 0;
+        Assert.positive(rowCount, "'rowCount' debe ser positivo");
+        Assert.positive(columnCount, "'columnCount' debe ser positivo");
 
         ArrayList<ArrayList<Object>> layer = new ArrayList<>(rowCount);
         for (int i = 0; i < rowCount; i++) {
@@ -55,7 +60,7 @@ public class Grid3d {
      * @return la fila generada
      */
     private static ArrayList<Object> generateRow(int columnCount) {
-        assert columnCount > 0;
+        Assert.positive(columnCount, "'columnCount' debe ser positivo");
 
         ArrayList<Object> row = new ArrayList<>();
         for (int i = 0; i < columnCount; i++) {
@@ -68,17 +73,26 @@ public class Grid3d {
 
     /**
      * Obtiene un objeto en la grilla
-     * @param row Numero de fila
-     * @param column Numero de columna
-     * @param layer Numero de capa
+     * @param row Numero de fila, mayor o igual a cero y menor a getRowCount()
+     * @param column Numero de columna, mayor o cero y menor a igual a getColumnCount()
+     * @param layer Numero de capa, mayor o igual a cero y menor a getLayerCount()
      * @return el objeto en la posición capa, fila, columna
      */
     public Object get(int row, int column, int layer) {
-        assert row >= 0 && row < getRowCount();
-        assert column >= 0 && column < getColumnCount();
-        assert layer >= 0 && layer < getLayerCount();
-
+        Assert.inRange(row, 0, getRowCount(), "'row' debe ser mayor o igual a cero y menor a getRowCount()");
+        Assert.inRange(column, 0, getColumnCount(), "'column' debe ser mayor o cero y menor a igual a getColumnCount()");
+        Assert.inRange(layer, 0, getLayerCount(), "'layer' debe ser mayor o igual a cero y menor a getLayerCount()");
         return grid.get(layer).get(row).get(column);
+    }
+
+    /**
+     * Obtiene un objeto en la posicion 'position' de la grilla
+     * @param position No null, debe ser una posicion valida
+     * @return El objeto en la posicion
+     */
+    public Object get(Position position) {
+        Assert.notNull(position, "'position' debe ser no null");
+        return get(position.row(), position.column(), position.layer());
     }
 
     public int getRowCount() {
@@ -91,5 +105,22 @@ public class Grid3d {
 
     public int getLayerCount() {
         return grid.size();
+    }
+
+    /**
+     * @return true si la posicion es valida, false si no lo es
+     */
+    public boolean isValidPosition(int row, int column, int layer) {
+        return row >= 0 && row < getRowCount()
+                && column >= 0 && column < getColumnCount()
+                && layer >= 0 && layer < getLayerCount();
+    }
+
+    /**
+     * @return true si la posicion es valida, false si no lo es o si es null
+     */
+    public boolean isValidPosition(Position position) {
+        return position != null
+                && isValidPosition(position.row(), position.column(), position.layer());
     }
 }

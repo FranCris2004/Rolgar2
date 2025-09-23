@@ -2,14 +2,7 @@ package org.thegoats.rolgar2.util;
 import java.util.Scanner;
 
 public class Keyboard {
-    private static Scanner keyboard = new Scanner(System.in);
-
-    /**
-     * Inicializa el teclaco
-     */
-    public static void initialize() {
-        keyboard = new Scanner(System.in);
-    }
+    private static final Scanner keyboard = new Scanner(System.in);
 
     /**
      * Escanea un entero
