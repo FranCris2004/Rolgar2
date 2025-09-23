@@ -41,11 +41,10 @@ public class World {
      * @return devuelve falso si se va del limite, true si se mantiene en el limite
      */
     public boolean isInTheLimits(Position position) {
-        return position.getRow() >= 0 && position.getRow() < grid.getRowCount()
-                && position.getColumn() >= 0 && position.getColumn() < grid.getColumnCount()
-                && position.getLayer() >= 0 && position.getLayer() < grid.getLayerCount();
+        return position.row() >= 0 && position.row() < grid.getRowCount()
+                && position.column() >= 0 && position.column() < grid.getColumnCount()
+                && position.layer() >= 0 && position.layer() < grid.getLayerCount();
     }
-
 
     /**
      *
@@ -54,9 +53,9 @@ public class World {
      */
     public boolean isFilled(Position position) {
         Object contenido = grid.get(
-                position.getRow(),
-                position.getColumn(),
-                position.getLayer()
+                position.row(),
+                position.column(),
+                position.layer()
         );
 
         if (contenido != null) {
@@ -65,7 +64,6 @@ public class World {
 
         return false;
     }
-
 
 //METODOS DE COMPORTAMIENTO -------------------------------------------------------------------------------
 
@@ -90,76 +88,47 @@ public class World {
         }
         this.grid[position.row()][position.column()][position.layer()] = entity;
 
-
-
-
-
-
     }
 
 
     /**
-     * mueve una entidad que se le de a la ubicacion que se le de
-     * @param entidad no null
-     * @param blockDestino no null
+     * mueve entity hacia position
+     * @param entity no null
+     * @param position no null
      */
-    public void moverEntidad(Entity entidad,Block blockDestino) {
-        Position newPosition = blockDestino.position();
-        if(isInTheLimits(newPosition) && !isFilled(newPosition)) {
-            if(blockDestino.isWalkable()){
-                Object destino = grid.get(newPosition.row(), newPosition.column(), newPosition.layer());
+    public void moveEntity(Entity entity,Position position) {
+        Assert.notNull(position, "'position' debe ser no nula");
+        Assert.notNull(entity, "'entity' debe ser no nula");
+        Assert.isNull(this.grid.get(position),"La posicion no esta vacia");
+        Object underCell = this.grid.get(position.row(), position.column(), position.layer() - 1);
 
-                /*
-                grid.set(entidad.getPosition().row(),entidad.getPosition().column(),entidad.getPosition().layer(), null);
-                entidad.setPosition(newPosition);
-                grid.set(newPosition.row(), newPosition.column(), newPosition.layer(), entidad);
-                */
+        Assert.notNull(underCell, "'underCell' debe ser no nula");
 
-            }
-            else{
-                System.out.println("El Bloque no es caminable");
-            }
-
+        if (!(underCell instanceof Block)) {
+            throw new RuntimeException("La celda de abajo no es un bloque");
         }
-        else{
-            System.out.println("No la nueva posicion no es valida");
+        if(!((Block) underCell).isWalkable()) {
+            throw new RuntimeException("El bloque de abajo no es caminable");
         }
-
-
     }
 
     /**
-     * elimina entidad de la grilla
-     * @param entidad no null
+     * elimina entity de la grilla
+     * @param entity no null
      */
-    public void eliminarEntidad(Entity entidad) {
-        Position pos = entidad.getPosition();
+    public void deleteEntity(Entity entity) {
+        Position pos = entity.getPosition();
 
         /*
         grid.set(pos.row(), pos.column(), pos.layer(), null);
          */
     }
 
-
-
 //METODOS DE CONSULTA DE ESTADO ---------------------------------------------------------------------------
 //GETTERS REDEFINIDOS -------------------------------------------------------------------------------------
 //GETTERS INICIALIZADOS -----------------------------------------------------------------------------------
 //GETTERS COMPLEJOS ---------------------------------------------------------------------------------------
 //GETTERS SIMPLES -----------------------------------------------------------------------------------------
-
-
-    //SETTERS COMPLEJOS----------------------------------------------------------------------------------------
+//SETTERS COMPLEJOS----------------------------------------------------------------------------------------
 //SETTERS SIMPLES -----------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
 }
