@@ -1,6 +1,7 @@
 package org.thegoats.rolgar2.world;
 
 import org.thegoats.rolgar2.entity.Entity;
+import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.Grid3d;
 
 public class World {
@@ -74,44 +75,25 @@ public class World {
      * @param position no null
      */
     public void addEntity(Entity entity,Position position) {
+        Assert.notNull(position, "'position' debe ser no nula");
+        Assert.notNull(entity, "'entity' debe ser no nula");
+        Assert.isNull(this.grid.get(position),"La posicion no esta vacia");
+        Object underCell = this.grid.get(position.row(), position.column(), position.layer() - 1);
 
-            Object underCell = this.grid.get(position.getRow(), position.getColumn(), position.getLayer()-1);
+        Assert.notNull(underCell, "'underCell' debe ser no nula");
 
-            if (underCell == null) {
-                throw new RuntimeException("La celda de abajo es nula");
-            }
-            if (!(underCell instanceof Block)) {
-                throw new RuntimeException("La celda de abajo no es un bloque");
-            }
-            if(!((Block) underCell).getIsWalkable()) {
-                throw new RuntimeException("El bloque de abajo no es caminable");
-            }
-
-
-
-                /**
-                 *
-
-                if(isInTheLimits(block.getPosition()) && !isFilled(posicion)) {
-                    grid.set(
-                            posicion.getRow(),
-                            posicion.getColumn(),
-                            posicion.getLayer(),
-                            entidad
-                    );
-                    entidad.setPosition(posicion);
-                }
-                else{
-                    System.out.println("La posicion no es valida");
-                }
+        if (!(underCell instanceof Block)) {
+            throw new RuntimeException("La celda de abajo no es un bloque");
+        }
+        if(!((Block) underCell).isWalkable()) {
+            throw new RuntimeException("El bloque de abajo no es caminable");
+        }
+        this.grid[position.row()][position.column()][position.layer()] = entity;
 
 
 
-            }
-            else{
-                System.out.println("el lugar donde quieres agregar la identidad no es caminable");
-            }
-            */
+
+
 
     }
 
@@ -122,15 +104,16 @@ public class World {
      * @param blockDestino no null
      */
     public void moverEntidad(Entity entidad,Block blockDestino) {
-        Position newPosition = blockDestino.getPosition();
+        Position newPosition = blockDestino.position();
         if(isInTheLimits(newPosition) && !isFilled(newPosition)) {
-            if(blockDestino.getIsWalkable()){
-                Object destino = grid.get(newPosition.getRow(), newPosition.getColumn(), newPosition.getLayer());
+            if(blockDestino.isWalkable()){
+                Object destino = grid.get(newPosition.row(), newPosition.column(), newPosition.layer());
 
-                grid.set(entidad.getPosition().getRow(),entidad.getPosition().getColumn(),entidad.getPosition().getLayer(), null);
+                /*
+                grid.set(entidad.getPosition().row(),entidad.getPosition().column(),entidad.getPosition().layer(), null);
                 entidad.setPosition(newPosition);
-                grid.set(newPosition.getRow(), newPosition.getColumn(), newPosition.getLayer(), entidad);
-
+                grid.set(newPosition.row(), newPosition.column(), newPosition.layer(), entidad);
+                */
 
             }
             else{
@@ -151,7 +134,10 @@ public class World {
      */
     public void eliminarEntidad(Entity entidad) {
         Position pos = entidad.getPosition();
-        grid.set(pos.getRow(), pos.getColumn(), pos.getLayer(), null);
+
+        /*
+        grid.set(pos.row(), pos.column(), pos.layer(), null);
+         */
     }
 
 
