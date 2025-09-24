@@ -1,5 +1,6 @@
-package org.thegoats.rolgar2.entity;
+package org.thegoats.rolgar2.entity.character;
 
+import org.thegoats.rolgar2.entity.Entity;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.world.Position;
 

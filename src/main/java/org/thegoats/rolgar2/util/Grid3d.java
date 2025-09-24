@@ -71,6 +71,16 @@ public class Grid3d {
         return row;
     }
 
+    public void set(int row, int column, int layer, Object value) {
+        assert isValidPosition(row, column, layer);
+        grid.get(layer).get(row).add(column, value);
+    }
+
+    public void set(Position position, Object value) {
+        Assert.notNull(position, "'position' no debe ser null");
+        set(position.row(), position.column(), position.layer(), value);
+    }
+
     /**
      * Obtiene un objeto en la grilla
      * @param row Numero de fila, mayor o igual a cero y menor a getRowCount()
