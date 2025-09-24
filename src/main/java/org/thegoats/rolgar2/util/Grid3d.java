@@ -95,6 +95,19 @@ public class Grid3d {
         return get(position.row(), position.column(), position.layer());
     }
 
+    public void set(int row, int column, int layer, Object value) {
+        if (!isValidPosition(row, column, layer)) {
+            throw new RuntimeException(new Position(row, column, layer) + " no es una posicion valida");
+        }
+
+        this.grid.get(row).get(column).set(layer, value);
+    }
+
+    public void set(Position position, Object value) {
+        Assert.notNull(position, "'position' debe ser no null");
+        set(position.row(), position.column(), position.layer(), value);
+    }
+
     public int getRowCount() {
         return grid.getFirst().size();
     }
