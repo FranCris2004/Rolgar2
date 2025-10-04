@@ -89,6 +89,9 @@ public abstract class Character {
         this.name = name;
     }
 
+    /**
+     * @return referencia a las stats del personaje
+     */
     public CharacterStats getStats() {
         return stats;
     }
