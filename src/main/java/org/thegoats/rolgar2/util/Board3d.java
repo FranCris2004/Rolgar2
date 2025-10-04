@@ -2,15 +2,16 @@ package org.thegoats.rolgar2.util;
 
 import org.thegoats.rolgar2.world.Position;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Grilla o matriz en tres dimensiones
  */
-public class Grid3d {
-    private final ArrayList<ArrayList<ArrayList<Object>>> grid;
+public class Board3d<T> {
+    private final List<List<List<T>>> grid;
 
-    public Grid3d(int rowCount, int columnCount, int layerCount) {
+    public Board3d(int rowCount, int columnCount, int layerCount) {
         this.grid = generateGrid(layerCount, rowCount, columnCount);
     }
 
@@ -21,35 +22,34 @@ public class Grid3d {
      * @param layerCount Positivo
      * @return la grilla generada
      */
-    private static ArrayList<ArrayList<ArrayList<Object>>> generateGrid(int rowCount, int columnCount, int layerCount) {
+    private List<List<List<T>>> generateGrid(int rowCount, int columnCount, int layerCount) {
         Assert.positive(rowCount, "'rowCount' debe ser positivo");
         Assert.positive(columnCount, "'columnCount' debe ser positivo");
         Assert.positive(layerCount, "'layerCount' debe ser positivo");
 
-        ArrayList<ArrayList<ArrayList<Object>>> layers = new ArrayList<>(layerCount);
+        List<List<List<T>>> layers = new LinkedList<>();
         for (int i = 0; i < layerCount; i++) {
             layers.add(generateLayer(rowCount, columnCount));
         }
-        layers.trimToSize();
 
         return layers;
     }
 
     /**
      * Genera una capa, de una grilla, de numeroDeFilas x numeroDeColumnas
-     * @param rowCount Positivo
+     *
+     * @param rowCount    Positivo
      * @param columnCount Positivo
      * @return la capa generada
      */
-    private static ArrayList<ArrayList<Object>> generateLayer(int rowCount, int columnCount) {
+    private List<List<T>> generateLayer(int rowCount, int columnCount) {
         Assert.positive(rowCount, "'rowCount' debe ser positivo");
         Assert.positive(columnCount, "'columnCount' debe ser positivo");
 
-        ArrayList<ArrayList<Object>> layer = new ArrayList<>(rowCount);
+        List<List<T>> layer = new LinkedList<>();
         for (int i = 0; i < rowCount; i++) {
             layer.add(generateRow(columnCount));
         }
-        layer.trimToSize();
 
         return layer;
     }
@@ -59,14 +59,13 @@ public class Grid3d {
      * @param columnCount Positivo
      * @return la fila generada
      */
-    private static ArrayList<Object> generateRow(int columnCount) {
+    private List<T> generateRow(int columnCount) {
         Assert.positive(columnCount, "'columnCount' debe ser positivo");
 
-        ArrayList<Object> row = new ArrayList<>();
+        List<T> row = new LinkedList<>();
         for (int i = 0; i < columnCount; i++) {
             row.add(null);
         }
-        row.trimToSize();
 
         return row;
     }
@@ -78,7 +77,7 @@ public class Grid3d {
      * @param layer Numero de capa, mayor o igual a cero y menor a getLayerCount()
      * @return el objeto en la posición capa, fila, columna
      */
-    public Object get(int row, int column, int layer) {
+    public T get(int row, int column, int layer) {
         Assert.inRange(row, 0, getRowCount(), "'row' debe ser mayor o igual a cero y menor a getRowCount()");
         Assert.inRange(column, 0, getColumnCount(), "'column' debe ser mayor o cero y menor a igual a getColumnCount()");
         Assert.inRange(layer, 0, getLayerCount(), "'layer' debe ser mayor o igual a cero y menor a getLayerCount()");
@@ -90,12 +89,12 @@ public class Grid3d {
      * @param position No null, debe ser una posicion valida
      * @return El objeto en la posicion
      */
-    public Object get(Position position) {
+    public T get(Position position) {
         Assert.notNull(position, "'position' debe ser no null");
         return get(position.row(), position.column(), position.layer());
     }
 
-    public void set(int row, int column, int layer, Object value) {
+    public void set(int row, int column, int layer, T value) {
         if (!isValidPosition(row, column, layer)) {
             throw new RuntimeException(new Position(row, column, layer) + " no es una posicion valida");
         }
@@ -103,7 +102,7 @@ public class Grid3d {
         this.grid.get(row).get(column).set(layer, value);
     }
 
-    public void set(Position position, Object value) {
+    public void set(Position position, T value) {
         Assert.notNull(position, "'position' debe ser no null");
         set(position.row(), position.column(), position.layer(), value);
     }
