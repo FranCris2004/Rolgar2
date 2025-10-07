@@ -6,23 +6,23 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Grilla o matriz en tres dimensiones
+ * Tablero de tres dimensiones
  */
 public class Board3d<T> {
-    private final List<List<List<T>>> grid;
+    private final List<List<List<T>>> board;
 
     public Board3d(int rowCount, int columnCount, int layerCount) {
-        this.grid = generateGrid(layerCount, rowCount, columnCount);
+        board = generateBoard(layerCount, rowCount, columnCount);
     }
 
     /**
-     * Genera un grilla de numeroDeFilas x numeroDeColumnas x numeroDeCapas
+     * Genera un tablero de numeroDeFilas x numeroDeColumnas x numeroDeCapas
      * @param rowCount Positivo
      * @param columnCount Positivo
      * @param layerCount Positivo
-     * @return la grilla generada
+     * @return el tablero generada
      */
-    private List<List<List<T>>> generateGrid(int rowCount, int columnCount, int layerCount) {
+    private List<List<List<T>>> generateBoard(int rowCount, int columnCount, int layerCount) {
         Assert.positive(rowCount, "'rowCount' debe ser positivo");
         Assert.positive(columnCount, "'columnCount' debe ser positivo");
         Assert.positive(layerCount, "'layerCount' debe ser positivo");
@@ -36,7 +36,7 @@ public class Board3d<T> {
     }
 
     /**
-     * Genera una capa, de una grilla, de numeroDeFilas x numeroDeColumnas
+     * Genera una capa, de un tablero, de numeroDeFilas x numeroDeColumnas
      *
      * @param rowCount    Positivo
      * @param columnCount Positivo
@@ -55,7 +55,7 @@ public class Board3d<T> {
     }
 
     /**
-     * Genera una fila, de una capa, de una grilla, de numeroDeColumnas
+     * Genera una fila, de una capa, de un tablero, de numeroDeColumnas
      * @param columnCount Positivo
      * @return la fila generada
      */
@@ -71,7 +71,7 @@ public class Board3d<T> {
     }
 
     /**
-     * Obtiene un objeto en la grilla
+     * Obtiene un objeto en el tablero
      * @param row Numero de fila, mayor o igual a cero y menor a getRowCount()
      * @param column Numero de columna, mayor o cero y menor a igual a getColumnCount()
      * @param layer Numero de capa, mayor o igual a cero y menor a getLayerCount()
@@ -81,11 +81,11 @@ public class Board3d<T> {
         Assert.inRange(row, 0, getRowCount(), "'row' debe ser mayor o igual a cero y menor a getRowCount()");
         Assert.inRange(column, 0, getColumnCount(), "'column' debe ser mayor o cero y menor a igual a getColumnCount()");
         Assert.inRange(layer, 0, getLayerCount(), "'layer' debe ser mayor o igual a cero y menor a getLayerCount()");
-        return grid.get(layer).get(row).get(column);
+        return board.get(layer).get(row).get(column);
     }
 
     /**
-     * Obtiene un objeto en la posicion 'position' de la grilla
+     * Obtiene un objeto en la posicion 'position' de el tablero
      * @param position No null, debe ser una posicion valida
      * @return El objeto en la posicion
      */
@@ -106,7 +106,7 @@ public class Board3d<T> {
             throw new RuntimeException(new Position(row, column, layer) + " no es una posicion valida");
         }
 
-        this.grid.get(row).get(column).set(layer, value);
+        board.get(row).get(column).set(layer, value);
     }
 
     /**
@@ -123,21 +123,21 @@ public class Board3d<T> {
      * @return numero de filas
      */
     public int getRowCount() {
-        return grid.getFirst().size();
+        return board.getFirst().size();
     }
 
     /**
      * @return numero de columnas
      */
     public int getColumnCount() {
-        return grid.getFirst().getFirst().size();
+        return board.getFirst().getFirst().size();
     }
 
     /**
      * @return numero de capas
      */
     public int getLayerCount() {
-        return grid.size();
+        return board.size();
     }
 
     /**
