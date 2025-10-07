@@ -17,6 +17,20 @@ public class WorldCell {
         this.content = content;
     }
 
+    public boolean hasNull() {
+        return content == null;
+    }
+
+    public boolean hasCharacter()
+    {
+        return !hasNull() && content instanceof Character;
+    }
+
+    public boolean hasBlock()
+    {
+        return !hasNull() && content instanceof Block;
+    }
+
     private static boolean validContent(Object content) {
         return content == null ||
                 content instanceof Block ||
