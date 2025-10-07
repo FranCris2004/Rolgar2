@@ -14,6 +14,22 @@ public record Position(int row, int column, int layer) {
         Assert.nonNegative(column, "'column' debe ser positivo o cero");
         Assert.nonNegative(layer, "'layer' debe ser positivo o cero");
     }
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        }
+        if(this == obj){
+            return true;
+        }
+        if(obj.getClass() != this.getClass()){
+            return false;
+        }
+        Position other = (Position) obj;
+        return row == other.row()
+                && layer == other.layer()
+                && column == other.column();
+    }
 
     /**
      * Comprueba que dos posiciones sean adyacentes (se encuentra a un casillero de distancia)
