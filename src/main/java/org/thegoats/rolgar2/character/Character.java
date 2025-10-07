@@ -13,9 +13,8 @@ public final class Character {
      * @param maxHealth Debe ser mayor a 0
      * @param health Debe ser mayor o igual a 0
      * @param strength Debe ser mayor o igual a 0
-     * @param position No null
      */
-    public Character(String name, int maxHealth, int health, int strength, Position position) {
+    public Character(String name, int maxHealth, int health, int strength) {
         setName(name);
         stats = new CharacterStats(health, maxHealth, strength);
     }
