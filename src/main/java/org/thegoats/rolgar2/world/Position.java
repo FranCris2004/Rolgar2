@@ -14,6 +14,11 @@ public record Position(int row, int column, int layer) {
         Assert.nonNegative(column, "'column' debe ser positivo o cero");
         Assert.nonNegative(layer, "'layer' debe ser positivo o cero");
     }
+
+    /**
+     * @param obj   Position a comparar con la posicion invocadora.
+     * @return
+     */
     @Override
     public boolean equals(Object obj){
         if(obj == null){
@@ -29,6 +34,17 @@ public record Position(int row, int column, int layer) {
         return row == other.row()
                 && layer == other.layer()
                 && column == other.column();
+    }
+
+    /**
+     * @return La posicion en formato string
+     */
+    @Override
+    public String toString(){
+        return String.format(
+                "Position[row=%d,column=%d,layer=%d]",
+                row(), column(), layer()
+        );
     }
 
     /**
