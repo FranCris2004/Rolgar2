@@ -1,13 +1,16 @@
 package org.thegoats.rolgar2.world;
 
-import org.thegoats.rolgar2.util.Assert;
+/**
+ * Representa un bloque<br>
+ * NOTA: Por ahora solo contiene el atributo isWalkable, en el futuro quizas se agreguen mas
+ */
+public class Block {
+	public boolean isWalkable;
 
-public record Block(Position position, boolean isWalkable) {
 	/**
-	 * @param position No null, posicion bloque
-	 * @param isWalkable Si se puede caminar o no sobre este bloque
+	 * @param isWalkable true para que se pueda caminar sobre este bloque, false para que no se pueda
 	 */
-	public Block {
-		Assert.notNull(position, "'position' debe ser no nula");
+	public Block(boolean isWalkable) {
+		this.isWalkable = isWalkable;
 	}
 }
