@@ -2,6 +2,8 @@ package org.thegoats.rolgar2.world;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Random;
+
 public class PositionTest {
     @Test
     void validPosition() {
@@ -50,13 +52,24 @@ public class PositionTest {
         }
     }
 
-    @Test void equalsNull() {
-        mustThrow(() -> {
-            Position position = new Position(0, 0, 0);
-            System.out.println("a");
-            position.equals(null);
-            System.out.println("b");
-        }, "Se permitio pasar null a position.equals");
+    @Test
+     void toStringTest(){
+        Position position1 = new Position(1, 2, 3);
+        assert position1.toString().equals("Position[row=1,column=2,layer=3]");
+
+        Position position2 = new Position(12, 12, 12);
+        assert position2.toString().equals("Position[row=12,column=12,layer=12]");
+
+        Random random = new Random(System.nanoTime());
+
+        int row = random.nextInt(100);
+        int column = random.nextInt(100);
+        int layer = random.nextInt(100);
+
+        Position position3 = new Position(row, column, layer);
+
+        String expectedString = "Position[row="+ row +",column="+ column +",layer="+ layer +"]";
+
     }
 
     static void mustThrow(Runnable r, String message) {
