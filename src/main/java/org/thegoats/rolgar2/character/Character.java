@@ -3,7 +3,7 @@ package org.thegoats.rolgar2.character;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.world.Position;
 
-public abstract class Character {
+public final class Character {
     private String name;
     private final CharacterStats stats;
 
@@ -15,7 +15,7 @@ public abstract class Character {
      * @param strength Debe ser mayor o igual a 0
      * @param position No null
      */
-    protected Character(String name, int maxHealth, int health, int strength, Position position) {
+    public Character(String name, int maxHealth, int health, int strength, Position position) {
         setName(name);
         stats = new CharacterStats(health, maxHealth, strength);
     }
@@ -41,17 +41,12 @@ public abstract class Character {
     }
 
     /**
-     * Si el daño es mayor a la vide, la setea en 0, sino la setea en this.health - damage
+     * Reduce la vida y la trunca en 0
      * @param damage Debe ser mayor a 0
      */
     public void takeDamage(int damage){
         Assert.nonNegative(damage, "el daño recibido debe ser mayor o igual a cero");
-
-        if(damage > stats.getHealth()){
-            stats.setHealth(0);
-        } else {
-            stats.setHealth(stats.getHealth() - damage);
-        }
+        stats.setHealth(Math.max(stats.getHealth() - damage, 0));
     }
 
     /**
