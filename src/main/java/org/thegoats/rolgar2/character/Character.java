@@ -1,22 +1,18 @@
 package org.thegoats.rolgar2.character;
 
 import org.thegoats.rolgar2.util.Assert;
-import org.thegoats.rolgar2.world.Position;
 
 public final class Character {
     private String name;
     private final CharacterStats stats;
 
     /**
-     *
-     * @param name no nulo, sólo debe contener de 3 a 20 caracteres alfanuméricos, '.' , '-' y '_'
+     * @param name      no nulo, sólo debe contener de 3 a 20 caracteres alfanuméricos, '.' , '-' y '_'
      * @param maxHealth Debe ser mayor a 0
-     * @param health Debe ser mayor o igual a 0
-     * @param strength Debe ser mayor o igual a 0
      */
-    public Character(String name, int maxHealth, int health, int strength) {
+    public Character(String name, int maxHealth, int strength) {
         setName(name);
-        stats = new CharacterStats(health, maxHealth, strength);
+        stats = new CharacterStats(maxHealth, maxHealth, strength);
     }
 
     @Override
