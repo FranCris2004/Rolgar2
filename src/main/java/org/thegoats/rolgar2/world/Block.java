@@ -8,7 +8,7 @@ public class Block {
 	public boolean isWalkable;
 
 	/**
-	 * @param isWalkable true para que no se pueda caminar sobre este bloque, false para que si se pueda
+	 * @param isWalkable true para que se pueda caminar sobre este bloque, false para que no se pueda
 	 */
 	public Block(boolean isWalkable) {
 		this.isWalkable = isWalkable;
