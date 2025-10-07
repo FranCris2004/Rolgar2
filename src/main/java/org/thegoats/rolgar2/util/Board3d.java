@@ -94,6 +94,13 @@ public class Board3d<T> {
         return get(position.row(), position.column(), position.layer());
     }
 
+    /**
+     * Pone value en una celda
+     * @param row fila de la celda
+     * @param column columna de la celda
+     * @param layer capa de la celda
+     * @param value valor de la celda
+     */
     public void set(int row, int column, int layer, T value) {
         if (!isValidPosition(row, column, layer)) {
             throw new RuntimeException(new Position(row, column, layer) + " no es una posicion valida");
@@ -102,19 +109,33 @@ public class Board3d<T> {
         this.grid.get(row).get(column).set(layer, value);
     }
 
+    /**
+     * Pone value en una celda
+     * @param position posicion de la celda
+     * @param value valor de la celda
+     */
     public void set(Position position, T value) {
         Assert.notNull(position, "'position' debe ser no null");
         set(position.row(), position.column(), position.layer(), value);
     }
 
+    /**
+     * @return numero de filas
+     */
     public int getRowCount() {
         return grid.getFirst().size();
     }
 
+    /**
+     * @return numero de columnas
+     */
     public int getColumnCount() {
         return grid.getFirst().getFirst().size();
     }
 
+    /**
+     * @return numero de capas
+     */
     public int getLayerCount() {
         return grid.size();
     }
