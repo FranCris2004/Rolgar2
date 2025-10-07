@@ -33,11 +33,9 @@ public final class Character {
         if(obj == null || getClass() != obj.getClass()){
             return false;
         }
-
+        
         Character other = (Character) obj;
-        return this == other
-                || this.name.equals(other.name)
-                && this.stats.equals(other.stats);
+        return this == other;
     }
 
     /**
