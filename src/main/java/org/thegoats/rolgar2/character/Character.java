@@ -40,11 +40,6 @@ public abstract class Character {
                 && this.stats.equals(other.stats);
     }
 
-    protected void attack(Character other){
-        Assert.notNull(other, "'other' no debe ser null'");
-        other.takeDamage(stats.getStrength());
-    }
-
     /**
      * Si el daño es mayor a la vide, la setea en 0, sino la setea en this.health - damage
      * @param damage Debe ser mayor a 0
