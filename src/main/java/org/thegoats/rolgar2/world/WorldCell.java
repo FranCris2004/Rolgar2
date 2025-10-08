@@ -1,6 +1,6 @@
 package org.thegoats.rolgar2.world;
 
-import org.thegoats.rolgar2.character.Character;
+import org.thegoats.rolgar2.character.CharacterData;
 
 public class WorldCell {
     private Object content = null;
@@ -23,7 +23,7 @@ public class WorldCell {
 
     public boolean hasCharacter()
     {
-        return !hasNull() && content instanceof Character;
+        return !hasNull() && content instanceof CharacterData;
     }
 
     public boolean hasBlock()
@@ -34,6 +34,6 @@ public class WorldCell {
     private static boolean validContent(Object content) {
         return content == null ||
                 content instanceof Block ||
-                content instanceof Character;
+                content instanceof CharacterData;
     }
 }
