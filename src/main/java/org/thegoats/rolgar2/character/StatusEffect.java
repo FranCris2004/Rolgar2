@@ -14,6 +14,13 @@ public abstract class StatusEffect {
     }
 
     /**
+     * Turnos que le quedan al efecto para expirar
+     */
+    public int getRemainingTurns() {
+        return remainingTurns;
+    }
+
+    /**
      * Reduce el contador de turnos que le quedan al efecto para expirar
      */
     void tick() {
