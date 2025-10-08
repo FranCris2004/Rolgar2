@@ -3,6 +3,9 @@ package org.thegoats.rolgar2.character.effects;
 import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.character.StatusEffect;
 
+/**
+ * Reduce el daño recibido
+ */
 public class ForceFieldEffect extends StatusEffect {
     private final float incomingDamageFactorModifier;
     
@@ -18,12 +21,12 @@ public class ForceFieldEffect extends StatusEffect {
 
     @Override
     public void onApply(CharacterData character) {
-        character.setIncomingDamageFactor(incomingDamageFactorModifier);
+        character.setIncomingDamageFactor(character.getIncomingDamageFactor() - incomingDamageFactorModifier);
     }
 
     @Override
     public void onRemove(CharacterData character) {
-        character.setIncomingDamageFactor(incomingDamageFactorModifier);
+        character.setIncomingDamageFactor(character.getIncomingDamageFactor() + incomingDamageFactorModifier);
     }
 
     @Override
