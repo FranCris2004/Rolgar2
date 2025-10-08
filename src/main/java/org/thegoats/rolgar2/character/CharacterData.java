@@ -179,7 +179,7 @@ public class CharacterData {
 
     public void setIncomingDamageFactor(float incomingDamageFactor) {
         // trunca takeDamageFactor entre MAX_TAKE_DAMAGE_FACTOR y MIN_TAKE_DAMAGE_FACTOR
-        this.incomingDamageFactor = Math.max(Math.min(incomingDamageFactor, ), MIN_INCOMING_DAMAGE_FACTOR);
+        this.incomingDamageFactor = Math.max(Math.min(incomingDamageFactor, MAX_INCOMING_DAMAGE_FACTOR), MIN_INCOMING_DAMAGE_FACTOR);
     }
 
     public void addEffect(StatusEffect effect) {
