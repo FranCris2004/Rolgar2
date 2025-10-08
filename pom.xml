@@ -11,8 +11,8 @@
     <packaging>jar</packaging>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>  <!-- tu versión de Java -->
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -33,7 +33,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.13.0</version>
                 <configuration>
-                    <release>21</release>
+                    <release>23</release>
+                    <source>23</source>
+                    <target>23</target>
+                    <compilerArgs>--enable-preview</compilerArgs>
                 </configuration>
             </plugin>
 
