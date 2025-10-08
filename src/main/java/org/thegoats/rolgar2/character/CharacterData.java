@@ -57,7 +57,12 @@ public class CharacterData {
         // deja en la lista solo los efectos que no expiraron
         effects = effects.stream().filter((effect) -> {
             effect.tick();
-            return !effect.isExpired();
+
+            if (!effect.isExpired())
+                return true;
+
+            effect.onRemove(this);
+            return false;
         }).toList();
     }
 
@@ -122,6 +127,9 @@ public class CharacterData {
         return visible;
     }
 
+    /**
+     * @return Factor por el cual se multiplica el daño entrante, esta entre MIN_INCOMING_DAMAGE_FACTOR y MAX_INCOMING_DAMAGE_FACTOR
+     */
     public float getIncomingDamageFactor() {
         return incomingDamageFactor;
     }
@@ -177,20 +185,28 @@ public class CharacterData {
         this.visible = visible;
     }
 
+    /**
+     * @param incomingDamageFactor cualquier float, se recorta entre MIN_INCOMING_DAMAGE_FACTOR y MAX_INCOMING_DAMAGE_FACTOR
+     */
     public void setIncomingDamageFactor(float incomingDamageFactor) {
-        // trunca takeDamageFactor entre MAX_TAKE_DAMAGE_FACTOR y MIN_TAKE_DAMAGE_FACTOR
-        this.incomingDamageFactor = Math.max(Math.min(incomingDamageFactor, MAX_INCOMING_DAMAGE_FACTOR), MIN_INCOMING_DAMAGE_FACTOR);
+        // mantiene takeDamageFactor entre MAX_TAKE_DAMAGE_FACTOR y MIN_TAKE_DAMAGE_FACTOR
+        this.incomingDamageFactor = Math.clamp(incomingDamageFactor, MIN_INCOMING_DAMAGE_FACTOR, MAX_INCOMING_DAMAGE_FACTOR);
     }
 
-    public void addEffect(StatusEffect effect) {
+    /**
+     * Aplica un efecto al personaje y lo agrega a la lista de efectos activos
+     * @param effect efecto a aplicar, no nulo, si el mismo objeto se paso dos veces, se ignora
+     */
+    public void applyEffect(StatusEffect effect) {
         Assert.notNull(effect, "El efecto no puede ser nulo");
 
-        // el efecto ya existe en la lista
-        if (effects.contains(effect)) {
+        // si la referencia al efecto ya existe en la lista, no lo vuelve a agregar
+        if (effects.stream().anyMatch((incomingEffect) -> effect == incomingEffect)) {
             return; // en vez de lanzar excepcion, lo ignora
         }
 
         effects.add(effect);
+        effect.onApply(this);
     }
 
     //
