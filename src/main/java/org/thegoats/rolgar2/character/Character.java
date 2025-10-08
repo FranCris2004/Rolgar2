@@ -8,7 +8,6 @@ public final class Character {
     private final CharacterStats stats;
 
     /**
-     *
      * @param name no nulo, sólo debe contener de 3 a 20 caracteres alfanuméricos, '.' , '-' y '_'
      * @param maxHealth Debe ser mayor a 0
      * @param health Debe ser mayor o igual a 0
@@ -18,26 +17,6 @@ public final class Character {
     public Character(String name, int maxHealth, int health, int strength, Position position) {
         setName(name);
         stats = new CharacterStats(health, maxHealth, strength);
-    }
-
-    @Override
-    public String toString() {
-        return String.format(
-                "Character[name=%s,stats=%s]",
-                name, stats
-        );
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == null || getClass() != obj.getClass()){
-            return false;
-        }
-
-        Character other = (Character) obj;
-        return this == other
-                || this.name.equals(other.name)
-                && this.stats.equals(other.stats);
     }
 
     /**
@@ -84,5 +63,25 @@ public final class Character {
      */
     public CharacterStats getStats() {
         return stats;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Character[name=%s,stats=%s]",
+                name, stats
+        );
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || getClass() != obj.getClass()){
+            return false;
+        }
+
+        Character other = (Character) obj;
+        return this == other
+                || this.name.equals(other.name)
+                && this.stats.equals(other.stats);
     }
 }
