@@ -1,4 +1,6 @@
-package org.thegoats.rolgar2.character;
+package org.thegoats.rolgar2.game;
+
+import org.thegoats.rolgar2.character.CharacterData;
 
 /**
  * Interfaz de las clases CharacterController,
