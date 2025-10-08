@@ -233,14 +233,8 @@ public class CharacterData {
 
     @Override
     public String toString() {
-        return String.format(
-                "{" +
-                        "\"name\":\"%s\"," +
-                        "\"health\":%d," +
-                        "\"maxHealth\":%d," +
-                        "\"strength\":%d" +
-                "}",
-                name, health, maxHealth, strength
+        return String.format("CharacterData[name=%s, health=%s, maxHealth=%s, strength=%s, visible=%s, incomingDamageFactor=%s, effects=%s]",
+                name, health, maxHealth, strength, visible, incomingDamageFactor, effects
         );
     }
 
