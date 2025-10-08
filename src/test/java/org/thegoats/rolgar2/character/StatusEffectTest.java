@@ -2,10 +2,13 @@ package org.thegoats.rolgar2.character;
 
 import org.junit.jupiter.api.Test;
 import org.thegoats.rolgar2.character.effects.ForceFieldEffect;
+import org.thegoats.rolgar2.character.effects.InvisibilityEffect;
 
 public class StatusEffectTest {
     @Test
     public void forceFieldTest() {
+        System.out.println("\nforceFieldTest:");
+
         CharacterData character = new CharacterData("Juan", 100, 10);
 
         System.out.println(character);
@@ -21,5 +24,33 @@ public class StatusEffectTest {
         character.updateEffects(); // deberia remover el efecto
         character.takeDamage(10); // deberia tomar 10 de daño nuevamente
         assert character.getHealth() == 75;
+    }
+
+    @Test
+    public void invisibilityTest() {
+        System.out.println("\ninvisibilityTest:");
+
+        CharacterData character = new CharacterData("Juan", 100, 10);
+
+        System.out.println(character);
+        character.applyEffect(new InvisibilityEffect(3)); // dura tres turnos
+
+        assert character.getEffects().stream().anyMatch(x -> x instanceof InvisibilityEffect); // deberia existir el efecto
+        assert !character.isVisible(); // el personaje deberia ser invisible
+
+        character.updateEffects();
+        // deberia existir el efecto
+        assert character.getEffects().stream().anyMatch(x -> x instanceof InvisibilityEffect);
+        assert !character.isVisible(); // el personaje deberia ser invisible
+
+        character.updateEffects();
+        // deberia existir el efecto
+        assert character.getEffects().stream().anyMatch(x -> x instanceof InvisibilityEffect);
+        assert !character.isVisible(); // el personaje deberia ser invisible
+
+        character.updateEffects();
+        // no deberia existir el efecto
+        assert character.getEffects().stream().noneMatch(x -> x instanceof InvisibilityEffect);
+        assert character.isVisible(); // el personaje deberia volver a ser visible
     }
 }
