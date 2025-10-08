@@ -51,8 +51,8 @@ public class Assert {
      * @throws RuntimeException Si n no es un valor entre 'a' a 'b'
      */
     public static void inRange(int n, int a, int b, String message) {
-        int floor = Math.max(a, b);
-        int roof = Math.min(a, b);
+        int floor = Math.min(a, b);
+        int roof = Math.max(a, b);
         if (n < floor || n > roof) {
             throw new RuntimeException(message);
         }
