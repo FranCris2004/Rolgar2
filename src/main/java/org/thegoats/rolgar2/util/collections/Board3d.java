@@ -92,7 +92,7 @@ public class Board3d<T> {
      */
     public T get(Position position) {
         Assert.notNull(position, "'position' debe ser no null");
-        return get(position.row(), position.column(), position.layer());
+        return get(position.getRow(), position.getColumn(), position.getLayer());
     }
 
     /**
@@ -117,7 +117,7 @@ public class Board3d<T> {
      */
     public void set(Position position, T value) {
         Assert.notNull(position, "'position' debe ser no null");
-        set(position.row(), position.column(), position.layer(), value);
+        set(position.getRow(), position.getColumn(), position.getLayer(), value);
     }
 
     /**
@@ -155,7 +155,7 @@ public class Board3d<T> {
      */
     public boolean isValidPosition(Position position) {
         return position != null
-                && isValidPosition(position.row(), position.column(), position.layer());
+                && isValidPosition(position.getRow(), position.getColumn(), position.getLayer());
     }
 
     /**
