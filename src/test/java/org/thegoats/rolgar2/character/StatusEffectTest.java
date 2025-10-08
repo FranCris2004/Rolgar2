@@ -14,14 +14,21 @@ public class StatusEffectTest {
 
         CharacterData character = new CharacterData("Juan", 100, 10);
 
+        // turno 1
+
         System.out.println(character);
         character.takeDamage(10); // deberia tomar 10 de daño
         assert character.getHealth() == 90;
 
+        // turno 2
+
         System.out.println(character);
+        character.updateEffects();
         character.applyEffect(new ForceFieldEffect(1, 0.5f));
         character.takeDamage(10); // deberia tomar 5 de daño
         assert character.getHealth() == 85;
+
+        // turno 3
 
         System.out.println(character);
         character.updateEffects(); // deberia remover el efecto
