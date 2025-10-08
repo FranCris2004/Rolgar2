@@ -5,6 +5,9 @@ import org.thegoats.rolgar2.character.effects.ForceFieldEffect;
 import org.thegoats.rolgar2.character.effects.InvisibilityEffect;
 
 public class StatusEffectTest {
+    /**
+     * Comprueba que ForceFieldEffect se aplique correctamente y dure lo que debe durar
+     */
     @Test
     public void forceFieldTest() {
         System.out.println("\nforceFieldTest:");
@@ -26,6 +29,9 @@ public class StatusEffectTest {
         assert character.getHealth() == 75;
     }
 
+    /**
+     * Comprueba que el efecto InvisibilityEffect se aplique correctamente y dure lo que debe durar
+     */
     @Test
     public void invisibilityTest() {
         System.out.println("\ninvisibilityTest:");
