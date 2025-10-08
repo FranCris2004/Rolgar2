@@ -9,14 +9,14 @@ import org.thegoats.rolgar2.character.StatusEffect;
 public class ForceFieldEffect extends StatusEffect {
     private final float incomingDamageFactorModifier;
     
-    public ForceFieldEffect(int remainingTurns, float takeDamageFactorModifier) {
+    public ForceFieldEffect(int remainingTurns, float incomingDamageFactorModifier) {
         super(remainingTurns);
 
-        if (takeDamageFactorModifier < 0) {
+        if (incomingDamageFactorModifier < 0) {
             throw new IllegalArgumentException("takeDamageFactorModifier no debe ser negativo");
         }
         
-        this.incomingDamageFactorModifier = takeDamageFactorModifier;
+        this.incomingDamageFactorModifier = incomingDamageFactorModifier;
     }
 
     @Override
