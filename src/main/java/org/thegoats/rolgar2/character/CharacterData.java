@@ -1,7 +1,9 @@
 package org.thegoats.rolgar2.character;
 
 import org.thegoats.rolgar2.util.Assert;
-import org.thegoats.rolgar2.world.Position;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class CharacterData {
     //
@@ -14,6 +16,11 @@ public class CharacterData {
     private int strength;
     private boolean visible;
 
+    /**
+     * Lista de efectos (buffs y debuffs) activos en el personaje
+     */
+    private List<StatusEffect> effects = new LinkedList<>();
+
     //
     // Constructor
     //
@@ -21,15 +28,28 @@ public class CharacterData {
     /**
      * @param name no nulo, sólo debe contener de 3 a 20 caracteres alfanuméricos, '.' , '-' y '_'
      * @param maxHealth Debe ser mayor a 0
-     * @param health Debe ser mayor o igual a 0
-     * @param strength Debe ser mayor o igual a 0
-     * @param position No null
+     * @param strength Debe ser mayor o 0
      */
-    public CharacterData(String name, int maxHealth, int health, int strength, Position position) {
+    public CharacterData(String name, int maxHealth, int strength) {
         setName(name);
         setMaxHealth(maxHealth);
-        setHealth(health);
+        setHealth(maxHealth); // la vida inicial es la vida maxima
         setStrength(strength);
+    }
+
+    //
+    // Comportamiento
+    //
+
+    /**
+     * Actualiza la lista de efectos activos
+     */
+    public void updateEffects() {
+        // deja en la lista solo los efectos que no expiraron
+        effects = effects.stream().filter((effect) -> {
+            effect.tick();
+            return !effect.isExpired();
+        }).toList();
     }
 
     //
@@ -93,6 +113,13 @@ public class CharacterData {
         return visible;
     }
 
+    /**
+     * @return Una copia de la lista de efectos activos en el personaje
+     */
+    public List<StatusEffect> getEffects() {
+        return List.copyOf(effects);
+    }
+
     //
     // Setters
     //
@@ -118,7 +145,7 @@ public class CharacterData {
      * @param maxHealth Debe ser mayor a 0
      */
     public void setMaxHealth(int maxHealth) {
-        Assert.nonNegative(maxHealth, "La vida máxima debe ser mayor a 0");
+        Assert.positive(maxHealth, "La vida máxima debe ser mayor a 0");
         this.maxHealth = maxHealth;
     }
 
@@ -126,7 +153,7 @@ public class CharacterData {
      * @param strength Debe ser mayor o igual a 0
      */
     public void setStrength(int strength) {
-        Assert.nonNegative(strength, "La fuerza debe ser mayor a 0");
+        Assert.positive(strength, "La fuerza debe ser mayor a 0");
         this.strength = strength;
     }
 
@@ -135,6 +162,17 @@ public class CharacterData {
      */
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public void addEffect(StatusEffect effect) {
+        Assert.notNull(effect, "El efecto no puede ser nulo");
+
+        // el efecto ya existe en la lista
+        if (effects.contains(effect)) {
+            return; // en vez de lanzar excepcion, lo ignora
+        }
+
+        effects.add(effect);
     }
 
     //
