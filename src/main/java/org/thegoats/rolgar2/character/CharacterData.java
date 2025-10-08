@@ -7,6 +7,13 @@ import java.util.List;
 
 public class CharacterData {
     //
+    // Constantes estaticas
+    //
+
+    public static final float MIN_INCOMING_DAMAGE_FACTOR = 0.0f;
+    public static final float MAX_INCOMING_DAMAGE_FACTOR = 2.0f;
+
+    //
     // Atributos privados
     //
 
@@ -15,7 +22,7 @@ public class CharacterData {
     private int maxHealth;
     private int strength;
     private boolean visible;
-    private float takeDamageFactor;
+    private float incomingDamageFactor;
 
     /**
      * Lista de efectos (buffs y debuffs) activos en el personaje
@@ -36,7 +43,7 @@ public class CharacterData {
         setMaxHealth(maxHealth);
         setHealth(maxHealth); // la vida inicial es la vida maxima
         setStrength(strength);
-        setTakeDamageFactor(1.0f);
+        setIncomingDamageFactor(1.0f);
     }
 
     //
@@ -64,7 +71,7 @@ public class CharacterData {
      */
     public void takeDamage(int damage){
         Assert.nonNegative(damage, "el daño recibido no puede ser negativo");
-        setHealth(Math.max(getHealth() - (int)(damage * takeDamageFactor), 0));
+        setHealth(Math.max(getHealth() - (int)(damage * incomingDamageFactor), 0));
     }
 
     /**
@@ -115,8 +122,8 @@ public class CharacterData {
         return visible;
     }
 
-    public float getTakeDamageFactor() {
-        return takeDamageFactor;
+    public float getIncomingDamageFactor() {
+        return incomingDamageFactor;
     }
 
     /**
@@ -170,12 +177,9 @@ public class CharacterData {
         this.visible = visible;
     }
 
-    public void setTakeDamageFactor(float takeDamageFactor) {
-        if (takeDamageFactor < 0 || takeDamageFactor > 1) {
-            throw new IllegalArgumentException("El factor de toma de daño debe estar entre 0 y 1");
-        }
-
-        this.takeDamageFactor = takeDamageFactor;
+    public void setIncomingDamageFactor(float incomingDamageFactor) {
+        // trunca takeDamageFactor entre MAX_TAKE_DAMAGE_FACTOR y MIN_TAKE_DAMAGE_FACTOR
+        this.incomingDamageFactor = Math.max(Math.min(incomingDamageFactor, ), MIN_INCOMING_DAMAGE_FACTOR);
     }
 
     public void addEffect(StatusEffect effect) {
@@ -226,8 +230,7 @@ public class CharacterData {
 
     @Override
     public boolean equals(Object obj) {
-        // si dos personajes comparten nombre y stats, siguen siendo personajes distintos
-        // por lo tanto solo su referencia los diferencia
+        // si dos personajes comparten nombre y stats, siguen siendo personajes distintos, por lo tanto, solo su referencia los diferencia
         return this == obj;
     }
 }
