@@ -41,22 +41,27 @@ public class StatusEffectTest {
         System.out.println(character);
         character.applyEffect(new InvisibilityEffect(3)); // dura tres turnos
 
+        // pasaron 0 turnos
+
         assert character.getEffects().stream().anyMatch(x -> x instanceof InvisibilityEffect); // deberia existir el efecto
         assert !character.isVisible(); // el personaje deberia ser invisible
 
-        character.updateEffects();
-        // deberia existir el efecto
-        assert character.getEffects().stream().anyMatch(x -> x instanceof InvisibilityEffect);
-        assert !character.isVisible(); // el personaje deberia ser invisible
+        // paso 1 turno
 
         character.updateEffects();
-        // deberia existir el efecto
-        assert character.getEffects().stream().anyMatch(x -> x instanceof InvisibilityEffect);
+        assert character.getEffects().stream().anyMatch(x -> x instanceof InvisibilityEffect); // deberia existir el efecto
         assert !character.isVisible(); // el personaje deberia ser invisible
 
+        // pasaron 2 turnos
+
         character.updateEffects();
-        // no deberia existir el efecto
-        assert character.getEffects().stream().noneMatch(x -> x instanceof InvisibilityEffect);
+        assert character.getEffects().stream().anyMatch(x -> x instanceof InvisibilityEffect); // deberia existir el efecto
+        assert !character.isVisible(); // el personaje deberia ser invisible
+
+        // pasaron 3 turnos
+
+        character.updateEffects();
+        assert character.getEffects().stream().noneMatch(x -> x instanceof InvisibilityEffect); // no deberia existir el efecto
         assert character.isVisible(); // el personaje deberia volver a ser visible
     }
 }
