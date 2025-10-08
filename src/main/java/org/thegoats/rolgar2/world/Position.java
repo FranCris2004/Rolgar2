@@ -16,6 +16,38 @@ public record Position(int row, int column, int layer) {
     }
 
     /**
+     * @param obj   Position a comparar con la posicion invocadora.
+     * @return
+     */
+    @Override
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        }
+        if(this == obj){
+            return true;
+        }
+        if(obj.getClass() != this.getClass()){
+            return false;
+        }
+        Position other = (Position) obj;
+        return row == other.row()
+                && layer == other.layer()
+                && column == other.column();
+    }
+
+    /**
+     * @return La posicion en formato string
+     */
+    @Override
+    public String toString(){
+        return String.format(
+                "Position[row=%d,column=%d,layer=%d]",
+                row(), column(), layer()
+        );
+    }
+
+    /**
      * Comprueba que dos posiciones sean adyacentes (se encuentra a un casillero de distancia)
      * @param other No null
      * @return true si 'this' y 'other' son adyacentes, false si no lo son
