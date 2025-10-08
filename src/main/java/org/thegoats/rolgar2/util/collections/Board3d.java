@@ -1,5 +1,6 @@
-package org.thegoats.rolgar2.util;
+package org.thegoats.rolgar2.util.collections;
 
+import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.world.Position;
 
 import java.util.LinkedList;
@@ -155,5 +156,13 @@ public class Board3d<T> {
     public boolean isValidPosition(Position position) {
         return position != null
                 && isValidPosition(position.row(), position.column(), position.layer());
+    }
+
+    /**
+     * <b>ADVERTENCIA</b>: Funcion pensada para ser utilizada por un Iterator por optimizacion, <b>NO DEBE SER UTILIZADA CON OTRO PROPOSITO</b>
+     * @return La estructura de datos interna del tablero.
+     */
+    public List<List<List<T>>> _getBoard() {
+        return board;
     }
 }
