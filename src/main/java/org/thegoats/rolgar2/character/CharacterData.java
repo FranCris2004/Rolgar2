@@ -15,6 +15,7 @@ public class CharacterData {
     private int maxHealth;
     private int strength;
     private boolean visible;
+    private float takeDamageFactor;
 
     /**
      * Lista de efectos (buffs y debuffs) activos en el personaje
@@ -35,6 +36,7 @@ public class CharacterData {
         setMaxHealth(maxHealth);
         setHealth(maxHealth); // la vida inicial es la vida maxima
         setStrength(strength);
+        setTakeDamageFactor(1.0f);
     }
 
     //
@@ -62,7 +64,7 @@ public class CharacterData {
      */
     public void takeDamage(int damage){
         Assert.nonNegative(damage, "el daño recibido no puede ser negativo");
-        setHealth(Math.max(getHealth() - damage, 0));
+        setHealth(Math.max(getHealth() - (int)(damage * takeDamageFactor), 0));
     }
 
     /**
@@ -111,6 +113,10 @@ public class CharacterData {
      */
     public boolean isVisible() {
         return visible;
+    }
+
+    public float getTakeDamageFactor() {
+        return takeDamageFactor;
     }
 
     /**
@@ -162,6 +168,14 @@ public class CharacterData {
      */
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public void setTakeDamageFactor(float takeDamageFactor) {
+        if (takeDamageFactor < 0 || takeDamageFactor > 1) {
+            throw new IllegalArgumentException("El factor de toma de daño debe estar entre 0 y 1");
+        }
+
+        this.takeDamageFactor = takeDamageFactor;
     }
 
     public void addEffect(StatusEffect effect) {
