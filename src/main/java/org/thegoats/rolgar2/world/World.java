@@ -86,14 +86,14 @@ public class World implements Iterable<WorldCell> {
                     int column = worldCell.getPosition().getColumn() + dy;
 
                     // salta la celda si esta fuera de los limites
-                    if (column < 0 || column >= getRowCount())
+                    if (column < 0 || column >= getColumnCount())
                         continue;
 
                     for (int dx = -1; dx <= 1; dx++) {
                         int row = worldCell.getPosition().getRow() + dx;
 
                         // salta la celda si esta fuera de los limites
-                        if (row < 0 || row >= getColumnCount())
+                        if (row < 0 || row >= getRowCount())
                             continue;
 
                         // saltar la celda actual
