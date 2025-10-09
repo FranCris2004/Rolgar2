@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 public class WorldTest {
     @Test
     public void testWorld() {
-        World world = new World(4, 3, 3);
+        World world = new World(3, 2, 4);
 
         world.forEach(worldCell -> {
             worldCell.set(new Block(worldCell.hashCode() % 2 == 0));
