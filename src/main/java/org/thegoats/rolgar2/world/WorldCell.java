@@ -121,9 +121,11 @@ public class WorldCell {
 
     @Override
     public String toString() {
+        // ADVERTENCIA: No imprimir los vecinos, ya que se generaria una impresion recursiva,
+        // cada vecino imprimira sus vecinos, en donde también entra este y asi sucesivamente
         return String.format(
-                "WorldCell[position=%s, content=%s, neighbors=%s]",
-                position, content, neighbors
+                "WorldCell[position=%s, content=%s]",
+                position, content
         );
     }
 
