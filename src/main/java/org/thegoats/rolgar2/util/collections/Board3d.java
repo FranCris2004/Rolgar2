@@ -3,9 +3,9 @@ package org.thegoats.rolgar2.util.collections;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.world.Position;
 
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Tablero de tres dimensiones
@@ -14,7 +14,11 @@ public class Board3d<T> implements Iterable<T> {
     private final List<List<List<T>>> board;
 
     public Board3d(int rowCount, int columnCount, int layerCount) {
-        board = generateBoard(rowCount, columnCount, layerCount);
+        board = generateBoard(rowCount, columnCount, layerCount, () -> null);
+    }
+
+    public Board3d(int rowCount, int columnCount, int layerCount, Supplier<T> supplier) {
+        board = generateBoard(rowCount, columnCount, layerCount, supplier);
     }
 
     //
@@ -132,14 +136,14 @@ public class Board3d<T> implements Iterable<T> {
      * @param layerCount Positivo
      * @return el tablero generada
      */
-    private List<List<List<T>>> generateBoard(int rowCount, int columnCount, int layerCount) {
+    private List<List<List<T>>> generateBoard(int rowCount, int columnCount, int layerCount, Supplier<T> supplier) {
         Assert.positive(rowCount, "'rowCount' debe ser positivo");
         Assert.positive(columnCount, "'columnCount' debe ser positivo");
         Assert.positive(layerCount, "'layerCount' debe ser positivo");
 
         List<List<List<T>>> layers = new LinkedList<>();
         for (int i = 0; i < layerCount; i++) {
-            layers.add(generateLayer(rowCount, columnCount));
+            layers.add(generateLayer(rowCount, columnCount, supplier));
         }
 
         return layers;
@@ -152,13 +156,13 @@ public class Board3d<T> implements Iterable<T> {
      * @param columnCount Positivo
      * @return la capa generada
      */
-    private List<List<T>> generateLayer(int rowCount, int columnCount) {
+    private List<List<T>> generateLayer(int rowCount, int columnCount, Supplier<T> supplier) {
         Assert.positive(rowCount, "'rowCount' debe ser positivo");
         Assert.positive(columnCount, "'columnCount' debe ser positivo");
 
         List<List<T>> layer = new LinkedList<>();
         for (int i = 0; i < rowCount; i++) {
-            layer.add(generateRow(columnCount));
+            layer.add(generateRow(columnCount, supplier));
         }
 
         return layer;
@@ -169,12 +173,12 @@ public class Board3d<T> implements Iterable<T> {
      * @param columnCount Positivo
      * @return la fila generada
      */
-    private List<T> generateRow(int columnCount) {
+    private List<T> generateRow(int columnCount, Supplier<T> supplier) {
         Assert.positive(columnCount, "'columnCount' debe ser positivo");
 
         List<T> row = new LinkedList<>();
         for (int i = 0; i < columnCount; i++) {
-            row.add(null);
+            row.add(supplier.get());
         }
 
         return row;
