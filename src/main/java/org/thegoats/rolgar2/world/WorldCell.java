@@ -3,6 +3,7 @@ package org.thegoats.rolgar2.world;
 import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.util.Assert;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -14,7 +15,7 @@ public class WorldCell {
 
     private Object content;
     private final Position position;
-    private List<WorldCell> neighbors;
+    private List<WorldCell> neighbors = null;
 
     //
     // Constructores
@@ -44,7 +45,12 @@ public class WorldCell {
 
     public void initNeighbors(List<WorldCell> neighbors) {
         Assert.notNull(neighbors, "'neighbors' debe ser no nulo.");
-        this.neighbors = List.copyOf(neighbors);
+
+        if (this.neighbors != null) {
+            throw new IllegalArgumentException("Ya se ha inicializado la lista de vecinos");
+        }
+
+        this.neighbors = List.copyOf(neighbors); // copia ininmutable
     }
 
     //
@@ -66,7 +72,11 @@ public class WorldCell {
     public List<WorldCell> getNeighbors() {
         return List.copyOf(neighbors);
     }
-    
+
+    public Iterator<WorldCell> getNeighborsIterator() {
+        return neighbors.iterator();
+    }
+
     //
     // Setters
     //
