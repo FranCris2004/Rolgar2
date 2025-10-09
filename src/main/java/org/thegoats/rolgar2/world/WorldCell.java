@@ -69,6 +69,10 @@ public class WorldCell {
         return Optional.ofNullable((Block)content);
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
     public List<WorldCell> getNeighbors() {
         return List.copyOf(neighbors);
     }
