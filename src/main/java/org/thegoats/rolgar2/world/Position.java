@@ -2,6 +2,8 @@ package org.thegoats.rolgar2.world;
 
 import org.thegoats.rolgar2.util.Assert;
 
+import java.util.Objects;
+
 /**
  * Representa una posicion en el mundo
  */
@@ -75,35 +77,6 @@ public final class Position {
     }
 
     /**
-     * @param obj Position a comparar con la posicion invocadora.
-     * @return true si la posicion invocadora y obj tienen las mismas componentes;
-     * false si obj es null, son de distintas clases o tienen distintas componentes
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if(obj == null || obj.getClass() != this.getClass()){
-            return false;
-        }
-
-        Position other = (Position) obj;
-        return this == obj
-                || row == other.getRow()
-                && layer == other.getLayer()
-                && column == other.getColumn();
-    }
-
-    /**
-     * @return La posicion en formato string
-     */
-    @Override
-    public String toString(){
-        return String.format(
-                "Position[row=%d, column=%d, layer=%d]",
-                row, column, layer
-        );
-    }
-
-    /**
      * Comprueba que dos posiciones sean adyacentes (se encuentra a un casillero de distancia)
      * @param other No null
      * @return true si 'this' y 'other' son adyacentes, false si no lo son
@@ -124,9 +97,44 @@ public final class Position {
         return dx <= 1 && dy <= 1 && dz <= 1;
     }
 
+    //
+    // Implementacion de Object
+    //
+
     /**
-     * No es necesario implementar equals, toString y hashCode
-     * ya que el compilador implementa automaticamente estas
-     * tres funciones en todos los records
+     * @return La posicion en formato string
      */
+    @Override
+    public String toString(){
+        return String.format(
+                "Position[row=%d, column=%d, layer=%d]",
+                row, column, layer
+        );
+    }
+
+    /**
+     * @param obj Position a comparar con la posicion invocadora.
+     * @return true si la posicion invocadora y obj tienen las mismas componentes;
+     * false si obj es null, son de distintas clases o tienen distintas componentes
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || obj.getClass() != this.getClass()){
+            return false;
+        }
+
+        Position other = (Position) obj;
+        return this == obj
+                || row == other.getRow()
+                && layer == other.getLayer()
+                && column == other.getColumn();
+    }
+
+    /**
+     * @return hash code de la posición en base a su fila, columna y capa
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, column, layer);
+    }
 }
