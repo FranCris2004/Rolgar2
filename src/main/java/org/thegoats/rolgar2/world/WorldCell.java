@@ -1,21 +1,91 @@
 package org.thegoats.rolgar2.world;
 
 import org.thegoats.rolgar2.character.CharacterData;
+import org.thegoats.rolgar2.util.Assert;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class WorldCell {
-    private Object content = null;
+    //
+    // Atributos privados
+    //
+
+    private Object content;
+    private final Position position;
+    private List<WorldCell> neighbors;
+
+    //
+    // Constructores
+    //
+
+    public WorldCell(Position position) {
+        Assert.notNull(position, "'position' debe ser no nulo.");
+        setNull();
+        this.position = position;
+    }
+    
+    public WorldCell(Position position, CharacterData character) {
+        Assert.notNull(position, "'position' debe ser no nulo.");
+        set(character);
+        this.position = position;
+    }
+
+    public WorldCell(Position position, Block block) {
+        Assert.notNull(position, "'position' debe ser no nulo.");
+        set(block);
+        this.position = position;
+    }
+
+    //
+    // Inicializacion
+    //
+
+    public void initNeighbors(List<WorldCell> neighbors) {
+        Assert.notNull(neighbors, "'neighbors' debe ser no nulo.");
+        this.neighbors = List.copyOf(neighbors);
+    }
+
+    //
+    // Getters
+    //
 
     public Object get() {
         return content;
     }
-
-    public void set(Object content) {
-        if (!validContent(content)) {
-            throw new IllegalArgumentException("'content' debe ser null o una instancia de ");
-        }
-
-        this.content = content;
+    
+    public Optional<CharacterData> getCharacter() {
+        return Optional.ofNullable((CharacterData)content);
     }
+    
+    public Optional<Block> getBlock() {
+        return Optional.ofNullable((Block)content);
+    }
+
+    public List<WorldCell> getNeighbors() {
+        return List.copyOf(neighbors);
+    }
+    
+    //
+    // Setters
+    //
+    
+    public void setNull() {
+        this.content = null;
+    }
+    
+    public void set(CharacterData characterData) {
+        this.content = characterData;
+    }
+    
+    public void set(Block block) {
+        this.content = block;
+    }
+
+    //
+    // Validaciones de estado
+    //
 
     public boolean hasNull() {
         return content == null;
@@ -31,9 +101,34 @@ public class WorldCell {
         return !hasNull() && content instanceof Block;
     }
 
-    private static boolean validContent(Object content) {
-        return content == null ||
-                content instanceof Block ||
-                content instanceof CharacterData;
+    //
+    // Implementacion de Object
+    //
+
+    @Override
+    public String toString() {
+        return String.format(
+                "WorldCell[position=%s, content=%s, neighbors=%s]",
+                position, content, neighbors
+        );
+    }
+
+    /**
+     * @param o objeto a comparar
+     * @return true si this == o, false en caso contrario
+     */
+    @Override
+    public boolean equals(Object o) {
+        // Ya que WorldCell fue diseñado para ser de unica referencia en el tablero,
+        // cada instancia es igual únicamente a sí misma
+        return this == o;
+    }
+
+    /**
+     * @return Hash code con base en la posicion de la celda
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(position);
     }
 }
