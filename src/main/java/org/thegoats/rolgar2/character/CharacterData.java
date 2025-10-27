@@ -4,6 +4,7 @@ import org.thegoats.rolgar2.util.Assert;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CharacterData {
     //
@@ -63,7 +64,7 @@ public class CharacterData {
 
             effect.onRemove(this);
             return false;
-        }).toList();
+        }).collect(Collectors.toList());
     }
 
     //
