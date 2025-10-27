@@ -20,5 +20,12 @@ public class DoubleStrengthEffect extends StatusEffect {
         character.setStrength(character.getStrength()/2);
     }
 
+    @Override
+    public String toString() {
+        return String.format(
+                "DoubleStrengthEffect[remainingTurns=%d]",
+                getRemainingTurns()
+        );
+    }
 
 }
