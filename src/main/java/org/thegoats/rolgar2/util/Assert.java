@@ -80,4 +80,16 @@ public class Assert {
             throw new RuntimeException(message);
         }
     }
+
+    /**
+     * valida si es valor es mayor a 0
+     * @param value valor a validar
+     * @param message mensaje de la excepcion
+     * @throws RuntimeException Si 'value' es menor o igual a 0
+     */
+    public static void greaterThanZero(int value,String message){
+        if(value <= 0){
+            throw new RuntimeException(message);
+        }
+    }
 }
