@@ -14,13 +14,14 @@ public class CharacterFactory {
         this.enemyStrength = enemyStrength;
     }
 
+    //TODO: arreglar
     public CharacterData createPlayer(String name)
     {
-        return new CharacterData(name, playerMaxHealth, playerStrength);
+        return null;
     }
 
     public CharacterData createEnemy()
     {
-        return new CharacterData("Enemy" + nextEnemyNum++, enemyMaxHealth, enemyStrength);
+        return null;
     }
 }

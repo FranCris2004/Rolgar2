@@ -12,13 +12,13 @@ public class InvisibilityEffect extends StatusEffect {
     }
 
     @Override
-    public void onApply(CharacterData character) {
-        character.setVisible(false);
+    public void onApply() {
+        getCharacter().setVisible(false);
     }
 
     @Override
-    public void onRemove(CharacterData character) {
-        character.setVisible(true);
+    public void onRemove() {
+        getCharacter().setVisible(true);
     }
 
     @Override
