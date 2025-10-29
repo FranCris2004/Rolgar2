@@ -21,6 +21,10 @@ public abstract class StatusEffect {
         return remainingTurns;
     }
 
+    protected CharacterData getCharacter() {
+        return character;
+    }
+
     /**
      * @param character no null, personaje al que se le aplica el efecto
      */
@@ -54,13 +58,11 @@ public abstract class StatusEffect {
 
     /**
      * Se aplica el efecto al personaje
-     * @param character personaje objetivo
      */
-    public abstract void onApply(CharacterData character);
+    public abstract void onApply();
 
     /**
      * Se remueve el efecto del personaje
-     * @param character personaje objetivo
      */
-    public abstract void onRemove(CharacterData character);
+    public abstract void onRemove();
 }
