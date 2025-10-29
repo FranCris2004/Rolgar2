@@ -1,6 +1,7 @@
 package org.thegoats.rolgar2.world;
 
 import org.thegoats.rolgar2.character.CharacterData;
+import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.collections.Board3d;
 
 import java.util.ArrayList;
@@ -11,30 +12,28 @@ import java.util.List;
  * Clase que envuelve Board3d para adicionarle logica, validaciones y metodos propios del juego
  */
 public class World implements Iterable<WorldCell> {
-    //
-    // Atributos privados
-    //
-
     private final Board3d<WorldCell> board;
-
-    //
-    // Constructor
-    //
 
     public World(int rows, int columns, int layers) {
         board = new Board3d<>(rows, columns, layers, WorldCell::new);
         initWorldCells();
     }
 
-    //
-    // Setters simples
-    //
-
+    /**
+     * @param position no nulo, dentro de los limites del mundo
+     * @param character no nulo
+     */
     public void setCell(Position position, CharacterData character) {
+        Assert.notNull(character, "character debe ser no nulo");
         board.get(position).set(character);
     }
 
+    /**
+     * @param position no nulo, dentro de los limites del mundo
+     * @param block no nulo
+     */
     public void setCell(Position position, Block block) {
+        Assert.notNull(block, "block debe ser no nulo");
         board.get(position).set(block);
     }
 
@@ -42,26 +41,48 @@ public class World implements Iterable<WorldCell> {
     // Getters simples
     //
 
+    /**
+     * @return Cantidad de filas
+     */
     public int getRowCount() {
         return board.getRowCount();
     }
 
+    /**
+     * @return Cantidad de columnas
+     */
     public int getColumnCount() {
         return board.getColumnCount();
     }
 
+    /**
+     * @return Cantidad de capas
+     */
     public int getLayerCount() {
         return board.getLayerCount();
     }
 
+    /**
+     * @param row fila, mayor o igual a cero y menor a getRowCount
+     * @param column columna, mayor o igual a cero y menor a getColumnsCount
+     * @param layer capa, mayor o igual a cero y menor a getLayerCount
+     * @return La celda en la posicion {row, column, layer}
+     */
     public WorldCell getCell(int row, int column, int layer) {
         return board.get(row, column, layer);
     }
 
+    /**
+     * @param position no nulo, posicion válida dentro del tablero
+     * @return La celda en la posicion position
+     */
     public WorldCell getCell(Position position) {
         return board.get(position);
     }
 
+    /**
+     * Iterador que itera pasando por cada fila de cada columna de cada capa del tablero
+     */
     @Override
     public Iterator<WorldCell> iterator() {
         return board.iterator();
@@ -71,6 +92,9 @@ public class World implements Iterable<WorldCell> {
     // Helpers
     //
 
+    /**
+     * Inicializa los vecinos de las celdas (26 vecinos)
+     */
     private void initWorldCells() {
         List<WorldCell> neighbors = new ArrayList<>();
 

@@ -15,12 +15,19 @@ public class Board3d<T> implements Iterable<T> {
 
     /**
      * Genera un tablero de rowCount x columnCount x layerCount
+     * usando la función proporcionada para crear cada elemento según su posición.
      * @param rowCount Positivo
      * @param columnCount Positivo
      * @param layerCount Positivo
+     * @param function No nula, función que genera los elementos del tablero con base a su posición
      */
-    public Board3d(int rowCount, int columnCount, int layerCount) {
-        board = generateBoard(rowCount, columnCount, layerCount, (ignoredPosition) -> null);
+    public <U> Board3d(int rowCount, int columnCount, int layerCount, Function<Position, T> function) {
+        Assert.positive(rowCount, "'rowCount' debe ser positivo");
+        Assert.positive(columnCount, "'columnCount' debe ser positivo");
+        Assert.positive(layerCount, "'layerCount' debe ser positivo");
+        Assert.notNull(function, "'function' debe ser no nula");
+
+        board = generateBoard(rowCount, columnCount, layerCount, function);
     }
 
     /**
@@ -32,19 +39,17 @@ public class Board3d<T> implements Iterable<T> {
      * @param supplier No nulo, supplier que genera los elementos del tablero
      */
     public Board3d(int rowCount, int columnCount, int layerCount, Supplier<T> supplier) {
-        board = generateBoard(rowCount, columnCount, layerCount, (ignoredPosition) -> supplier.get());
+        this(rowCount, columnCount, layerCount, (ignoredPosition) -> supplier.get());
     }
 
     /**
      * Genera un tablero de rowCount x columnCount x layerCount
-     * usando la función proporcionada para crear cada elemento según su posición.
      * @param rowCount Positivo
      * @param columnCount Positivo
      * @param layerCount Positivo
-     * @param function No nula, función que genera los elementos del tablero con base a su posición
      */
-    public <U> Board3d(int rowCount, int columnCount, int layerCount, Function<Position, T> function) {
-        board = generateBoard(rowCount, columnCount, layerCount, function);
+    public Board3d(int rowCount, int columnCount, int layerCount) {
+        this(rowCount, columnCount, layerCount, (ignoredPosition) -> null);
     }
 
     //
@@ -147,6 +152,9 @@ public class Board3d<T> implements Iterable<T> {
     // Implementacion de Iterable
     //
 
+    /**
+     * Iterador que itera pasando por cada fila de cada columna de cada capa del tablero
+     */
     @Override
     public Iterator<T> iterator() {
         return new Board3dLinearIterator<>(List.copyOf(board));
@@ -167,11 +175,6 @@ public class Board3d<T> implements Iterable<T> {
      * @return El tablero generado
      */
     private List<List<List<T>>> generateBoard(int rowCount, int columnCount, int layerCount, Function<Position, T> function) {
-        Assert.positive(rowCount, "'rowCount' debe ser positivo");
-        Assert.positive(columnCount, "'columnCount' debe ser positivo");
-        Assert.positive(layerCount, "'layerCount' debe ser positivo");
-        Assert.notNull(function, "'function' debe ser no nula");
-
         List<List<List<T>>> board = new LinkedList<>();
         for (int z = 0; z < layerCount; z++) {
             List<List<T>> layer = new LinkedList<>();
