@@ -24,7 +24,7 @@ public class HalfDamageEffect extends StatusEffect {
     @Override
     public String toString() {
         return String.format(
-                "ForceFieldEffect[remainingTurns=%d, incomingDamageFactor=%.2f]",
+                "ForceFieldEffect[remainingTurns=%d]",
                 getRemainingTurns()
         );
     }
