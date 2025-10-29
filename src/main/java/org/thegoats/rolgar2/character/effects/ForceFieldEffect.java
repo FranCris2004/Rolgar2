@@ -7,10 +7,10 @@ import org.thegoats.rolgar2.character.StatusEffect;
  * Reduce el daño recibido
  */
 public class ForceFieldEffect extends StatusEffect {
-    private final float incomingDamageFactorModifier;
+    private final double incomingDamageFactorModifier;
     
-    public ForceFieldEffect(int remainingTurns, float incomingDamageFactorModifier) {
-        super(remainingTurns);
+    public ForceFieldEffect(CharacterData character, int remainingTurns, double incomingDamageFactorModifier){
+        super(character, remainingTurns);
 
         if (incomingDamageFactorModifier < 0) {
             throw new IllegalArgumentException("takeDamageFactorModifier no debe ser negativo");
@@ -20,13 +20,13 @@ public class ForceFieldEffect extends StatusEffect {
     }
 
     @Override
-    public void onApply(CharacterData character) {
-        character.setIncomingDamageFactor(character.getIncomingDamageFactor() - incomingDamageFactorModifier);
+    public void onApply() {
+        getCharacter().setIncomingDamageFactor(getCharacter().getIncomingDamageFactor() - incomingDamageFactorModifier);
     }
 
     @Override
-    public void onRemove(CharacterData character) {
-        character.setIncomingDamageFactor(character.getIncomingDamageFactor() + incomingDamageFactorModifier);
+    public void onRemove() {
+        getCharacter().setIncomingDamageFactor(getCharacter().getIncomingDamageFactor() + incomingDamageFactorModifier);
     }
 
     @Override

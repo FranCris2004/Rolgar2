@@ -12,7 +12,7 @@ public class StatusEffectTest {
     public void forceFieldTest() {
         System.out.println("\nforceFieldTest:");
 
-        CharacterData character = new CharacterData("Juan", 100, 10);
+        CharacterData character = new CharacterData("Juan", 100, 10, 10, 2, 1.0);
 
         // turno 1
 
@@ -24,7 +24,7 @@ public class StatusEffectTest {
 
         System.out.println(character);
         character.updateEffects();
-        character.applyEffect(new ForceFieldEffect(1, 0.5f));
+        character.applyEffect(new ForceFieldEffect(character, 1, 0.5f));
         character.takeDamage(10); // deberia tomar 5 de daño
         assert character.getHealth() == 85;
 
@@ -43,10 +43,10 @@ public class StatusEffectTest {
     public void invisibilityTest() {
         System.out.println("\ninvisibilityTest:");
 
-        CharacterData character = new CharacterData("Juan", 100, 10);
+        CharacterData character = new CharacterData("Juan", 100, 10, 10, 2, 1.0);
 
         System.out.println(character);
-        character.applyEffect(new InvisibilityEffect(3)); // dura tres turnos
+        character.applyEffect(new InvisibilityEffect(character, 3)); // dura tres turnos
 
         // pasaron 0 turnos
 

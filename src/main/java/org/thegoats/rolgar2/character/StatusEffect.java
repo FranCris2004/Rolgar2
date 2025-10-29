@@ -7,10 +7,11 @@ public abstract class StatusEffect {
      * Turnos que le quedan al efecto para expirar
      */
     private int remainingTurns;
+    private CharacterData character = null;
 
-    public StatusEffect(int remainingTurns) {
-        Assert.positive(remainingTurns, "El efecto debe durar al menos un turno");
-        this.remainingTurns = remainingTurns;
+    public StatusEffect(CharacterData character, int remainingTurns) {
+        setCharacter(character);
+        setRemainingTurns(remainingTurns);
     }
 
     /**
@@ -18,6 +19,27 @@ public abstract class StatusEffect {
      */
     public int getRemainingTurns() {
         return remainingTurns;
+    }
+
+    protected CharacterData getCharacter() {
+        return character;
+    }
+
+    /**
+     * @param character no null, personaje al que se le aplica el efecto
+     */
+    private void setCharacter(CharacterData character) {
+        Assert.notNull(character, "character no puede ser null");
+        this.character = character;
+    }
+
+    /**
+     * @param remainingTurns mayor a cero
+     */
+    private void setRemainingTurns(int remainingTurns) {
+        Assert.positive(remainingTurns, "El efecto debe durar al menos un turno");
+
+        this.remainingTurns = remainingTurns;
     }
 
     /**
@@ -36,13 +58,11 @@ public abstract class StatusEffect {
 
     /**
      * Se aplica el efecto al personaje
-     * @param character personaje objetivo
      */
-    public abstract void onApply(CharacterData character);
+    public abstract void onApply();
 
     /**
      * Se remueve el efecto del personaje
-     * @param character personaje objetivo
      */
-    public abstract void onRemove(CharacterData character);
+    public abstract void onRemove();
 }

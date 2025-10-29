@@ -14,7 +14,7 @@ public class ShieldCard implements Card{
     @Override
     public void use() {
         Assert.notNull(target, "El target no ha sido setteado.");
-        target.applyEffect(new ForceFieldEffect(1, target.getIncomingDamageFactor()));
+        target.applyEffect(new ForceFieldEffect(target , 1, target.getIncomingDamageFactor()));
     }
 }
 

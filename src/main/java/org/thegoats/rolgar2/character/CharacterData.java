@@ -1,7 +1,9 @@
 package org.thegoats.rolgar2.character;
 
+import org.thegoats.rolgar2.card.Card;
 import org.thegoats.rolgar2.util.Assert;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,8 +24,11 @@ public class CharacterData {
     private int health;
     private int maxHealth;
     private int strength;
-    private boolean visible;
-    private float incomingDamageFactor;
+    private boolean visible = true;
+    private boolean isFreezed = false;
+    private double incomingDamageFactor;
+    private int moves;
+    private Card[] inventory;
 
     /**
      * Lista de efectos (buffs y debuffs) activos en el personaje
@@ -39,12 +44,15 @@ public class CharacterData {
      * @param maxHealth Debe ser mayor a 0
      * @param strength Debe ser mayor o 0
      */
-    public CharacterData(String name, int maxHealth, int strength) {
+    public CharacterData(String name, int maxHealth, int strength, int inventorySize, int moves, double incomingDamageFactor) {
         setName(name);
         setMaxHealth(maxHealth);
         setHealth(maxHealth); // la vida inicial es la vida maxima
         setStrength(strength);
-        setIncomingDamageFactor(1.0f);
+        setMoves(moves);
+        setIncomingDamageFactor(incomingDamageFactor);
+        initInventory(inventorySize);
+
     }
 
     //
@@ -62,7 +70,7 @@ public class CharacterData {
             if (!effect.isExpired())
                 return true;
 
-            effect.onRemove(this);
+            effect.onRemove();
             return false;
         }).collect(Collectors.toList());
     }
@@ -129,9 +137,16 @@ public class CharacterData {
     }
 
     /**
+     * @return true si esta congelado
+     */
+    public boolean isFreezed() {
+        return isFreezed;
+    }
+
+    /**
      * @return Factor por el cual se multiplica el daño entrante, esta entre MIN_INCOMING_DAMAGE_FACTOR y MAX_INCOMING_DAMAGE_FACTOR
      */
-    public float getIncomingDamageFactor() {
+    public double getIncomingDamageFactor() {
         return incomingDamageFactor;
     }
 
@@ -140,6 +155,20 @@ public class CharacterData {
      */
     public List<StatusEffect> getEffects() {
         return List.copyOf(effects);
+    }
+
+    /**
+     * @return una copia del inventario
+     */
+    public Card[] getInventory() {
+        return inventory.clone();
+    }
+
+    /**
+     * @return movimientos por turno del personaje
+     */
+    public int getMoves() {
+        return moves;
     }
 
     //
@@ -189,9 +218,30 @@ public class CharacterData {
     /**
      * @param incomingDamageFactor cualquier float, se recorta entre MIN_INCOMING_DAMAGE_FACTOR y MAX_INCOMING_DAMAGE_FACTOR
      */
-    public void setIncomingDamageFactor(float incomingDamageFactor) {
+    public void setIncomingDamageFactor(double incomingDamageFactor) {
         // mantiene takeDamageFactor entre MAX_TAKE_DAMAGE_FACTOR y MIN_TAKE_DAMAGE_FACTOR
         this.incomingDamageFactor = Math.clamp(incomingDamageFactor, MIN_INCOMING_DAMAGE_FACTOR, MAX_INCOMING_DAMAGE_FACTOR);
+    }
+
+    /**
+     * Dado unos movimientos por turno dados, si son validos los setea. Se permite 0 por posibles usos de cartas.
+     * @param moves movimientos por turno del personaje
+     */
+    public void setMoves(int moves) {
+        Assert.nonNegative(moves, "Los movimientos no pueden ser negatovos. Se ingreso"+moves);
+        this.moves = moves;
+    }
+
+    /**
+     * Inicializa todas las cartas del inventario en null
+     * @param inventorySize mayor a cero, tamanio del inventario
+     */
+    private void initInventory(int inventorySize){
+        Assert.positive(inventorySize, "El tamanio del inventario deberia ser positivo. Se ingreso "+inventorySize);
+        this.inventory = new Card[inventorySize];
+        for (int i = 0; i < inventorySize; i++) {
+            inventory[i] = null;
+        }
     }
 
     /**
@@ -207,7 +257,7 @@ public class CharacterData {
         }
 
         effects.add(effect);
-        effect.onApply(this);
+        effect.onApply();
     }
 
     //

@@ -80,4 +80,10 @@ public class Assert {
             throw new RuntimeException(message);
         }
     }
+
+    public static void isTrue(boolean condition, String message){
+        if(!condition){
+            throw new RuntimeException(message);
+        }
+    }
 }
