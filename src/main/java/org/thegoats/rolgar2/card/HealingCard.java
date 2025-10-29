@@ -28,7 +28,7 @@ public class HealingCard implements Card {
      * @param health mayor a 0
      */
     private void setHealth(int health){
-        Assert.greaterThanZero(health,"health no puede ser menor a 0");
+        Assert.positive(health,"health no puede ser menor a 0");
         this.health = health;
     }
 
