@@ -70,7 +70,7 @@ public class CharacterData {
             if (!effect.isExpired())
                 return true;
 
-            effect.onRemove(this);
+            effect.onRemove();
             return false;
         }).collect(Collectors.toList());
     }
@@ -146,7 +146,7 @@ public class CharacterData {
     /**
      * @return Factor por el cual se multiplica el daño entrante, esta entre MIN_INCOMING_DAMAGE_FACTOR y MAX_INCOMING_DAMAGE_FACTOR
      */
-    public float getIncomingDamageFactor() {
+    public double getIncomingDamageFactor() {
         return incomingDamageFactor;
     }
 
@@ -257,7 +257,7 @@ public class CharacterData {
         }
 
         effects.add(effect);
-        effect.onApply(this);
+        effect.onApply();
     }
 
     //
