@@ -9,8 +9,8 @@ import org.thegoats.rolgar2.character.StatusEffect;
 public class ForceFieldEffect extends StatusEffect {
     private final float incomingDamageFactorModifier;
     
-    public ForceFieldEffect(int remainingTurns, float incomingDamageFactorModifier) {
-        super(remainingTurns);
+    public ForceFieldEffect(CharacterData character, int remainingTurns, float incomingDamageFactorModifier){
+        super(character, remainingTurns);
 
         if (incomingDamageFactorModifier < 0) {
             throw new IllegalArgumentException("takeDamageFactorModifier no debe ser negativo");

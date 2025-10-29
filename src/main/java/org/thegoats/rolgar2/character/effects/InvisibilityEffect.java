@@ -7,8 +7,8 @@ import org.thegoats.rolgar2.character.StatusEffect;
  * Hace al personaje invisible
  */
 public class InvisibilityEffect extends StatusEffect {
-    public InvisibilityEffect(int remainingTurns) {
-        super(remainingTurns);
+    public InvisibilityEffect(CharacterData character, int remainingTurns) {
+        super(character, remainingTurns);
     }
 
     @Override
