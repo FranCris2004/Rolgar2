@@ -10,8 +10,8 @@ public class DoubleStrengthEffect extends StatusEffect {
      * Crea el efecto de estado
      * @param remainingTurns turnos a durar del efecto
      */
-    public DoubleStrengthEffect(int remainingTurns){
-        super(remainingTurns);
+    public DoubleStrengthEffect(Character character, int remainingTurns) {
+        super(character, remainingTurns);
     }
 
     /**
@@ -45,5 +45,4 @@ public class DoubleStrengthEffect extends StatusEffect {
                 getRemainingTurns()
         );
     }
-
 }
