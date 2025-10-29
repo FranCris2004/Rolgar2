@@ -18,7 +18,7 @@ public class DoubleStrengthCard implements Card{
     @Override
     public void use() {
         Assert.notNull(target, "El target no ha sido setteado.");
-        target.applyEffect(new DoubleStrengthEffect(1));
+        target.applyEffect(new DoubleStrengthEffect(target, 1));
     }
 }
 
