@@ -3,7 +3,7 @@ package org.thegoats.rolgar2.card;
 import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.util.Assert;
 
-public class HealingCard implements Card{
+public class HealingCard implements Card {
     private int health;
     private CharacterData target = null;
 
@@ -41,10 +41,4 @@ public class HealingCard implements Card{
         Assert.notNull(target, "El target no ha sido setteado.");
         target.recoverHealth(this.health);
     }
-
-
 }
-
-
-
-
