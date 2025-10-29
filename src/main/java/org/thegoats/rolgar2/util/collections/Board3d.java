@@ -143,14 +143,6 @@ public class Board3d<T> implements Iterable<T> {
                 && isValidPosition(position.getRow(), position.getColumn(), position.getLayer());
     }
 
-    /**
-     * <b>ADVERTENCIA</b>: Funcion pensada para ser utilizada por un Iterator por optimizacion, <b>NO DEBE SER UTILIZADA CON OTRO PROPOSITO</b>
-     * @return La estructura de datos interna del tablero.
-     */
-    public List<List<List<T>>> _getBoard() {
-        return board;
-    }
-
     //
     // Implementacion de Iterable
     //
