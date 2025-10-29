@@ -4,13 +4,14 @@ import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.character.effects.InvisibilityEffect;
 import org.thegoats.rolgar2.util.Assert;
 
-public class InvisibilityCard implements Card{
+public class InvisibilityCard implements Card {
     private CharacterData target = null;
 
     /**
      * @param target dado un CharacterData o null, lo setea
      */
     public void setTarget(CharacterData target) {
+        Assert.notNull(target, "El target no debe ser nulo.");
         this.target = target;
     }
 
