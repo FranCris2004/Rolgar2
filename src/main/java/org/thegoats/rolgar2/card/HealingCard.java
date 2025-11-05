@@ -3,12 +3,12 @@ package org.thegoats.rolgar2.card;
 import org.thegoats.rolgar2.util.Assert;
 
 public class HealingCard extends CardWithCharacterTarget {
-    private int healingPoints = -1;
+    private Integer healingPoints = null;
 
     @Override
     public void use() {
         validateTarget();
-        Assert.positive(healingPoints, "healingPoints no fue setteado");
+        Assert.notNull(healingPoints, "healingPoints no fue setteado");
         getTarget().recoverHealth(healingPoints);
     }
 
