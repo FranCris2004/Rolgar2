@@ -2,49 +2,78 @@ package org.thegoats.rolgar2.world;
 
 import org.thegoats.rolgar2.util.Assert;
 
+import java.util.Objects;
+
 /**
  * Representa una posicion en el mundo
- * @param row No negativo
- * @param column No negativo
- * @param layer No negativo
  */
-public record Position(int row, int column, int layer) {
-    public Position {
+public final class Position {
+    private int row;
+    private int column;
+    private int layer;
+
+    /**
+     * @param row No negativo
+     * @param column No negativo
+     * @param layer No negativo
+     */
+    public Position(int row, int column, int layer) {
+        setRow(row);
+        setColumn(column);
+        setLayer(layer);
+    }
+
+    //
+    // Getters simples
+    //
+
+    /**
+     * @return Fila
+     */
+    public int getRow() {
+        return row;
+    }
+
+    /**
+     * @return Columna
+     */
+    public int getColumn() {
+        return column;
+    }
+
+    /**
+     * @return Capa
+     */
+    public int getLayer() {
+        return layer;
+    }
+
+    //
+    // Setters simples
+    //
+
+    /**
+     * @param row No negativo
+     */
+    public void setRow(int row) {
         Assert.nonNegative(row, "'row' debe ser positivo o cero");
+        this.row = row;
+    }
+
+    /**
+     * @param column No negativo
+     */
+    public void setColumn(int column) {
         Assert.nonNegative(column, "'column' debe ser positivo o cero");
+        this.column = column;
+    }
+
+    /**
+     * @param layer No negativo
+     */
+    public void setLayer(int layer) {
         Assert.nonNegative(layer, "'layer' debe ser positivo o cero");
-    }
-
-    /**
-     * @param obj   Position a comparar con la posicion invocadora.
-     * @return
-     */
-    @Override
-    public boolean equals(Object obj){
-        if(obj == null){
-            return false;
-        }
-        if(this == obj){
-            return true;
-        }
-        if(obj.getClass() != this.getClass()){
-            return false;
-        }
-        Position other = (Position) obj;
-        return row == other.row()
-                && layer == other.layer()
-                && column == other.column();
-    }
-
-    /**
-     * @return La posicion en formato string
-     */
-    @Override
-    public String toString(){
-        return String.format(
-                "Position[row=%d,column=%d,layer=%d]",
-                row(), column(), layer()
-        );
+        this.layer = layer;
     }
 
     /**
@@ -68,9 +97,44 @@ public record Position(int row, int column, int layer) {
         return dx <= 1 && dy <= 1 && dz <= 1;
     }
 
+    //
+    // Implementacion de Object
+    //
+
     /**
-     * No es necesario implementar equals, toString y hashCode
-     * ya que el compilador implementa automaticamente estas
-     * tres funciones en todos los records
+     * @return La posicion en formato string
      */
+    @Override
+    public String toString(){
+        return String.format(
+                "Position[row=%d, column=%d, layer=%d]",
+                row, column, layer
+        );
+    }
+
+    /**
+     * @param obj Position a comparar con la posicion invocadora.
+     * @return true si la posicion invocadora y obj tienen las mismas componentes;
+     * false si obj es null, son de distintas clases o tienen distintas componentes
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null || obj.getClass() != this.getClass()){
+            return false;
+        }
+
+        Position other = (Position) obj;
+        return this == obj
+                || row == other.getRow()
+                && layer == other.getLayer()
+                && column == other.getColumn();
+    }
+
+    /**
+     * @return hash code de la posición en base a su fila, columna y capa
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, column, layer);
+    }
 }

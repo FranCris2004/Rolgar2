@@ -68,7 +68,7 @@ public class PositionTest {
 
         Position position3 = new Position(row, column, layer);
 
-        String expectedString = "Position[row="+ row +",column="+ column +",layer="+ layer +"]";
+        String expectedString = "Position[row="+ row +", column="+ column +", layer="+ layer +"]";
 
     }
 
