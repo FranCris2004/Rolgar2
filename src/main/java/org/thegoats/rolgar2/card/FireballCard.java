@@ -21,7 +21,7 @@ public class FireballCard extends CardWithCharacterTarget {
     }
 
     /**
-     * Si damage recibido por parametro es valido, lo setea y
+     * Si damage recibido por parametro es valido, lo setea
      * @param damage mayor a cero, daño que hara la bola de fuego
      */
     public void setDamage(int damage) {
