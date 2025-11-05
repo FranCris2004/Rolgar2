@@ -1,32 +1,31 @@
 package org.thegoats.rolgar2.util.structures.vector;
 
-import utils.Validaciones;
-import utils.Validaciones.*;
+import org.thegoats.rolgar2.util.Assert;
 
 public class Vector<T> {
 //ATRIBUTOS DE CLASE --------------------------------------------------------------------------------------
 //ATRIBUTOS -----------------------------------------------------------------------------------------------
 
-	private T[] datos = null;
-	private T datoInicial;
+	private T[] data = null;
+	private T firstData;
 
 //CONSTRUCTORES -------------------------------------------------------------------------------------------
 	
 	/**
 	 * pre: 
-	 * @param longitud: entero mayor a 0, determina la cantiadad de elementos del vector
-	 * @param datoInicial: valor inicial para las posiciones del vector
+	 * @param length: entero mayor a 0, determina la cantiadad de elementos del vector
+	 * @param firstData: valor inicial para las posiciones del vector
 	 * @throws Exception: da error si la longitud es invalida
 	 * post: inicializa el vector de longitud de largo y todos los valores inicializados
 	 */
-	public Vector(int longitud, T datoInicial) {
-		if (longitud < 1) {
+	public Vector(int length, T firstData) {
+		if (length < 1) {
 			throw new RuntimeException("La longitud debe ser mayor o igual a 1");
 		}
-		this.datos = crearVector(longitud);
-		this.datoInicial = datoInicial;
-		for(int i = 0; i < this.getLongitud(); i++){
-			this.datos[i] = datoInicial;
+		this.data = makeVector(length);
+		this.firstData = firstData;
+		for(int i = 0; i < this.getLength(); i++){
+			this.data[i] = firstData;
 		}
 	}
 	
@@ -35,99 +34,99 @@ public class Vector<T> {
 //METODOS DE COMPORTAMIENTO -------------------------------------------------------------------------------
 
 	public Vector(Vector<T> vector) {
-		this(vector.getLongitud(), vector.datoInicial);
-		for(int i = 0; i < vector.getLongitud(); i++){
-			this.datos[i] = vector.datos[i];
+		this(vector.getLength(), vector.firstData);
+		for(int i = 0; i < vector.getLength(); i++){
+			this.data[i] = vector.data[i];
 		}
 	}
 
 	/**
 	 * pre:
-	 * @param posicion: valor entre 1 y el largo del vector (no redimensiona)
-	 * @param dato: -
+	 * @param position: valor entre 1 y el largo del vector (no redimensiona)
+	 * @param data: -
 	 * @throws Exception: da error si la posicion no esta en rango
 	 * post: guarda la el dato en la posicion dada 
 	 */
-	public void agregar(int posicion, T dato) throws Exception {
-		Validaciones.validarRangoNumerico(posicion, 1, this.getLongitud(), "posicion");
-		this.datos[posicion - 1] = dato;
+	public void add(int position, T data) throws Exception {
+		Assert.inRange(position, 1, this.getLength(), "posicion debe estar entre 1 y el largo del vector");
+		this.data[position - 1] = data;
 	}
 
 	/**
 	 * pre: -
-	 * @param posicion: valor entre 1 y el largo del vector
+	 * @param position: valor entre 1 y el largo del vector
 	 * @return devuelve el valor en esa posicion
 	 * @throws Exception: da error si la posicion no esta en rango
 	 */
-	public T obtener(int posicion) {
-		Validaciones.validarRangoNumerico( posicion,1,  this.getLongitud(), "posicion");
-		return this.datos[posicion - 1];
+	public T get(int position) {
+		Assert.inRange( position,1,  this.getLength(), "posicion debe estar entre 1 y el largo del vector");
+		return this.data[position - 1];
 	}
 
 	/**
 	 * pre: -
-	 * @param posicion: valor entre 1 y el largo del vector
+	 * @param position: valor entre 1 y el largo del vector
 	 * @throws Exception: da error si la posicion no esta en rango
 	 * post: remueve el valor en la posicion y deja el valor inicial
 	 */
-	public void remover(int posicion) throws Exception {
-		if ((posicion < 1) ||
-				(posicion > this.getLongitud())) {
-			throw new Exception("La " + posicion + " no esta en el rango 1 y " + this.getLongitud() + " inclusive");
+	public void remove(int position) throws Exception {
+		if ((position < 1) ||
+				(position > this.getLength())) {
+			throw new Exception("La " + position + " no esta en el rango 1 y " + this.getLength() + " inclusive");
 		}
-		this.datos[posicion - 1] = this.datoInicial;
+		this.data[position - 1] = this.firstData;
 	}
 
 	/**
 	 * pre: 
-	 * @param dato: valor a guardar
+	 * @param data: valor a guardar
 	 * @return devuelve la posicion en que se guardo
 	 * @throws Exception
 	 * post: guarda el dato en la siguiente posicion vacia
 	 */
-	public int agregar(T dato) {
+	public int add(T data) {
 		//validar dato;
-		for(int i = 0; i < this.getLongitud(); i++) {
-			if (this.datos[i] == this.datoInicial) {
-				this.datos[i] = dato;
+		for(int i = 0; i < this.getLength(); i++) {
+			if (this.data[i] == this.firstData) {
+				this.data[i] = data;
 				return i + 1;
 			}
 		}		
-		T[] temp = crearVector(this.getLongitud() * 2);
-		for(int i = 0; i < this.getLongitud(); i++) {
-			temp[i] = this.datos[i];
+		T[] temp = makeVector(this.getLength() * 2);
+		for(int i = 0; i < this.getLength(); i++) {
+			temp[i] = this.data[i];
 		}
-		int posicion = this.getLongitud();		
-		this.datos = temp;
-		this.datos[posicion] = dato;		
-		for(int i = posicion +1; i < this.getLongitud(); i++) {
-			this.datos[i] = this.datoInicial;	
+		int position = this.getLength();
+		this.data = temp;
+		this.data[position] = data;
+		for(int i = position +1; i < this.getLength(); i++) {
+			this.data[i] = this.firstData;
 		}
-		return posicion + 1;
+		return position + 1;
 	}
 
 	/**
 	 * pre: 
-	 * @param longitud: -
+	 * @param length: -
 	 * @return devuelve un vector del tipo y longitud deseado
 	 * @throws Exception 
 	 */
 	
 	@SuppressWarnings("unchecked")
-	private T[] crearVector(int longitud) {
-		if (longitud <= 0) {
+	private T[] makeVector(int length) {
+		if (length <= 0) {
 			throw new RuntimeException("La longitud debe ser mayor o igual a 1");
 		}
-		return (T[]) new Object[longitud];
+		return (T[]) new Object[length];
 	}
 		
 //GETTERS SIMPLES -----------------------------------------------------------------------------------------
 	
-	public int getLongitud() {
-		return this.datos.length;
+	public int getLength() {
+		return this.data.length;
 	}
 
-	public boolean contiene(Character letra) {
+	public boolean contains(Character letter) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -136,28 +135,28 @@ public class Vector<T> {
 	 * Devuelve la cantidad de valores distintos del valor inicial
 	 * @return
 	 */
-	public int getCantidadDeDatos() {
-		int cantidadDeDatos = 0;
-		for(T dato: this.datos) {
-			if (dato != this.datoInicial) {
-				cantidadDeDatos++;
+	public int getDataCount() {
+		int dataCount = 0;
+		for(T data: this.data) {
+			if (data != this.firstData) {
+				dataCount++;
 			}
 		}
-		return cantidadDeDatos;
+		return dataCount;
 	}
 
     /**
      *
      */
-    public void reducirTamanio(int tamanioSolicitado) throws Exception {
-        Validaciones.validarRangoNumerico(tamanioSolicitado, 1, this.getLongitud() - this.getCantidadDeDatos(), "Tamanio Solicitado");
-        Vector<T> nuevo = new Vector<T>(tamanioSolicitado, null);
-        for(int i=1; i < tamanioSolicitado; i++){
+    public void reduceSize(int requestedSize) throws Exception {
+        Assert.inRange(requestedSize, 1, this.getLength() - this.getDataCount(), "Tamanio Solicitado debe estar entre 1 y el largo del vector");
+        Vector<T> temporary = new Vector<T>(requestedSize, null);
+        for(int i=1; i < requestedSize; i++){
             int j = 1;
-            while(this.obtener(j) == null){
+            while(this.get(j) == null){
                 j++;
             }
-            nuevo.agregar(i, this.obtener(j));
+            temporary.add(i, this.get(j));
         }
     }
 

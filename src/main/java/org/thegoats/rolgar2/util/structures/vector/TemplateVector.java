@@ -1,9 +1,11 @@
 package org.thegoats.rolgar2.util.structures.vector;
 
-public class VectorConTemplate<T> {
+import org.thegoats.rolgar2.util.Assert;
+
+public class TemplateVector<T> {
         // ATRIBUTOS -------------------------------------------------------------
-        private T[] datos = null;
-        private T datoInicial;
+        private T[] data = null;
+        private T firstData;
 
         // CONSTRUCTOR -----------------------------------------------------------
         /**
@@ -14,14 +16,14 @@ public class VectorConTemplate<T> {
          * post:
          *   - crea un vector de 'longitud' y lo deja todo en 'datoInicial'
          */
-        public VectorConTemplate(int longitud, T datoInicial) throws Exception {
-            if (longitud < 1) {
+        public TemplateVector(int length, T firstData) throws Exception {
+            if (length < 1) {
                 throw new Exception("La longitud debe ser mayor o igual a 1");
             }
-            this.datos = crearVector(longitud);
-            this.datoInicial = datoInicial;
-            for (int i = 0; i < this.getLongitud(); i++) {
-                this.datos[i] = datoInicial;
+            this.data = makeVector(length);
+            this.firstData = firstData;
+            for (int i = 0; i < this.getLength(); i++) {
+                this.data[i] = firstData;
             }
         }
 
@@ -35,9 +37,9 @@ public class VectorConTemplate<T> {
          * post:
          *   - guarda el dato en la posicion dada
          */
-        public void agregar(int posicion, T dato) throws Exception {
-            validarPosicion(posicion);
-            this.datos[posicion - 1] = dato;
+        public void add(int position, T data) throws Exception {
+            Assert.inRange(position, 1, this.getLength(), "posicion debe estar entre 1 y el largo del vector");
+            this.data[position - 1] = data;
         }
 
         /**
@@ -47,9 +49,9 @@ public class VectorConTemplate<T> {
          *   - devuelve el valor en esa posicion
          * throws Exception si la posicion no está en rango
          */
-        public T obtener(int posicion) throws Exception {
-            validarPosicion(posicion);
-            return this.datos[posicion - 1];
+        public T get(int position) throws Exception {
+            Assert.inRange(position, 1, this.getLength(), "posicion debe estar entre 1 y el largo del vector");
+            return this.data[position - 1];
         }
 
         /**
@@ -59,9 +61,9 @@ public class VectorConTemplate<T> {
          * post:
          *   - “remueve” dejando el valor inicial en esa posición
          */
-        public void remover(int posicion) throws Exception {
-            validarPosicion(posicion);
-            this.datos[posicion - 1] = this.datoInicial;
+        public void remove(int position) throws Exception {
+            Assert.inRange(position, 1, this.getLength(), "posicion debe estar entre 1 y el largo del vector");
+            this.data[position - 1] = this.firstData;
         }
 
         /**
@@ -72,60 +74,48 @@ public class VectorConTemplate<T> {
          * return:
          *   - la posición (1..N) en la que se guardó el dato
          */
-        public int agregar(T dato) throws Exception {
+        public int add(T data) throws Exception {
             // Buscar primer hueco con datoInicial
-            for (int i = 0; i < this.getLongitud(); i++) {
-                if (this.datos[i] == this.datoInicial) {   // ojo: compara por referencia
-                    this.datos[i] = dato;
+            for (int i = 0; i < this.getLength(); i++) {
+                if (this.data[i] == this.firstData) {   // ojo: compara por referencia
+                    this.data[i] = data;
                     return i + 1;
                 }
             }
 
             // No había hueco: duplicar capacidad
-            T[] temp = crearVector(this.getLongitud() * 2);
-            for (int i = 0; i < this.getLongitud(); i++) {
-                temp[i] = this.datos[i];
+            T[] temp = makeVector(this.getLength() * 2);
+            for (int i = 0; i < this.getLength(); i++) {
+                temp[i] = this.data[i];
             }
 
-            int posicion = this.getLongitud(); // índice 0-based donde comienza el tramo nuevo
-            this.datos = temp;
-            this.datos[posicion] = dato;
+            int position = this.getLength(); // índice 0-based donde comienza el tramo nuevo
+            this.data = temp;
+            this.data[position] = data;
 
             // Rellenar el resto del tramo nuevo con datoInicial
-            for (int i = posicion + 1; i < this.getLongitud(); i++) {
-                this.datos[i] = this.datoInicial;
+            for (int i = position + 1; i < this.getLength(); i++) {
+                this.data[i] = this.firstData;
             }
 
-            return posicion + 1; // devolver en base 1
+            return position + 1; // devolver en base 1
         }
 
         // HELPERS PRIVADOS ------------------------------------------------------
-
-        /**
-         * pre:
-         *   - posicion entre 1 y getLongitud()
-         * throws Exception si está fuera de rango
-         */
-        private void validarPosicion(int posicion) throws Exception {
-            if (posicion < 1 || posicion > this.getLongitud()) {
-                throw new Exception("La posición " + posicion + " no está en el rango 1.." + this.getLongitud());
-            }
-        }
-
         /**
          * Crea un arreglo genérico T[] de la longitud solicitada.
          */
         @SuppressWarnings("unchecked")
-        private T[] crearVector(int longitud) throws Exception {
-            if (longitud < 1) {
+        private T[] makeVector(int length) throws Exception {
+            if (length < 1) {
                 throw new Exception("La longitud debe ser mayor o igual a 1");
             }
-            return (T[]) new Object[longitud];
+            return (T[]) new Object[length];
         }
 
         // GETTERS ---------------------------------------------------------------
-        public int getLongitud() {
-            return this.datos.length;
+        public int getLength() {
+            return this.data.length;
         }
     }
 
