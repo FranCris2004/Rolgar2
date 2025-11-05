@@ -72,7 +72,7 @@ public class CharacterData {
 
             effect.onRemove();
             return false;
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toCollection(LinkedList::new));
     }
 
     //

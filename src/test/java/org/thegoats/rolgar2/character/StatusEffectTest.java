@@ -1,7 +1,7 @@
 package org.thegoats.rolgar2.character;
 
 import org.junit.jupiter.api.Test;
-import org.thegoats.rolgar2.character.effects.ForceFieldEffect;
+import org.thegoats.rolgar2.character.effects.HalfDamageEffect;
 import org.thegoats.rolgar2.character.effects.InvisibilityEffect;
 
 public class StatusEffectTest {
@@ -24,7 +24,7 @@ public class StatusEffectTest {
 
         System.out.println(character);
         character.updateEffects();
-        character.applyEffect(new ForceFieldEffect(character, 1, 0.5f));
+        character.applyEffect(new HalfDamageEffect(character, 1));
         character.takeDamage(10); // deberia tomar 5 de daño
         assert character.getHealth() == 85;
 

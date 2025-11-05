@@ -46,6 +46,17 @@ public class Assert {
     }
 
     /**
+     * @param n Positivo
+     * @param message Mensaje en caso de excepcion
+     * @throws RuntimeException Si 'n' no es positivo
+     */
+    public static void positive(double n, String message) {
+        if (n <= 0) {
+            throw new RuntimeException(message);
+        }
+    }
+
+    /**
      * @param n Debe ser un valor en el rango de 'a' a 'b'
      * @param message Mensaje en caso de excepcion
      * @throws RuntimeException Si n no es un valor entre 'a' a 'b'

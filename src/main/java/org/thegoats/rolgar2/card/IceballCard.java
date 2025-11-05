@@ -1,10 +1,15 @@
 package org.thegoats.rolgar2.card;
 
-public class IceballCard implements Card{
+import org.thegoats.rolgar2.character.effects.FreezeEffect;
 
+public class IceballCard extends CardWithStatusEffect {
+    /**
+     * Aplica el efecto de la carta sobre el personaje destino, no puede ser nulo llegado este punto
+     */
     @Override
     public void use() {
-
+        validateTarget();
+        validateRemainingTurns();
+        getTarget().applyEffect(new FreezeEffect(getTarget(), getRemainingTurns()));
     }
 }
-

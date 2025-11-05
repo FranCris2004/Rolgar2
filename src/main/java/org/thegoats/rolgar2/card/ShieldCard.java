@@ -1,20 +1,21 @@
 package org.thegoats.rolgar2.card;
 
-import org.thegoats.rolgar2.character.CharacterData;
-import org.thegoats.rolgar2.character.effects.ForceFieldEffect;
+import org.thegoats.rolgar2.character.effects.HalfDamageEffect;
 import org.thegoats.rolgar2.util.Assert;
 
-public class ShieldCard implements Card{
-    private CharacterData target = null;
-
-    public void setTarget(CharacterData target) {
-        this.target = target;
-    }
+public class ShieldCard extends CardWithStatusEffect {
+    private Double incomingDamageFactorModifier = null;
 
     @Override
     public void use() {
-        Assert.notNull(target, "El target no ha sido setteado.");
-        target.applyEffect(new ForceFieldEffect(target , 1, target.getIncomingDamageFactor()));
+        validateTarget();
+        validateRemainingTurns();
+        Assert.notNull(incomingDamageFactorModifier, "incomingDamageFactorModifier no ha sido setteado");
+        getTarget().applyEffect(new HalfDamageEffect(getTarget(), getRemainingTurns()));
+    }
+
+    public void setIncomingDamageFactorModifier(double incomingDamageFactorModifier) {
+        Assert.positive(incomingDamageFactorModifier, "incomingDamageFactorModifier debe ser positivo");
+        this.incomingDamageFactorModifier = incomingDamageFactorModifier;
     }
 }
-
