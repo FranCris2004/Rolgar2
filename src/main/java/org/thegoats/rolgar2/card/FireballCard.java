@@ -3,12 +3,12 @@ package org.thegoats.rolgar2.card;
 import org.thegoats.rolgar2.util.Assert;
 
 public class FireballCard extends CardWithCharacterTarget {
-    private int damage = -1;
+    private Integer damage = null;
 
     @Override
     public void use() {
         validateTarget();
-        Assert.positive(damage, "damage no ha sido setteado.");
+        Assert.notNull(damage, "damage no ha sido setteado.");
         getTarget().takeDamage(damage);
     }
 
