@@ -4,13 +4,13 @@ import org.thegoats.rolgar2.character.effects.HalfDamageEffect;
 import org.thegoats.rolgar2.util.Assert;
 
 public class ShieldCard extends CardWithStatusEffect {
-    private double incomingDamageFactorModifier = -1.0;
+    private Double incomingDamageFactorModifier = null;
 
     @Override
     public void use() {
         validateTarget();
         validateRemainingTurns();
-        Assert.positive(incomingDamageFactorModifier, "incomingDamageFactorModifier no ha sido setteado");
+        Assert.notNull(incomingDamageFactorModifier, "incomingDamageFactorModifier no ha sido setteado");
         getTarget().applyEffect(new HalfDamageEffect(getTarget(), getRemainingTurns()));
     }
 
