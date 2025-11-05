@@ -1,12 +1,12 @@
 package org.thegoats.rolgar2.card;
 
-import org.thegoats.rolgar2.character.effects.DoubleStrengthEffect;
+import org.thegoats.rolgar2.character.effects.DoubleMoveEffect;
 
 public class DoubleMoveCard extends CardWithStatusEffect {
     @Override
     public void use() {
         validateTarget();
         validateRemainingTurns();
-        getTarget().applyEffect(new DoubleStrengthEffect(getTarget(), getRemainingTurns()));
+        getTarget().applyEffect(new DoubleMoveEffect(getTarget(), getRemainingTurns()));
     }
 }
