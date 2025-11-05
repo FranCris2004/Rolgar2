@@ -13,13 +13,13 @@ public class DoubleStrengthEffect extends StatusEffect {
 
     @Override
     public void onApply() {
-        var character = getCharacter();
+        CharacterData character = getCharacter();
         character.setStrength(character.getStrength()*2);
     }
 
     @Override
     public void onRemove() {
-        var character = getCharacter();
+        CharacterData character = getCharacter();
         character.setStrength(character.getStrength()/2);
     }
 }
