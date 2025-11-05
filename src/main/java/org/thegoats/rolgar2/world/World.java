@@ -7,6 +7,9 @@ import org.thegoats.rolgar2.util.collections.Board3d;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Clase que envuelve Board3d para adicionarle logica, validaciones y metodos propios del juego
@@ -78,6 +81,19 @@ public class World implements Iterable<WorldCell> {
      */
     public WorldCell getCell(Position position) {
         return board.get(position);
+    }
+
+    public WorldCell getRandomEmptyWalkableCell(Random random) {
+        List<WorldCell> emptyWalkableCells = new ArrayList<>();
+
+        board.forEach(cell -> {
+            var floor = cell.getFloor();
+            if (cell.hasNull() && floor.hasBlock() && floor.getBlock().isWalkable) {
+                emptyWalkableCells.add(cell);
+            }
+        });
+
+        return emptyWalkableCells.get(random.nextInt(0, emptyWalkableCells.size()));
     }
 
     /**
