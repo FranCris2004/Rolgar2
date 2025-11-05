@@ -1,7 +1,16 @@
 package org.thegoats.rolgar2;
 
+import org.thegoats.rolgar2.game.GameCharacter;
+
+import java.util.LinkedList;
+import java.util.List;
+
 public final class Game {
     private int turnCount = 0;
+
+    private final List<GameCharacter> gameCharacters = new LinkedList<>();
+
+    public Game() {}
 
     /**
      * Inicia la ejecucion del juego, esto implica:
@@ -46,10 +55,23 @@ public final class Game {
 
         System.out.println("Turn " + turnCount);
 
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        for (GameCharacter gameCharacter : gameCharacters) {
+            if (gameCharacter.isPlayer)
+            {
+                playerDoTurn(gameCharacter);
+            } else {
+                enemyDoTurn(gameCharacter);
+            }
         }
+    }
+
+    private void playerDoTurn(GameCharacter gameCharacter)
+    {
+        System.out.println("El jugador " + gameCharacter.characterData.getName() + " realiza su turno.");
+    }
+
+    private void enemyDoTurn(GameCharacter gameCharacter)
+    {
+        System.out.println("El enemigo " + gameCharacter.characterData.getName() + " realiza su turno.");
     }
 }
