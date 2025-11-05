@@ -15,7 +15,7 @@ public abstract class CardWithCharacterTarget implements Card {
         return target;
     }
 
-    public void validateSetTarget() {
+    public void validateTarget() {
         Assert.notNull(target, "El target no ha sido setteado");
     }
 }

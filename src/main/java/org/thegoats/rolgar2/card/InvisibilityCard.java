@@ -8,8 +8,8 @@ public class InvisibilityCard extends CardWithStatusEffect {
      */
     @Override
     public void use() {
-        validateSetTarget();
-        validateSetRemainingTurns();
+        validateTarget();
+        validateRemainingTurns();
         getTarget().applyEffect(new InvisibilityEffect(getTarget(), getRemainingTurns()));
     }
 }

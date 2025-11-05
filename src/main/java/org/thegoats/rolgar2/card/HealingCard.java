@@ -7,7 +7,7 @@ public class HealingCard extends CardWithCharacterTarget {
 
     @Override
     public void use() {
-        validateSetTarget();
+        validateTarget();
         Assert.positive(healingPoints, "healingPoints no fue setteado");
         getTarget().recoverHealth(healingPoints);
     }

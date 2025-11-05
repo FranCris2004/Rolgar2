@@ -8,8 +8,8 @@ public class IceballCard extends CardWithStatusEffect {
      */
     @Override
     public void use() {
-        validateSetTarget();
-        validateSetRemainingTurns();
+        validateTarget();
+        validateRemainingTurns();
         getTarget().applyEffect(new FreezeEffect(getTarget(), getRemainingTurns()));
     }
 }

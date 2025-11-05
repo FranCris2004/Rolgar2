@@ -5,6 +5,6 @@ public class StealingCard extends CardWithCharacterTarget {
 
     @Override
     public void use() {
-        validateSetTarget();
+        validateTarget();
     }
 }

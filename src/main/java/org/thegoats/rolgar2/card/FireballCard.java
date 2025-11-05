@@ -7,7 +7,7 @@ public class FireballCard extends CardWithCharacterTarget {
 
     @Override
     public void use() {
-        validateSetTarget();
+        validateTarget();
         Assert.positive(damage, "damage no ha sido setteado.");
         getTarget().takeDamage(damage);
     }

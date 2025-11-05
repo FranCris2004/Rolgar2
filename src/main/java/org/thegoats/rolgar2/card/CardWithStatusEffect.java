@@ -14,7 +14,7 @@ public abstract class CardWithStatusEffect extends CardWithCharacterTarget {
         return remainingTurns;
     }
 
-    public void validateSetRemainingTurns() {
+    public void validateRemainingTurns() {
         Assert.positive(remainingTurns, "remainingTurns no ha sido setteado.");
     }
 }

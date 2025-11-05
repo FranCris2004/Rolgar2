@@ -8,8 +8,8 @@ public class ShieldCard extends CardWithStatusEffect {
 
     @Override
     public void use() {
-        validateSetTarget();
-        validateSetRemainingTurns();
+        validateTarget();
+        validateRemainingTurns();
         Assert.positive(incomingDamageFactorModifier, "incomingDamageFactorModifier no ha sido setteado");
         getTarget().applyEffect(new HalfDamageEffect(getTarget(), getRemainingTurns()));
     }
