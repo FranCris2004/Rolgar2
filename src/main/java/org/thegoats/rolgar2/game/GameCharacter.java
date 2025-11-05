@@ -5,6 +5,5 @@ import org.thegoats.rolgar2.world.Position;
 
 public final class GameCharacter {
     public CharacterData characterData;
-    public CharacterController characterController;
     public Position position;
 }
