@@ -26,6 +26,7 @@ public class StealingCard implements Card {
         Assert.notNull(stolenCard, "stolenCard no ha sido setteado");
         Assert.isTrue(stolenDeck != thiefDeck, "El mazo del ladron no puede ser el mazo del hurtado");
         Assert.isTrue(thiefDeck.getCards().contains(stolenCard), "La carta a ser robada no se encuentra en el mazo del hurtado");
+        Assert.isTrue(thiefDeck.size() != thiefDeck.maxSize(), "El mazo del ladron ya esta lleno");
 
         thiefDeck.add(stolenCard);
         stolenDeck.remove(stolenCard);
