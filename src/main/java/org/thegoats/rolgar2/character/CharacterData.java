@@ -28,7 +28,7 @@ public class CharacterData {
     private boolean isFreezed = false;
     private double incomingDamageFactor;
     private int moves;
-    private Card[] inventory;
+    private List<Card> inventory = new LinkedList<>();
 
     /**
      * Lista de efectos (buffs y debuffs) activos en el personaje
@@ -160,8 +160,8 @@ public class CharacterData {
     /**
      * @return una copia del inventario
      */
-    public Card[] getInventory() {
-        return inventory.clone();
+    public List<Card> getInventory() {
+        return inventory;
     }
 
     /**
