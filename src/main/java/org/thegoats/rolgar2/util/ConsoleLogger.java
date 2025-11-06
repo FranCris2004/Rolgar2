@@ -3,9 +3,9 @@ package org.thegoats.rolgar2.util;
 /**
  * Logger que imprime en la consola
  */
-public final class ConsoleLogger implements Logger {
+public final class ConsoleLogger extends Logger {
     @Override
-    public void log(String message) {
+    public void logInfo(String message) {
         System.out.println(message);
     }
 
@@ -17,5 +17,10 @@ public final class ConsoleLogger implements Logger {
     @Override
     public void logWarning(String message) {
         System.out.println("Advertencia: " + message);
+    }
+
+    @Override
+    public void logDebug(String message) {
+        System.out.println("Debug: " + message);
     }
 }
