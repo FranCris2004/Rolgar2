@@ -6,7 +6,7 @@ public class StrengthCard extends CardWithStatusEffect {
     @Override
     public void use() {
         validateTarget();
-        validateRemainingTurns();
-        getTarget().applyEffect(new DoubleStrengthEffect(getTarget(), getRemainingTurns()));
+        validateDuration();
+        getTarget().applyEffect(new DoubleStrengthEffect(getTarget(), getDuration()));
     }
 }

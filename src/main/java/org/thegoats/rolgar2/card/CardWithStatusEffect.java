@@ -9,29 +9,29 @@ import org.thegoats.rolgar2.util.Assert;
  * de estado heredaran de esta clase.
  */
 public abstract class CardWithStatusEffect extends CardWithCharacterTarget {
-    private Integer remainingTurns = null;
+    private Integer duration = null;
 
     /**
      * Recibe una cantidad de turnos restantes 'remainingTurns', y si son mayores a 0 los setea.
-     * @param remainingTurns mayor a cero, turnos que durara el efecto de estado de la carta al ser aplicado sobre un personaje
+     * @param duration mayor a cero, turnos que durara el efecto de estado de la carta al ser aplicado sobre un personaje
      */
-    public void setRemainingTurns(int remainingTurns) {
-        Assert.positive(remainingTurns, "remainingTurns debe ser positivo.");
-        this.remainingTurns = remainingTurns;
+    public void setDuration(int duration) {
+        Assert.positive(duration, "remainingTurns debe ser positivo.");
+        this.duration = duration;
     }
 
     /**
      * Devuelve los turnos que la carta durara al usarse sobre un personaje
      * @return turnos que durara la carta
      */
-    public int getRemainingTurns() {
-        return remainingTurns;
+    public int getDuration() {
+        return duration;
     }
 
     /**
      * Chequea que los turnos ya hayan sido correctamente setteados y no sigan siendo null.
      */
-    public void validateRemainingTurns() {
-        Assert.notNull(remainingTurns, "remainingTurns no ha sido setteado.");
+    public void validateDuration() {
+        Assert.notNull(duration, "remainingTurns no ha sido setteado.");
     }
 }

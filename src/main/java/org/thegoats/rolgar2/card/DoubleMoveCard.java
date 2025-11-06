@@ -15,8 +15,8 @@ public class DoubleMoveCard extends CardWithStatusEffect {
     @Override
     public void use() {
         validateTarget();
-        validateRemainingTurns();
-        getTarget().applyEffect(new DoubleMoveEffect(getTarget(), getRemainingTurns()));
+        validateDuration();
+        getTarget().applyEffect(new DoubleMoveEffect(getTarget(), getDuration()));
     }
 
     /**
@@ -25,6 +25,6 @@ public class DoubleMoveCard extends CardWithStatusEffect {
      */
     @Override
     public String toString(){
-        return String.format("DoubleMoveCard[target=%s, Duration=%d]", getTarget().toString(), getRemainingTurns());
+        return String.format("DoubleMoveCard[target=%s, Duration=%d]", getTarget().toString(), getDuration());
     }
 }

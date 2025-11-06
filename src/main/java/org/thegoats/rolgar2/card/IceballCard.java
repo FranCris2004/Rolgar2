@@ -12,8 +12,8 @@ public class IceballCard extends CardWithStatusEffect {
     @Override
     public void use() {
         validateTarget();
-        validateRemainingTurns();
-        getTarget().applyEffect(new FreezeEffect(getTarget(), getRemainingTurns()));
+        validateDuration();
+        getTarget().applyEffect(new FreezeEffect(getTarget(), getDuration()));
     }
 
     /**
@@ -24,6 +24,6 @@ public class IceballCard extends CardWithStatusEffect {
     public String toString(){
         return String.format("IceballCard[target=%s, duration=%d",
                 getTarget().toString(),
-                getRemainingTurns());
+                getDuration());
     }
 }
