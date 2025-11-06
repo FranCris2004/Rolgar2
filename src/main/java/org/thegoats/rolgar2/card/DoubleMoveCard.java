@@ -25,6 +25,8 @@ public class DoubleMoveCard extends CardWithStatusEffect {
      */
     @Override
     public String toString(){
-        return String.format("DoubleMoveCard[target=%s, Duration=%d]", getTarget().toString(), getDuration());
+        return String.format("DoubleMoveCard[target=%s, Duration=%d]",
+                getTarget().toString(),
+                getDuration());
     }
 }

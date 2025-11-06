@@ -22,7 +22,7 @@ public class IceballCard extends CardWithStatusEffect {
      * @return version en formato string de la carta
      */
     public String toString(){
-        return String.format("IceballCard[target=%s, duration=%d",
+        return String.format("IceballCard[target=%s, duration=%d]",
                 getTarget().toString(),
                 getDuration());
     }
