@@ -1,9 +1,8 @@
 package org.thegoats.rolgar2.character;
 
-import org.thegoats.rolgar2.card.Card;
+import org.thegoats.rolgar2.card.CardDeck;
 import org.thegoats.rolgar2.util.Assert;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,7 +27,7 @@ public class CharacterData {
     private boolean isFreezed = false;
     private double incomingDamageFactor;
     private int moves;
-    private List<Card> inventory = new LinkedList<>();
+    private final CardDeck deck;
 
     /**
      * Lista de efectos (buffs y debuffs) activos en el personaje
@@ -44,15 +43,14 @@ public class CharacterData {
      * @param maxHealth Debe ser mayor a 0
      * @param strength Debe ser mayor o 0
      */
-    public CharacterData(String name, int maxHealth, int strength, int inventorySize, int moves, double incomingDamageFactor) {
+    public CharacterData(String name, int maxHealth, int strength, int deckSize, int moves, double incomingDamageFactor) {
         setName(name);
         setMaxHealth(maxHealth);
         setHealth(maxHealth); // la vida inicial es la vida maxima
         setStrength(strength);
         setMoves(moves);
         setIncomingDamageFactor(incomingDamageFactor);
-        initInventory(inventorySize);
-
+        this.deck = new CardDeck(deckSize);
     }
 
     //
@@ -158,10 +156,10 @@ public class CharacterData {
     }
 
     /**
-     * @return una copia del inventario
+     * @return mazo del personaje
      */
-    public List<Card> getInventory() {
-        return inventory;
+    public CardDeck getDeck() {
+        return deck;
     }
 
     /**
@@ -230,18 +228,6 @@ public class CharacterData {
     public void setMoves(int moves) {
         Assert.nonNegative(moves, "Los movimientos no pueden ser negatovos. Se ingreso"+moves);
         this.moves = moves;
-    }
-
-    /**
-     * Inicializa todas las cartas del inventario en null
-     * @param inventorySize mayor a cero, tamanio del inventario
-     */
-    private void initInventory(int inventorySize){
-        Assert.positive(inventorySize, "El tamanio del inventario deberia ser positivo. Se ingreso "+inventorySize);
-        this.inventory = new Card[inventorySize];
-        for (int i = 0; i < inventorySize; i++) {
-            inventory[i] = null;
-        }
     }
 
     /**
