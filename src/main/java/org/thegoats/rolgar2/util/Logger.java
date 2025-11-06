@@ -10,4 +10,16 @@ public interface Logger {
      * @param message mensaje a imprimir
      */
     void log(String message);
+
+    /**
+     * Imprime un mensaje de error
+     * @param message mensaje a imprimir
+     */
+    void logError(String message);
+
+    /**
+     * Imprime un mensaje de advertencia
+     * @param message mensaje a imprimir
+     */
+    void logWarning(String message);
 }
