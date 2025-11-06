@@ -1,27 +1,48 @@
 package org.thegoats.rolgar2.character;
 
+import java.util.Random;
+
+// TODO: comentar
+
 public class CharacterFactory {
-    private final int playerMaxHealth;
-    private final int playerStrength;
-    private final int enemyMaxHealth;
-    private final int enemyStrength;
-    private int nextEnemyNum = 0;
+    private final Random random;
+    private final int minHealth;
+    private final int maxHealth;
+    private final int minStrength;
+    private final int maxStrength;
+    private final int inventorySize;
+    private final int moves;
+    private final double incomingDamageFactor;
 
-    public CharacterFactory(int playerMaxHealth, int playerStrength, int enemyMaxHealth, int enemyStrength) {
-        this.playerMaxHealth = playerMaxHealth;
-        this.playerStrength = playerStrength;
-        this.enemyMaxHealth = enemyMaxHealth;
-        this.enemyStrength = enemyStrength;
+    public CharacterFactory(Random random,
+                            int minHealth,
+                            int maxHealth,
+                            int minStrength,
+                            int maxStrength,
+                            int inventorySize,
+                            int moves,
+                            double incomingDamageFactor) {
+        // TODO: agregar validaciones
+
+        this.random = random;
+        this.minHealth = minHealth;
+        this.maxHealth = maxHealth;
+        this.minStrength = minStrength;
+        this.maxStrength = maxStrength;
+        this.inventorySize = inventorySize;
+        this.moves = moves;
+        this.incomingDamageFactor = incomingDamageFactor;
     }
 
-    //TODO: arreglar
-    public CharacterData createPlayer(String name)
+    public CharacterData create(String name)
     {
-        return null;
-    }
-
-    public CharacterData createEnemy()
-    {
-        return null;
+        return new CharacterData(
+                name,
+                random.nextInt(minHealth, maxHealth),
+                random.nextInt(minStrength, maxStrength),
+                inventorySize,
+                moves,
+                incomingDamageFactor
+        );
     }
 }
