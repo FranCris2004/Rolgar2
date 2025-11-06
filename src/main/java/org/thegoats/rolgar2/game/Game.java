@@ -1,16 +1,23 @@
-package org.thegoats.rolgar2;
+package org.thegoats.rolgar2.game;
 
-import org.thegoats.rolgar2.game.GameCharacter;
+import org.thegoats.rolgar2.util.Logger;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 
 public final class Game {
     private int turnCount = 0;
 
-    private final List<GameCharacter> gameCharacters = new LinkedList<>();
+    private final Logger logger;
+    private final DifficultyData difficulty;
+    private final MapData map;
+    private final Set<GameCharacter> gameCharacters;
 
-    public Game() {}
+    public Game(Logger logger, DifficultyData difficulty, MapData map, Set<GameCharacter> gameCharacters) {
+        this.logger = logger;
+        this.difficulty = difficulty;
+        this.map = map;
+        this.gameCharacters = gameCharacters;
+    }
 
     /**
      * Inicia la ejecucion del juego, esto implica:
@@ -21,17 +28,10 @@ public final class Game {
      */
     public void run()
     {
-        System.out.println("Game run");
-        loop();
-    }
+        logger.logDebug("Game run");
 
-    /**
-     * Bucle de juego en el cual se realizan los turnos y las impresiones iterativas
-     */
-    private void loop()
-    {
-        System.out.println("Game loop");
         while (hasNextTurn()) {
+            logger.logDebug("Game loop");
             nextTurn();
         }
     }
@@ -53,7 +53,7 @@ public final class Game {
     {
         turnCount++;
 
-        System.out.println("Turn " + turnCount);
+        logger.logDebug("Turn " + turnCount);
 
         for (GameCharacter gameCharacter : gameCharacters) {
             if (gameCharacter.isPlayer)
@@ -67,11 +67,11 @@ public final class Game {
 
     private void playerDoTurn(GameCharacter gameCharacter)
     {
-        System.out.println("El jugador " + gameCharacter.characterData.getName() + " realiza su turno.");
+        logger.logDebug("El jugador " + gameCharacter.characterData.getName() + " realiza su turno.");
     }
 
     private void enemyDoTurn(GameCharacter gameCharacter)
     {
-        System.out.println("El enemigo " + gameCharacter.characterData.getName() + " realiza su turno.");
+        logger.logDebug("El enemigo " + gameCharacter.characterData.getName() + " realiza su turno.");
     }
 }
