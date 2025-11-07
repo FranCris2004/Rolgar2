@@ -8,17 +8,19 @@ import java.util.Objects;
  */
 public class Block {
 	public boolean isWalkable; // no es necesario getter y setter
-
+	public boolean isClimbable;
+	
 	/**
 	 * @param isWalkable true para que se pueda caminar sobre este bloque, false para que no se pueda
 	 */
-	public Block(boolean isWalkable) {
+	public Block(boolean isWalkable, boolean isClimbable) {
 		this.isWalkable = isWalkable;
+		this.isClimbable = isClimbable;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Block[isWalkable=%b]", isWalkable);
+		return String.format("Block[isWalkable=%b, isClimbable=%b]", isWalkable, isClimbable);
 	}
 
 	@Override
@@ -27,11 +29,11 @@ public class Block {
 			return false;
 
 		Block block = (Block) o;
-		return isWalkable == block.isWalkable;
+		return isWalkable == block.isWalkable && isClimbable == block.isClimbable;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(isWalkable);
+		return Objects.hashCode(isWalkable, isClimbable);
 	}
 }
