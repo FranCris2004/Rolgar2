@@ -2,7 +2,6 @@ package org.thegoats.rolgar2.card;
 
 import org.thegoats.rolgar2.character.effects.HalfDamageEffect;
 import org.thegoats.rolgar2.util.Assert;
-
 import java.util.Random;
 
 public class ShieldCard extends CardWithStatusEffect {
