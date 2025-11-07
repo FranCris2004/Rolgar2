@@ -42,7 +42,7 @@ public class PlayerRanking {
         int i = 1;
         for (Player player : players) {
             sb.append(String.format("%d.\t\t%s\t\t%f\t\t(%d/%d)\n",
-                    i,
+                    i++,
                     player.getName(),
                     player.getGamesWonPercentage(),
                     player.getGamesWon(),
