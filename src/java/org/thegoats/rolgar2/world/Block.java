@@ -24,16 +24,21 @@ public class Block {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (o == null || getClass() != o.getClass())
-			return false;
-
-		Block block = (Block) o;
-		return isWalkable == block.isWalkable && isClimbable == block.isClimbable;
+	public int hashCode() {
+		return Objects.hash(isClimbable, isWalkable);
 	}
 
 	@Override
-	public int hashCode() {
-		return Objects.hashCode(isWalkable, isClimbable);
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Block other = (Block) obj;
+		return isClimbable == other.isClimbable && isWalkable == other.isWalkable;
 	}
+
+	
 }
