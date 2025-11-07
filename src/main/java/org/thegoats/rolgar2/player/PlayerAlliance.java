@@ -18,6 +18,10 @@ public class PlayerAlliance {
         players.remove(player);
     }
 
+    public boolean isAllied(Player player) {
+        return players.contains(player);
+    }
+
     public boolean inForce() {
         return inForce;
     }
