@@ -8,4 +8,12 @@ public interface Card {
      * Ejecuta la accion de la carta
      */
     void use();
+
+    /**
+     * Abstract Factory de la clase Card
+     * @see <a href="https://refactoring.guru/es/design-patterns/abstract-factory">Abstract Factory</a>
+     */
+    interface Factory<T extends Card> {
+        T create();
+    }
 }
