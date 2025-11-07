@@ -1,8 +1,5 @@
 package org.thegoats.rolgar2.card;
-
 import org.thegoats.rolgar2.character.effects.DoubleMoveEffect;
-
-import java.util.Objects;
 import java.util.Random;
 
 /**

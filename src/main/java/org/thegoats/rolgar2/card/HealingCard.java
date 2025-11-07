@@ -71,9 +71,10 @@ public class HealingCard extends CardWithCharacterTarget {
      * NombreDeCarta[atributo1=valor1, atributo2=valor2, ..., atributoN=valorN]
      * @return version en formato string de la carta
      */
+    @Override
     public String toString(){
         return String.format("HealingCard[target=%s, healingPoints=%d]",
-                getTarget().toString(),
+                getTarget(),
                 healingPoints);
     }
 }
