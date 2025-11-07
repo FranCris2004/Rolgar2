@@ -5,9 +5,10 @@ import org.thegoats.rolgar2.util.Assert;
 import java.util.Random;
 
 /**
- * Muchas de las cartas que tienen un CharacterData como target, le aplican un efecto de estado StatusEffect a dicho personaje,
- * por lo tanto abstraemos en esta clase el atributo duration, que sera la duracion del efecto de estado en turnos,
- * y los metodos setDuration, getDuration, y validateDuration. Todas las cartas que apliquen un efecto
+ * Muchas de las cartas que tienen un CharacterData como target, le aplican un efecto de estado
+ * StatusEffect a dicho personaje, por lo tanto abstraemos en esta clase el atributo duration,
+ * que sera la duracion del efecto de estado en turnos, y los metodos setDuration, getDuration,
+ * y validateDuration. Todas las cartas que apliquen un efecto
  * de estado heredaran de esta clase.
  */
 public abstract class CardWithStatusEffect extends CardWithCharacterTarget {
@@ -33,8 +34,7 @@ public abstract class CardWithStatusEffect extends CardWithCharacterTarget {
     /**
      * Recibe al construirse un piso y un techo para la duracion. De esta manera tendra un rango de valores para los que
      * generar una duracion aleatoria de la carta.
-     * Dichos valores, piso y techo, serán extraídos del config.json
-     * @param <T>
+     * @param <T> Clase de la carta a construir
      */
     public static abstract class Factory<T extends CardWithStatusEffect> implements Card.Factory<T> {
         protected final Random random;
@@ -61,8 +61,6 @@ public abstract class CardWithStatusEffect extends CardWithCharacterTarget {
 
         /**
          * Genera una duracion aleatoria con el rango numerico indicado por 'duracionFloor' (piso) y 'durationRoof' (techo).
-         * Todas las cartas que aplican un efecto de estado, lo construyen con un randomDuration y de esta manera tenemos
-         * un generador aleatorio de duraciones para los efectos de estado correspondientes a las cartas
          * @return un entero aleatorio, con el piso y techo indicados, que será la duración del efecto de estado
          */
         public int getRandomDuration() {
