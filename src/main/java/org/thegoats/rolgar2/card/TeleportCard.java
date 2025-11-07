@@ -5,4 +5,11 @@ public class TeleportCard implements Card {
 
     @Override
     public void use() {}
+
+    public static class Factory implements Card.Factory<TeleportCard> {
+        @Override
+        public TeleportCard create() {
+            return new TeleportCard();
+        }
+    }
 }
