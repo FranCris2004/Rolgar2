@@ -13,7 +13,7 @@ public class PlayerRanking {
 
     public PlayerRanking() {
         this(Comparator
-                .comparing(Player::getGamesWonPercentage)
+                .comparing(Player::getWinRate)
                 .thenComparing(Player::getGamesWon)
                 .thenComparing(Player::getName));
     }
@@ -44,7 +44,7 @@ public class PlayerRanking {
             sb.append(String.format("%d.\t\t%s\t\t%f\t\t(%d/%d)\n",
                     i++,
                     player.getName(),
-                    player.getGamesWonPercentage(),
+                    player.getWinRate(),
                     player.getGamesWon(),
                     player.getGamesPlayed()
             ));
