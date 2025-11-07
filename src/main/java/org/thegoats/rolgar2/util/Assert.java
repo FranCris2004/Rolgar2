@@ -88,7 +88,7 @@ public class Assert {
      * @throws RuntimeException Si 'nombre' es invalido
      */
     public static void validName(String name, String message) {
-        if (!Check.validName(name)) {
+        if (name != null && name.matches("^[a-zA-Z0-9._-]{3,20}$")) {
             throw new RuntimeException(message);
         }
     }
