@@ -2,6 +2,7 @@ package org.thegoats.rolgar2.character.effects;
 
 import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.character.StatusEffect;
+import org.thegoats.rolgar2.util.Assert;
 
 /**
  * Efecto de doble movimiento: toma los movimientos del personaje y los duplica por 'duration' turnos
@@ -21,6 +22,7 @@ public class DoubleMoveEffect extends StatusEffect {
      */
     @Override
     public void onApply() {
+        Assert.notNull(getCharacter(), "character no puede ser null");
         getCharacter().setMoves(getCharacter().getMoves()*2);
     }
 
@@ -29,6 +31,17 @@ public class DoubleMoveEffect extends StatusEffect {
      */
     @Override
     public void onRemove() {
+        Assert.notNull(getCharacter(), "character no puede ser null");
         getCharacter().setMoves(getCharacter().getMoves()/2);
+    }
+
+    /**
+     * @return version en formato String del efecto
+     */
+    @Override
+    public String toString(){
+        return String.format("DoubleMoveEffect[character=%s, remainingTurns=%d]",
+                getCharacter(),
+                getRemainingTurns());
     }
 }
