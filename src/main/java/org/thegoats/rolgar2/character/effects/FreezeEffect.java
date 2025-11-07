@@ -9,7 +9,6 @@ import org.thegoats.rolgar2.util.Assert;
  */
 
 public class FreezeEffect extends StatusEffect {
-    private int moves;
     /**
      * Construye el efecto de congelamiento con los turnos indicados
      * @param duration mayor a cero
@@ -24,8 +23,7 @@ public class FreezeEffect extends StatusEffect {
     @Override
     public void onApply() {
         Assert.notNull(getCharacter(), "character no puede ser null");
-        this.moves = getCharacter().getMoves();
-        getCharacter().setMoves(0);
+        getCharacter().freeze();
     }
 
     /**
@@ -34,7 +32,7 @@ public class FreezeEffect extends StatusEffect {
     @Override
     public void onRemove() {
         Assert.notNull(getCharacter(), "character no puede ser null");
-        getCharacter().setMoves(moves);
+        getCharacter().unfreeze();
     }
 
     /**

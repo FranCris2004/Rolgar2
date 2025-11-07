@@ -21,7 +21,7 @@ public class InvisibilityEffect extends StatusEffect {
      */
     @Override
     public void onApply() {
-        getCharacter().setVisible(false);
+        getCharacter().setInvisible();;
     }
 
     /**
@@ -29,7 +29,7 @@ public class InvisibilityEffect extends StatusEffect {
      */
     @Override
     public void onRemove() {
-        getCharacter().setVisible(true);
+        getCharacter().setVisible();
     }
 
     /**
