@@ -70,6 +70,18 @@ public class Assert {
     }
 
     /**
+     * @param a Entero
+     * @param b Entero
+     * @param message Mensaje en caso de excepcion
+     * @throws RuntimeException Si 'a' es mayor o igual a 'b'
+     */
+    public static void lowerThan(int a, int b, String message) {
+        if (a >= b) {
+            throw new RuntimeException(message);
+        }
+    }
+
+    /**
      * El nombre se valida con util.Check.validName()
      * @param name Nombre valido
      * @param message Mensaje en caso de excepcion

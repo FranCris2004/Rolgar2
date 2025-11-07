@@ -2,11 +2,18 @@ package org.thegoats.rolgar2.card;
 
 import org.thegoats.rolgar2.util.Assert;
 
+import java.util.Random;
+
 /**
  * Carta que cura al personaje 'target' en 'healingPoints' unidades
  */
 public class HealingCard extends CardWithCharacterTarget {
-    private Integer healingPoints = null;
+    private final int healingPoints;
+
+    public HealingCard(int healingPoints) {
+        Assert.positive(healingPoints, "healingPoints debe ser positiva.");
+        this.healingPoints = healingPoints;
+    }
 
     /**
      * Chequea que a la carta ya se le haya asignado un personaje 'target' objetivo, y que se le haya setteado unos
@@ -20,13 +27,26 @@ public class HealingCard extends CardWithCharacterTarget {
         getTarget().recoverHealth(healingPoints);
     }
 
-    /**
-     * Si healingPoints recibido por parametro es valido, lo setea
-     * @param healingPoints mayor a cero, puntos de vida a curarle a 'target'
-     */
-    public void setHealingPoints(int healingPoints) {
-        Assert.positive(healingPoints, "healingPoints debe ser positiva.");
-        this.healingPoints = healingPoints;
+    public static class Factory implements Card.Factory<HealingCard> {
+        private final Random random;
+        private final int healingPointsFloor;
+        private final int healingPointsRoof;
+
+        public Factory(Random random, int healingPointsFloor, int healingPointsRoof) {
+            Assert.notNull(random, "random no puede ser nulo.");
+            Assert.positive(healingPointsFloor, "healingPointsFloor debe ser positivo.");
+            Assert.positive(healingPointsRoof, "healingPointsRoof debe ser positivo.");
+            Assert.isTrue(healingPointsFloor <= healingPointsRoof, "healingPointsFloor debe ser menor o igual a healingPointsRoof.");
+
+            this.random = random;
+            this.healingPointsFloor = healingPointsFloor;
+            this.healingPointsRoof = healingPointsRoof;
+        }
+
+        @Override
+        public HealingCard create() {
+            return new HealingCard(random.nextInt(healingPointsFloor, healingPointsRoof));
+        }
     }
 
     /**

@@ -2,19 +2,24 @@ package org.thegoats.rolgar2.card;
 
 import org.thegoats.rolgar2.character.effects.InvisibilityEffect;
 
+import java.util.Random;
+
 /**
  * Carta que vuelve invisible al personaje 'target' durante 'duration' turnos
  */
 
 public class InvisibilityCard extends CardWithStatusEffect {
+    public InvisibilityCard(int remainingTurns) {
+        super(remainingTurns);
+    }
+
     /**
      * Aplica el efecto de la carta sobre el personaje destino, no puede ser nulo llegado este punto
      */
     @Override
     public void use() {
         validateTarget();
-        validateDuration();
-        getTarget().applyEffect(new InvisibilityEffect(getTarget(), getDuration()));
+        getTarget().applyEffect(new InvisibilityEffect(getTarget(), getRemainingTurns()));
     }
 
     /**
@@ -25,6 +30,17 @@ public class InvisibilityCard extends CardWithStatusEffect {
     public String toString(){
         return String.format("InvisibilityCard[target=%s, duration=%d]",
                 getTarget().toString(),
-                getDuration());
+                getRemainingTurns());
+    }
+
+    public static class Factory extends CardWithStatusEffect.Factory<InvisibilityCard> {
+        public Factory(Random random, int remainingTurnsFloor, int remainingTurnsRoof) {
+            super(random, remainingTurnsFloor, remainingTurnsRoof);
+        }
+
+        @Override
+        public InvisibilityCard create() {
+            return new InvisibilityCard(getRandomRemainingTurns());
+        }
     }
 }
