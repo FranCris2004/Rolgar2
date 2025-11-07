@@ -26,9 +26,9 @@ public class HealingCard extends CardWithCharacterTarget {
 
         public Factory(Random random, int minHealingPoints, int maxHealingPoints) {
             Assert.notNull(random, "random no puede ser nulo.");
-            Assert.positive(minHealingPoints, "minDamage debe ser positivo.");
-            Assert.positive(maxHealingPoints, "maxDamage debe ser positivo.");
-            Assert.minAndMax(minHealingPoints, maxHealingPoints, "minDamage debe ser menor a maxDamage.");
+            Assert.positive(minHealingPoints, "minHealingPoints debe ser positivo.");
+            Assert.positive(maxHealingPoints, "maxHealingPoints debe ser positivo.");
+            Assert.isTrue(minHealingPoints <= maxHealingPoints, "minHealingPoints debe ser menor o igual a maxHealingPoints.");
 
             this.random = random;
             this.minHealingPoints = minHealingPoints;
