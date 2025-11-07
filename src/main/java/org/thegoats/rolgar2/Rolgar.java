@@ -1,6 +1,6 @@
 package org.thegoats.rolgar2;
 
-import org.thegoats.rolgar2.game.GameBuilder;
+import org.thegoats.rolgar2.rolgar.GameBuilder;
 import org.thegoats.rolgar2.util.ConsoleLogger;
 
 public class Rolgar {

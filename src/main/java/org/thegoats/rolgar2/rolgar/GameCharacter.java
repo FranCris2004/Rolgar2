@@ -1,4 +1,4 @@
-package org.thegoats.rolgar2.game;
+package org.thegoats.rolgar2.rolgar;
 
 import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.player.Player;
