@@ -19,7 +19,7 @@ public class HealingCard extends CardWithCharacterTarget {
         getTarget().recoverHealth(healingPoints);
     }
 
-    public static class Factory implements CardFactory<HealingCard> {
+    public static class Factory implements Card.Factory<HealingCard> {
         private final Random random;
         private final int minHealingPoints;
         private final int maxHealingPoints;
