@@ -56,7 +56,7 @@ public final class Game {
         logger.logDebug("Turn " + turnCount);
 
         for (GameCharacter gameCharacter : gameCharacters) {
-            if (gameCharacter.isPlayer)
+            if (gameCharacter.isPlayerCharacter())
             {
                 playerDoTurn(gameCharacter);
             } else {
