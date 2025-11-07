@@ -45,11 +45,22 @@ public class DoubleMoveCard extends CardWithStatusEffect {
      * y generar una carta con duracion aleatoria
      */
     public static class Factory extends CardWithStatusEffect.Factory<DoubleMoveCard> {
+        /**
+         * Construye la fabrica de cartas de doble movimiento
+         * @param random no null, objeto generador aleatorio
+         * @param durationFloor mayor a cero, menor a 'durationRoof'
+         * @param durationRoof mayor a cero, mayor a 'durationFloor'
+         */
         public Factory(Random random, int
                 durationFloor, int durationRoof) {
             super(random, durationFloor, durationRoof);
         }
 
+        /**
+         * Crea una carta de doble movimiento con duracion aleatoria entre 'durationFloor' y 'durationRoof'
+         * pasados por parametro al constructor de Factory
+         * @return carta de doble movimiento
+         */
         @Override
         public DoubleMoveCard create() {
             return new DoubleMoveCard(getRandomDuration());
