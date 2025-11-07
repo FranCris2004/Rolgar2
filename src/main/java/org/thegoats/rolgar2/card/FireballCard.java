@@ -20,23 +20,23 @@ public class FireballCard extends CardWithCharacterTarget {
 
     public static class Factory implements Card.Factory<FireballCard> {
         private final Random random;
-        private final int minDamage;
-        private final int maxDamage;
+        private final int damageFloor;
+        private final int damageRoof;
 
-        public Factory(Random random, int minDamage, int maxDamage) {
+        public Factory(Random random, int damageFloor, int damageRoof) {
             Assert.notNull(random, "random no puede ser nulo.");
-            Assert.positive(minDamage, "minDamage debe ser positivo.");
-            Assert.positive(maxDamage, "maxDamage debe ser positivo.");
-            Assert.isTrue(minDamage <= maxDamage, "minDamage debe ser menor o igual a maxDamage.");
+            Assert.positive(damageFloor, "damageFloor debe ser positivo.");
+            Assert.positive(damageRoof, "damageRoof debe ser positivo.");
+            Assert.isTrue(damageFloor <= damageRoof, "damageFloor debe ser menor o igual a damageRoof.");
 
             this.random = random;
-            this.minDamage = minDamage;
-            this.maxDamage = maxDamage;
+            this.damageFloor = damageFloor;
+            this.damageRoof = damageRoof;
         }
 
         @Override
         public FireballCard create() {
-            return new FireballCard(random.nextInt(minDamage, maxDamage + 1));
+            return new FireballCard(random.nextInt(damageFloor, damageRoof));
         }
     }
 }

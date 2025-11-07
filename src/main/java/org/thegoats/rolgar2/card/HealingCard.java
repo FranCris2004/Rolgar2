@@ -21,23 +21,23 @@ public class HealingCard extends CardWithCharacterTarget {
 
     public static class Factory implements Card.Factory<HealingCard> {
         private final Random random;
-        private final int minHealingPoints;
-        private final int maxHealingPoints;
+        private final int healingPointsFloor;
+        private final int healingPointsRoof;
 
-        public Factory(Random random, int minHealingPoints, int maxHealingPoints) {
+        public Factory(Random random, int healingPointsFloor, int healingPointsRoof) {
             Assert.notNull(random, "random no puede ser nulo.");
-            Assert.positive(minHealingPoints, "minHealingPoints debe ser positivo.");
-            Assert.positive(maxHealingPoints, "maxHealingPoints debe ser positivo.");
-            Assert.isTrue(minHealingPoints <= maxHealingPoints, "minHealingPoints debe ser menor o igual a maxHealingPoints.");
+            Assert.positive(healingPointsFloor, "healingPointsFloor debe ser positivo.");
+            Assert.positive(healingPointsRoof, "healingPointsRoof debe ser positivo.");
+            Assert.isTrue(healingPointsFloor <= healingPointsRoof, "healingPointsFloor debe ser menor o igual a healingPointsRoof.");
 
             this.random = random;
-            this.minHealingPoints = minHealingPoints;
-            this.maxHealingPoints = maxHealingPoints;
+            this.healingPointsFloor = healingPointsFloor;
+            this.healingPointsRoof = healingPointsRoof;
         }
 
         @Override
         public HealingCard create() {
-            return new HealingCard(random.nextInt(minHealingPoints, maxHealingPoints + 1));
+            return new HealingCard(random.nextInt(healingPointsFloor, healingPointsRoof));
         }
     }
 }

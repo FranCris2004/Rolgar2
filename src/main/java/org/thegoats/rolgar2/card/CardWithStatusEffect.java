@@ -18,22 +18,22 @@ public abstract class CardWithStatusEffect extends CardWithCharacterTarget {
 
     public static abstract class Factory<T extends CardWithStatusEffect> implements Card.Factory<T> {
         protected final Random random;
-        protected final int minRemainingTurns;
-        protected final int maxRemainingTurns;
+        protected final int remainingTurnsFloor;
+        protected final int remainingTurnsRoof;
 
-        public Factory(Random random, int minRemainingTurns, int maxRemainingTurns) {
+        public Factory(Random random, int remainingTurnsFloor, int remainingTurnsRoof) {
             Assert.notNull(random, "random no puede ser nulo.");
-            Assert.positive(minRemainingTurns, "minRemainingTurns debe ser positivo.");
-            Assert.positive(maxRemainingTurns, "maxRemainingTurns debe ser positivo.");
-            Assert.isTrue(minRemainingTurns <= maxRemainingTurns, "minRemainingTurns debe ser menor o igual a maxRemainingTurns.");
+            Assert.positive(remainingTurnsFloor, "remainingTurnsFloor debe ser positivo.");
+            Assert.positive(remainingTurnsRoof, "remainingTurnsRoof debe ser positivo.");
+            Assert.isTrue(remainingTurnsFloor <= remainingTurnsRoof, "remainingTurnsFloor debe ser menor o igual a remainingTurnsRoof.");
 
             this.random = random;
-            this.minRemainingTurns = minRemainingTurns;
-            this.maxRemainingTurns = maxRemainingTurns;
+            this.remainingTurnsFloor = remainingTurnsFloor;
+            this.remainingTurnsRoof = remainingTurnsRoof;
         }
 
         public int getRandomRemainingTurns() {
-            return random.nextInt(minRemainingTurns, maxRemainingTurns + 1);
+            return random.nextInt(remainingTurnsFloor, remainingTurnsRoof);
         }
     }
 }

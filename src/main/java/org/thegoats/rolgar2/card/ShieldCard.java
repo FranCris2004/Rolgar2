@@ -22,27 +22,27 @@ public class ShieldCard extends CardWithStatusEffect {
     }
 
     public static class Factory extends CardWithStatusEffect.Factory<ShieldCard> {
-        private final double minIncomingDamageFactorModifier;
-        private final double maxIncomingDamageFactorModifier;
+        private final double incomingDamageFactorModifierFloor;
+        private final double incomingDamageFactorModifierRoof;
 
         public Factory(Random random,
-                       int minRemainingTurns,
-                       int maxRemainingTurns,
-                       double minIncomingDamageFactorModifier,
-                       double maxIncomingDamageFactorModifier) {
-            super(random, minRemainingTurns, maxRemainingTurns);
-            Assert.positive(minIncomingDamageFactorModifier, "minIncomingDamageFactorModifier debe ser positivo");
-            Assert.positive(maxIncomingDamageFactorModifier, "maxIncomingDamageFactorModifier debe ser positivo");
-            Assert.isTrue(minIncomingDamageFactorModifier <= maxIncomingDamageFactorModifier,
-                    "minIncomingDamageFactorModifier debe ser menor o igual a maxIncomingDamageFactorModifier");
-            this.minIncomingDamageFactorModifier = minIncomingDamageFactorModifier;
-            this.maxIncomingDamageFactorModifier = maxIncomingDamageFactorModifier;
+                       int remainingTurnsFloor,
+                       int remainingTurnsRoof,
+                       double incomingDamageFactorModifierFloor,
+                       double incomingDamageFactorModifierRoof) {
+            super(random, remainingTurnsFloor, remainingTurnsRoof);
+            Assert.positive(incomingDamageFactorModifierFloor, "incomingDamageFactorModifierFloor debe ser positivo");
+            Assert.positive(incomingDamageFactorModifierRoof, "incomingDamageFactorModifierRoof debe ser positivo");
+            Assert.isTrue(incomingDamageFactorModifierFloor <= incomingDamageFactorModifierRoof,
+                    "incomingDamageFactorModifierFloor debe ser menor o igual a incomingDamageFactorModifierRoof");
+            this.incomingDamageFactorModifierFloor = incomingDamageFactorModifierFloor;
+            this.incomingDamageFactorModifierRoof = incomingDamageFactorModifierRoof;
         }
 
         @Override
         public ShieldCard create() {
             return new ShieldCard(getRandomRemainingTurns(),
-                    random.nextDouble(minIncomingDamageFactorModifier, maxIncomingDamageFactorModifier));
+                    random.nextDouble(incomingDamageFactorModifierFloor, incomingDamageFactorModifierRoof));
         }
     }
 }

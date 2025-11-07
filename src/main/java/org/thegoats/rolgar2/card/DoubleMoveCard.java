@@ -16,8 +16,9 @@ public class DoubleMoveCard extends CardWithStatusEffect {
     }
 
     public static class Factory extends CardWithStatusEffect.Factory<DoubleMoveCard> {
-        public Factory(Random random, int minRemainingTurns, int maxRemainingTurns) {
-            super(random, minRemainingTurns, maxRemainingTurns);
+        public Factory(Random random, int
+                remainingTurnsFloor, int remainingTurnsRoof) {
+            super(random, remainingTurnsFloor, remainingTurnsRoof);
         }
 
         @Override
