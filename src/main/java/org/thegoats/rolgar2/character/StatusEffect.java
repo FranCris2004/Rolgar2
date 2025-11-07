@@ -21,6 +21,9 @@ public abstract class StatusEffect {
         return remainingTurns;
     }
 
+    /**
+     * @return personaje al que se le aplicó el efecto de estado
+     */
     protected CharacterData getCharacter() {
         return character;
     }
