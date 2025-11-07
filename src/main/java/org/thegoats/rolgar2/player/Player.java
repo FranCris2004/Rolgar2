@@ -1,4 +1,4 @@
-package org.thegoats.rolgar2.game;
+package org.thegoats.rolgar2.player;
 
 import org.thegoats.rolgar2.util.Assert;
 
