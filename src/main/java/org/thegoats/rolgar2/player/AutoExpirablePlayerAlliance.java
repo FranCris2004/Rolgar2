@@ -11,11 +11,10 @@ public class AutoExpirablePlayerAlliance extends PlayerAlliance {
     }
 
     public void updateRemainingTurns() {
-        this.remainingTurns--;
-    }
-
-    @Override
-    public boolean inForce() {
-        return super.inForce() || this.remainingTurns <= 0;
+        if (remainingTurns == 1) {
+            broke();
+        } else  {
+            remainingTurns--;
+        }
     }
 }
