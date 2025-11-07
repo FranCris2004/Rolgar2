@@ -7,15 +7,15 @@ public class StealingCard implements Card {
     private CardDeck stolenDeck = null;
     private Card stolenCard = null;
 
-    private void setThiefInventory(CardDeck thiefDeck) {
+    public void setThiefInventory(CardDeck thiefDeck) {
         this.thiefDeck = thiefDeck;
     }
 
-    private void setStolenDeck(CardDeck stolenDeck) {
+    public void setStolenDeck(CardDeck stolenDeck) {
         this.stolenDeck = stolenDeck;
     }
 
-    private void setStolenCard(Card stolenCard) {
+    public void setStolenCard(Card stolenCard) {
         this.stolenCard = stolenCard;
     }
 
