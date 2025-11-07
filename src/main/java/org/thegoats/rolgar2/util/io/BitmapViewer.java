@@ -5,6 +5,7 @@ import org.thegoats.rolgar2.util.Assert;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -35,8 +36,8 @@ public class BitmapViewer {
      * Inicia el visualizador de bitmaps
      * @param bitmaps
      */
-    public static void showBitmaps(Bitmap... bitmaps) {    	
-        new BitmapViewer(Arrays.asList(bitmaps));
+    public static void showBitmaps(Collection<Bitmap> bitmaps) {
+        new BitmapViewer(bitmaps.stream().toList());
     }
 
     /**
