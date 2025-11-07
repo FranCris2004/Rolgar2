@@ -13,14 +13,21 @@ public class GameBuilder {
 
     public GameBuilder() {}
 
+    /**
+     * Construye el Game
+     * @return nuevo juego de RolgarII
+     */
     public Game build() {
         return new Game(logger, selectDifficulty(), selectMap(), characters);
     }
 
+    /**
+     * Setea el logger
+     * @param logger no null
+     */
     public GameBuilder setLogger(Logger logger) {
         Assert.notNull(logger, "El logger no puede ser nulo.");
         this.logger = logger;
-        return this;
     }
 
     public GameBuilder loadDifficulties(String difficultiesDirectoryPath) {
