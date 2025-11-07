@@ -17,9 +17,9 @@ public abstract class CardWithStatusEffect extends CardWithCharacterTarget {
     }
 
     public static abstract class Factory<T extends CardWithStatusEffect> implements Card.Factory<T> {
-        private final Random random;
-        private final int minRemainingTurns;
-        private final int maxRemainingTurns;
+        protected final Random random;
+        protected final int minRemainingTurns;
+        protected final int maxRemainingTurns;
 
         public Factory(Random random, int minRemainingTurns, int maxRemainingTurns) {
             Assert.notNull(random, "random no puede ser nulo.");
