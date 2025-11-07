@@ -27,7 +27,8 @@ public class FireballCard extends CardWithCharacterTarget {
             Assert.notNull(random, "random no puede ser nulo.");
             Assert.positive(minDamage, "minDamage debe ser positivo.");
             Assert.positive(maxDamage, "maxDamage debe ser positivo.");
-            Assert.isTrue(minDamage <= maxDamage, "minDamage debe ser menor a maxDamage.");
+            Assert.isTrue(minDamage <= maxDamage, "minDamage debe ser menor o igual a maxDamage.");
+
             this.random = random;
             this.minDamage = minDamage;
             this.maxDamage = maxDamage;

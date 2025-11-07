@@ -2,8 +2,15 @@ package org.thegoats.rolgar2.card;
 
 import org.thegoats.rolgar2.util.Assert;
 
+import java.util.Random;
+
 public class HealingCard extends CardWithCharacterTarget {
-    private Integer healingPoints = null;
+    private final int healingPoints;
+
+    public HealingCard(int healingPoints) {
+        Assert.positive(healingPoints, "healingPoints debe ser positiva.");
+        this.healingPoints = healingPoints;
+    }
 
     @Override
     public void use() {
@@ -12,8 +19,25 @@ public class HealingCard extends CardWithCharacterTarget {
         getTarget().recoverHealth(healingPoints);
     }
 
-    public void setHealingPoints(int healingPoints) {
-        Assert.positive(healingPoints, "healingPoints debe ser positiva.");
-        this.healingPoints = healingPoints;
+    public static class Factory implements CardFactory<HealingCard> {
+        private final Random random;
+        private final int minHealingPoints;
+        private final int maxHealingPoints;
+
+        public Factory(Random random, int minHealingPoints, int maxHealingPoints) {
+            Assert.notNull(random, "random no puede ser nulo.");
+            Assert.positive(minHealingPoints, "minDamage debe ser positivo.");
+            Assert.positive(maxHealingPoints, "maxDamage debe ser positivo.");
+            Assert.minAndMax(minHealingPoints, maxHealingPoints, "minDamage debe ser menor a maxDamage.");
+
+            this.random = random;
+            this.minHealingPoints = minHealingPoints;
+            this.maxHealingPoints = maxHealingPoints;
+        }
+
+        @Override
+        public HealingCard create() {
+            return new HealingCard(random.nextInt(minHealingPoints, maxHealingPoints + 1));
+        }
     }
 }
