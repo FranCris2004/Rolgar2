@@ -37,8 +37,8 @@ public class Bitmap {
      * @param color: no nulo
      */
     public void drawPixel(int x, int y, Color color) {
-    	Assert.inRange(0, getWidth(), x, "ancho");
-    	Assert.inRange(0, getHeight(), y, "alto");
+    	Assert.inRange(x, 0, getWidth(), "ancho");
+    	Assert.inRange(y, 0, getHeight(), "alto");
     	Assert.notNull(color, "color");
         if (x >= 0 && x < width && y >= 0 && y < height) {
             image.setRGB(x, y, color.getRGB());
@@ -54,10 +54,10 @@ public class Bitmap {
      * @param color: no nulo
      */
     public void drawLine(int x1, int y1, int x2, int y2, Color color) {
-    	Assert.inRange(0, getWidth(), x1, "x1");
-    	Assert.inRange(0, getWidth(), x2, "x2");
-    	Assert.inRange(0, getHeight(), y1, "y1");
-    	Assert.inRange(0, getHeight(), y2, "y2");
+    	Assert.inRange(x1, 0, getWidth(), "x1");
+    	Assert.inRange(x2, 0, getWidth(), "x2");
+    	Assert.inRange(y1, 0, getHeight(), "y1");
+    	Assert.inRange(y2, 0, getHeight(), "y2");
     	Assert.notNull(color, "color");
         int dx = Math.abs(x2 - x1);
         int dy = Math.abs(y2 - y1);
@@ -89,10 +89,10 @@ public class Bitmap {
      * @param color: no nulo
      */    
     public void drawRectangle(int x, int y, int width, int height, Color color) {
-    	Assert.inRange(0, getWidth(), x, "x1");
-    	Assert.inRange(0, getHeight(), y, "y1");
-    	Assert.inRange(0, getWidth(), width, "ancho");
-    	Assert.inRange(0, getHeight(), height, "alto");
+    	Assert.inRange(x, 0, getWidth(), "x1");
+    	Assert.inRange(y, 0, getHeight(), "y1");
+    	Assert.inRange(width, 0, getWidth(), "ancho");
+    	Assert.inRange(height, 0, getHeight(), "alto");
     	Assert.notNull(color, "color");
         drawLine(x, y, x + width, y, color);
         drawLine(x, y, x, y + height, color);
@@ -108,9 +108,9 @@ public class Bitmap {
      * @param color
      */
     public void drawCircle(int centerX, int centerY, int radius, Color color) {
-    	Assert.inRange(0, getWidth(), centerX, "x1");
-    	Assert.inRange(0, getHeight(), centerY, "y1");
-    	Assert.inRange(0, Math.min(getWidth(), getHeight()), radius, "ancho");
+    	Assert.inRange(centerX, 0, getWidth(), "x1");
+    	Assert.inRange(centerY, 0, getHeight(), "y1");
+    	Assert.inRange(radius, 0, Math.min(getWidth(), getHeight()), "ancho");
     	Assert.notNull(color, "color");
         int x = radius;
         int y = 0;
@@ -146,8 +146,8 @@ public class Bitmap {
      * @param color: colo no nulo
      */
     public void drawText(String text, int x, int y, Font font, Color color, Color background) {
-    	Assert.inRange(0, getWidth(), x, "x");
-    	Assert.inRange(0, getHeight(), y, "y");
+    	Assert.inRange(x, 0, getWidth(), "x");
+    	Assert.inRange(y, 0, getHeight(), "y");
     	Assert.notNull(font, "fuente");
     	Assert.notNull(color, "color");
         Graphics2D g = image.createGraphics();
