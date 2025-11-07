@@ -50,10 +50,7 @@ public final class Game {
      */
     private void nextTurn()
     {
-        turnCount++;
-
-        logger.logDebug("Turn " + turnCount);
-
+        logger.logDebug("Turn " + ++turnCount);
         for (GameCharacter gameCharacter : gameCharacters) {
             gameCharacter.turnManager.doTurn();
         }
