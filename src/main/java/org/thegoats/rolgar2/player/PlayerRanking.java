@@ -32,4 +32,24 @@ public class PlayerRanking {
     public void removePlayer(Player player) {
         players.remove(player);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("PlayerRanking:\n");
+        sb.append("Rank\t\tName\t\tGames Won Percentage\t\t(Games Won/Games Played)\n");
+        int i = 1;
+        for (Player player : players) {
+            sb.append(String.format("%d.\t\t%s\t\t%f\t\t(%d/%d)\n",
+                    i,
+                    player.getName(),
+                    player.getGamesWonPercentage(),
+                    player.getGamesWon(),
+                    player.getGamesPlayed()
+            ));
+        }
+
+        return sb.toString();
+    }
 }
