@@ -19,7 +19,7 @@ public class InvisibilityCard extends CardWithStatusEffect {
     @Override
     public void use() {
         validateTarget();
-        getTarget().applyEffect(new InvisibilityEffect(getTarget(), getRemainingTurns()));
+        getTarget().applyEffect(new InvisibilityEffect(getTarget(), getDuration()));
     }
 
     /**
@@ -30,7 +30,7 @@ public class InvisibilityCard extends CardWithStatusEffect {
     public String toString(){
         return String.format("InvisibilityCard[target=%s, duration=%d]",
                 getTarget().toString(),
-                getRemainingTurns());
+                getDuration());
     }
 
     public static class Factory extends CardWithStatusEffect.Factory<InvisibilityCard> {
@@ -40,7 +40,7 @@ public class InvisibilityCard extends CardWithStatusEffect {
 
         @Override
         public InvisibilityCard create() {
-            return new InvisibilityCard(getRandomRemainingTurns());
+            return new InvisibilityCard(getRandomDuration());
         }
     }
 }

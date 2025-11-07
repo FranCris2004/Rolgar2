@@ -21,7 +21,7 @@ public class DoubleMoveCard extends CardWithStatusEffect {
     @Override
     public void use() {
         validateTarget();
-        getTarget().applyEffect(new DoubleMoveEffect(getTarget(), getRemainingTurns()));
+        getTarget().applyEffect(new DoubleMoveEffect(getTarget(), getDuration()));
     }
 
     /**
@@ -32,7 +32,7 @@ public class DoubleMoveCard extends CardWithStatusEffect {
     public String toString(){
         return String.format("DoubleMoveCard[target=%s, Duration=%d]",
                 getTarget().toString(),
-                getRemainingTurns());
+                getDuration());
     }
 
     public static class Factory extends CardWithStatusEffect.Factory<DoubleMoveCard> {
@@ -43,7 +43,7 @@ public class DoubleMoveCard extends CardWithStatusEffect {
 
         @Override
         public DoubleMoveCard create() {
-            return new DoubleMoveCard(getRandomRemainingTurns());
+            return new DoubleMoveCard(getRandomDuration());
         }
     }
 }

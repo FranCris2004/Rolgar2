@@ -4,6 +4,7 @@ import org.thegoats.rolgar2.character.effects.HalfDamageEffect;
 import org.thegoats.rolgar2.util.Assert;
 import java.util.Random;
 
+
 public class ShieldCard extends CardWithStatusEffect {
     private final double incomingDamageFactorModifier;
 
@@ -17,7 +18,7 @@ public class ShieldCard extends CardWithStatusEffect {
     public void use() {
         validateTarget();
         Assert.notNull(incomingDamageFactorModifier, "incomingDamageFactorModifier no ha sido setteado");
-        getTarget().applyEffect(new HalfDamageEffect(getTarget(), getRemainingTurns()));
+        getTarget().applyEffect(new HalfDamageEffect(getTarget(), getDuration()));
     }
 
     public static class Factory extends CardWithStatusEffect.Factory<ShieldCard> {
@@ -40,7 +41,7 @@ public class ShieldCard extends CardWithStatusEffect {
 
         @Override
         public ShieldCard create() {
-            return new ShieldCard(getRandomRemainingTurns(),
+            return new ShieldCard(getRandomDuration(),
                     random.nextDouble(incomingDamageFactorModifierFloor, incomingDamageFactorModifierRoof));
         }
     }

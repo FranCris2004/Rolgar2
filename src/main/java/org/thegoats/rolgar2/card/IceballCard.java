@@ -17,7 +17,7 @@ public class IceballCard extends CardWithStatusEffect {
     @Override
     public void use() {
         validateTarget();
-        getTarget().applyEffect(new FreezeEffect(getTarget(), getRemainingTurns()));
+        getTarget().applyEffect(new FreezeEffect(getTarget(), getDuration()));
     }
 
     /**
@@ -28,7 +28,7 @@ public class IceballCard extends CardWithStatusEffect {
     public String toString(){
         return String.format("IceballCard[target=%s, duration=%d]",
                 getTarget().toString(),
-                getRemainingTurns());
+                getDuration());
     }
 
     public static class Factory extends CardWithStatusEffect.Factory<IceballCard> {
@@ -38,7 +38,7 @@ public class IceballCard extends CardWithStatusEffect {
 
         @Override
         public IceballCard create() {
-            return new IceballCard(getRandomRemainingTurns());
+            return new IceballCard(getRandomDuration());
         }
     }
 }

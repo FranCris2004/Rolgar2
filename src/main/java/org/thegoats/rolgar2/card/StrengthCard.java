@@ -12,7 +12,7 @@ public class StrengthCard extends CardWithStatusEffect {
     @Override
     public void use() {
         validateTarget();
-        getTarget().applyEffect(new DoubleStrengthEffect(getTarget(), getRemainingTurns()));
+        getTarget().applyEffect(new DoubleStrengthEffect(getTarget(), getDuration()));
     }
 
     public static class Factory extends CardWithStatusEffect.Factory<StrengthCard> {
@@ -22,7 +22,7 @@ public class StrengthCard extends CardWithStatusEffect {
 
         @Override
         public StrengthCard create() {
-            return new StrengthCard(getRandomRemainingTurns());
+            return new StrengthCard(getRandomDuration());
         }
     }
 }
