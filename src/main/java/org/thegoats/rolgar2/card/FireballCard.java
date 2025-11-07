@@ -30,6 +30,12 @@ public class FireballCard extends CardWithCharacterTarget {
         getTarget().takeDamage(damage);
     }
 
+    /**
+     * Fabrica de cartas de bola de fuego, construye la fabrica de
+     * CardWithStatusEffect con un generador aleatorio, piso y techo de duraciones,
+     * y a partir de ahi permite utilizar el metodo create() para abstraerse de la implementacion
+     * y generar una carta con duracion aleatoria
+     */
     public static class Factory implements Card.Factory<FireballCard> {
         private final Random random;
         private final int damageFloor;
