@@ -4,6 +4,12 @@ import org.thegoats.rolgar2.util.Assert;
 
 import java.util.Random;
 
+/**
+ * Muchas de las cartas que tienen un CharacterData como target, le aplican un efecto de estado StatusEffect a dicho personaje,
+ * por lo tanto abstraemos en esta clase el atributo remainingTurns, que sera la duracion del efecto de estado en turnos,
+ * y los metodos setRemainingTurns, getRemainingTurns, y validateRemainingTurns. Todas las cartas que apliquen un efecto
+ * de estado heredaran de esta clase.
+ */
 public abstract class CardWithStatusEffect extends CardWithCharacterTarget {
     private final int remainingTurns;
 

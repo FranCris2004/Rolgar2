@@ -4,6 +4,9 @@ import org.thegoats.rolgar2.util.Assert;
 
 import java.util.Random;
 
+/**
+ * Carta que arroja una bola de fuego al personaje 'target' asignado.
+ */
 public class FireballCard extends CardWithCharacterTarget {
     private final int damage;
 
@@ -12,6 +15,11 @@ public class FireballCard extends CardWithCharacterTarget {
         this.damage = damage;
     }
 
+    /**
+     * Chequea que a la carta ya se le haya asignado un personaje 'target' objetivo, y que se le haya setteado un
+     * damage valido.
+     * Si ambas condiciones se cumplen, daña a 'target' en funcion de damage
+     */
     @Override
     public void use() {
         validateTarget();
@@ -38,5 +46,17 @@ public class FireballCard extends CardWithCharacterTarget {
         public FireballCard create() {
             return new FireballCard(random.nextInt(damageFloor, damageRoof));
         }
+    }
+
+    /**
+     * Devuelve una version en formato String de la carta, con el formato
+     * NombreDeCarta[atributo1=valor1, atributo2=valor2, ..., atributoN=valorN]
+     * @return version en formato string de la carta
+     */
+    @Override
+    public String toString(){
+        return String.format("FireballCard[target=%s, damage=%d]",
+                getTarget().toString(),
+                damage);
     }
 }
