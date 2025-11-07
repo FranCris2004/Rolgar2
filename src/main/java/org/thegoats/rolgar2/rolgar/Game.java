@@ -1,5 +1,6 @@
 package org.thegoats.rolgar2.rolgar;
 
+import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.Logger;
 
 import java.util.Set;
@@ -11,7 +12,19 @@ public final class Game {
     public final MapData map;
     private final Set<GameCharacter> gameCharacters;
 
+    /**
+     * Crea Game dado un logger para impresiones, dificultad, mapa y personajes.
+     * @param logger interfaz que representa un sistema de Logs
+     * @param difficulty configuracion general de la dificultad
+     * @param map informacion general del mapa
+     * @param gameCharacters conjunto de GameCharacters
+     */
     public Game(Logger logger, DifficultyData difficulty, MapData map, Set<GameCharacter> gameCharacters) {
+        Assert.notNull(logger, "Logger no puede ser null");
+        Assert.notNull(difficulty, "Difficulty no puede ser null");
+        Assert.notNull(map, "Map no puede ser null");
+        Assert.notNull(gameCharacters, "GameCharacters no puede ser null");
+        Assert.isTrue(gameCharacters.size() >= 2, "No se puede jugar si no hay al menos dos jugadores");
         this.logger = logger;
         this.difficulty = difficulty;
         this.map = map;

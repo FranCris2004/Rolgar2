@@ -4,6 +4,9 @@ import org.thegoats.rolgar2.util.Assert;
 
 import java.util.*;
 
+/**
+ * TDA que modela el ranking con los jugadores.
+ */
 public class PlayerRanking {
     private final SortedSet<Player> players;
 
