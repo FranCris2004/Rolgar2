@@ -18,7 +18,7 @@ public class FireballCard extends CardWithCharacterTarget {
         getTarget().takeDamage(damage);
     }
 
-    public static class Factory implements CardFactory<FireballCard> {
+    public static class Factory implements Card.Factory<FireballCard> {
         private final Random random;
         private final int minDamage;
         private final int maxDamage;
