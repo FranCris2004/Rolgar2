@@ -2,7 +2,7 @@ package org.thegoats.rolgar2.util;
 
 public class Assert {
     /**
-     * @param o No null
+     * @param o No Null
      * @param message Mensaje en caso de excepcion
      * @throws RuntimeException Si 'o' es null
      */
