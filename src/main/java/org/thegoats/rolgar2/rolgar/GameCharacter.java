@@ -5,16 +5,28 @@ import org.thegoats.rolgar2.player.Player;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.world.WorldCell;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 public final class GameCharacter {
     public final Player player;
     public final CharacterData characterData;
+    public final GameCharacterTurnManager gameCharacterTurnManager;
     private WorldCell worldCell;
 
-    public GameCharacter(CharacterData characterData, WorldCell initialWorldCell, Player player) {
+    public GameCharacter(Player player, CharacterData characterData, WorldCell initialWorldCell, Class<? extends GameCharacterTurnManager> gameCharacterTurnManagerClass) {
         Assert.notNull(characterData, "characterData no puede ser nulo");
+        Assert.notNull(player, "player no puede ser nulo");
+        setWorldCell(initialWorldCell);
         this.characterData = characterData;
         this.player = player;
-        setWorldCell(initialWorldCell);
+
+        try {
+            Constructor<?> ctor = gameCharacterTurnManagerClass.getDeclaredConstructor(GameCharacter.class);
+            this.gameCharacterTurnManager =  (GameCharacterTurnManager) ctor.newInstance(this);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void setWorldCell(WorldCell worldCell) {
