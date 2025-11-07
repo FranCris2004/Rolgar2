@@ -10,6 +10,6 @@ public class GameCharacterEnemyTurnManager extends GameCharacterTurnManager {
 
     @Override
     public void doTurn() {
-
+        gameCharacter.game.logger.logDebug("El enemigo " + gameCharacter.characterData.getName() + " realiza su turno.");
     }
 }
