@@ -6,6 +6,9 @@ import java.util.Random;
 
 // TODO: comentar
 
+/**
+ *  Fábrica de Character
+ */
 public class CharacterFactory {
     private final Random random;
     private final int healthFloor;
@@ -16,6 +19,17 @@ public class CharacterFactory {
     private final int moves;
     private final double incomingDamageFactor;
 
+    /**
+     * Crea una fábrica de Character
+     * @param random no null, generador de valores
+     * @param healthFloor mayor a cero y menor a healthRoof piso de la vida maxima
+     * @param healthRoof mayor a cero y mayor a healthFloor, techo de la vida maxima
+     * @param strengthFloor mayor a cero y menor a strengthRoof, piso de strength
+     * @param strengthRoof mayor a cero y mayor a strengthFloor, techo de strength
+     * @param inventorySize mayor a cero, tamaño máximo del inventario
+     * @param moves mayor a cero, movimientos totales por turno
+     * @param incomingDamageFactor mayor a cero, multiplicador de daño recibido
+     */
     public CharacterFactory(Random random,
                             int healthFloor,
                             int healthRoof,
@@ -24,6 +38,7 @@ public class CharacterFactory {
                             int inventorySize,
                             int moves,
                             double incomingDamageFactor) {
+        Assert.notNull(random, "random no puede ser null");
         Assert.positive(healthFloor, "healthFloor debe ser positivo");
         Assert.positive(healthRoof, "healthRoof debe ser positivo");
         Assert.isTrue(healthFloor < healthRoof, "healthFloor debe ser menor a healthRoof");
@@ -32,8 +47,9 @@ public class CharacterFactory {
         Assert.positive(strengthRoof, "strengthRoof debe ser positivo");
         Assert.isTrue(strengthFloor < strengthRoof, "strengthFloor debe ser menor a strengthRoof");
 
-        Assert.nonNegative(inventorySize, "inventorySize debe ser mayor o igual a cero");
-        Assert.nonNegative(moves, "moves debe mayor o igual a cero");
+        Assert.positive(inventorySize, "inventorySize debe ser mayor a cero");
+        Assert.positive(moves, "moves debe mayor a cero");
+        Assert.positive(incomingDamageFactor, "incomingDamageFactor debe ser positivo");
 
         this.random = random;
         this.healthFloor = healthFloor;
@@ -45,6 +61,11 @@ public class CharacterFactory {
         this.incomingDamageFactor = incomingDamageFactor;
     }
 
+    /**
+     *
+     * @param name entre 3 y 20 caracteres alfanumericos, y '.-_'
+     * @return CharacterData con stats ya predefinidos por el CharacterFactory y name recibido por parametro
+     */
     public CharacterData create(String name)
     {
         return new CharacterData(
