@@ -7,8 +7,12 @@ import org.thegoats.rolgar2.character.effects.FreezeEffect;
  */
 
 public class IceballCard extends CardWithStatusEffect {
-    public IceballCard(int remainingTurns) {
-        super(remainingTurns);
+    /**
+     * Construye la carta de bola de nieve
+     * @param duration mayor a cero
+     */
+    public IceballCard(int duration) {
+        super(duration);
     }
 
     /**
@@ -17,7 +21,7 @@ public class IceballCard extends CardWithStatusEffect {
     @Override
     public void use() {
         validateTarget();
-        getTarget().applyEffect(new FreezeEffect(getTarget(), getRemainingTurns()));
+        getTarget().applyEffect(new FreezeEffect(getTarget(), getDuration()));
     }
 
     /**
@@ -25,20 +29,38 @@ public class IceballCard extends CardWithStatusEffect {
      * NombreDeCarta[atributo1=valor1, atributo2=valor2, ..., atributoN=valorN]
      * @return version en formato string de la carta
      */
+    @Override
     public String toString(){
         return String.format("IceballCard[target=%s, duration=%d]",
-                getTarget().toString(),
-                getRemainingTurns());
+                getTarget(),
+                getDuration());
     }
 
+    /**
+     * Fabrica de cartas de bola de nieve, construye la fabrica de
+     * CardWithStatusEffect con un generador aleatorio, piso y techo de duraciones,
+     * y a partir de ahi permite utilizar el metodo create() para abstraerse de la implementacion
+     * y generar una carta cuyo efecto de estado a aplicar tenga duracion aleatoria
+     */
     public static class Factory extends CardWithStatusEffect.Factory<IceballCard> {
-        public Factory(Random random, int remainingTurnsFloor, int remainingTurnsRoof) {
-            super(random, remainingTurnsFloor, remainingTurnsRoof);
+        /**
+         * Construye la fabrica de cartas de bola de nieve
+         * @param random no null, objeto generador aleatorio
+         * @param durationFloor mayor a cero, menor a 'durationRoof'
+         * @param durationRoof mayor a cero, mayor a 'durationFloor'
+         */
+        public Factory(Random random, int durationFloor, int durationRoof) {
+            super(random, durationFloor, durationRoof);
         }
 
+        /**
+         * Crea una carta de bola de nieve cuyo efecto de estado tiene una duracion aleatoria entre 
+         * 'durationFloor' y 'durationRoof' pasados por parametro al constructor de Factory
+         * @return carta de bola de nieve
+         */
         @Override
         public IceballCard create() {
-            return new IceballCard(getRandomRemainingTurns());
+            return new IceballCard(getRandomDuration());
         }
     }
 }

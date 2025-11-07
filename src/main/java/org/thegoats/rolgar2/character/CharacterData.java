@@ -28,10 +28,6 @@ public class CharacterData {
     private double incomingDamageFactor;
     private int moves;
     private final CardDeck deck;
-
-    /**
-     * Lista de efectos (buffs y debuffs) activos en el personaje
-     */
     private List<StatusEffect> effects = new LinkedList<>();
 
     //
@@ -40,15 +36,20 @@ public class CharacterData {
 
     /**
      * @param name no nulo, sólo debe contener de 3 a 20 caracteres alfanuméricos, '.' , '-' y '_'
-     * @param maxHealth Debe ser mayor a 0
-     * @param strength Debe ser mayor o 0
+     * @param maxHealth Debe ser mayor a 0, vida maxima del personaje
+     * @param strength Debe ser mayor o 0, daño del personaje
+     * @param deckSize Debe ser mayor a 0, tamaño maximo que puede tomar el inventario (mazo de cartas)
+     * @param moves Debe ser mayor a cero
+     * @param incomingDamageFactor
      */
     public CharacterData(String name, int maxHealth, int strength, int deckSize, int moves, double incomingDamageFactor) {
         setName(name);
         setMaxHealth(maxHealth);
         setHealth(maxHealth); // la vida inicial es la vida maxima
         setStrength(strength);
+        Assert.positive(moves, "Los movimientos iniciales no pueden ser 0");
         setMoves(moves);
+        Assert.positive(incomingDamageFactor, "El multiplicador de daño recibido inicial no puede ser 0");
         setIncomingDamageFactor(incomingDamageFactor);
         this.deck = new CardDeck(deckSize);
     }
@@ -100,7 +101,7 @@ public class CharacterData {
     //
 
     /**
-     * @return EL nombre del personaje
+     * @return El nombre del personaje
      */
     public String getName(){
         return name;
@@ -142,7 +143,7 @@ public class CharacterData {
     }
 
     /**
-     * @return Factor por el cual se multiplica el daño entrante, esta entre MIN_INCOMING_DAMAGE_FACTOR y MAX_INCOMING_DAMAGE_FACTOR
+     * @return Factor por el cual se multiplica el daño entrante, estará entre MIN_INCOMING_DAMAGE_FACTOR y MAX_INCOMING_DAMAGE_FACTOR
      */
     public double getIncomingDamageFactor() {
         return incomingDamageFactor;
@@ -156,7 +157,7 @@ public class CharacterData {
     }
 
     /**
-     * @return mazo del personaje
+     * @return mazo o inventario del personaje
      */
     public CardDeck getDeck() {
         return deck;
@@ -207,14 +208,39 @@ public class CharacterData {
     }
 
     /**
-     * @param visible true si el personaje es visible, false si es invisible
+     * Si el personaje era invisible, lo vuelve visible, si era visible lanza una excepcion
      */
-    public void setVisible(boolean visible) {
-        this.visible = visible;
+    public void setVisible() {
+        Assert.isTrue(!visible, "El personaje ya es visible");
+        this.visible = true;
     }
 
     /**
-     * @param incomingDamageFactor cualquier float, se recorta entre MIN_INCOMING_DAMAGE_FACTOR y MAX_INCOMING_DAMAGE_FACTOR
+     * Si el personaje era visible, lo vuelve invisible, si era invisible lanza una excepcion
+     */
+    public void setInvisible(){
+        Assert.isTrue(visible, "El personaje ya es invisible");
+        this.visible = false;
+    }
+
+    /**
+     * Si el personaje estaba descongelado, lo congela, y si estaba congelado lanza una excepcion
+     */
+    public void freeze(){
+        Assert.isTrue(!isFreezed, "El personaje ya está congelado");
+        this.isFreezed = true;
+    }
+
+    /**
+     * Si el personaje estaba congelado, lo descongela, y si estaba descongelado lanza una excepcion
+     */
+    public void unfreeze() {
+        Assert.isTrue(isFreezed, "El personaje no está congelado");
+        this.isFreezed = false;
+    }
+
+    /**
+     * @param incomingDamageFactor cualquier double, se recorta entre MIN_INCOMING_DAMAGE_FACTOR y MAX_INCOMING_DAMAGE_FACTOR
      */
     public void setIncomingDamageFactor(double incomingDamageFactor) {
         // mantiene takeDamageFactor entre MAX_TAKE_DAMAGE_FACTOR y MIN_TAKE_DAMAGE_FACTOR
@@ -222,11 +248,11 @@ public class CharacterData {
     }
 
     /**
-     * Dado unos movimientos por turno dados, si son validos los setea. Se permite 0 por posibles usos de cartas.
+     * Dado unos movimientos por turno dados, si son validos los setea.
      * @param moves movimientos por turno del personaje
      */
     public void setMoves(int moves) {
-        Assert.nonNegative(moves, "Los movimientos no pueden ser negatovos. Se ingreso"+moves);
+        Assert.positive(moves, "Los movimientos no pueden ser negativos. Se ingreso"+moves);
         this.moves = moves;
     }
 
@@ -268,13 +294,20 @@ public class CharacterData {
     // Implemetacion de metodos abstractos
     //
 
+    /**
+     * @return version en formato String del personaje
+     */
     @Override
     public String toString() {
-        return String.format("CharacterData[name=%s, health=%s, maxHealth=%s, strength=%s, visible=%s, incomingDamageFactor=%s, effects=%s]",
-                name, health, maxHealth, strength, visible, incomingDamageFactor, effects
+        return String.format("CharacterData[name=%s, health=%d, maxHealth=%d, strength=%d, visible=%s, isFreezed=%s, incomingDamageFactor=%.2f, moves=%d, effects=%s, deck=%s]",
+                name, health, maxHealth, strength, visible, isFreezed, incomingDamageFactor, moves, effects.toString(), deck.toString()
         );
     }
 
+    /**
+     * @param obj el otro personaje con el que comparar
+     * @return true si son iguales, unicamente si son la misma referencia.
+     */
     @Override
     public boolean equals(Object obj) {
         // si dos personajes comparten nombre y stats, siguen siendo personajes distintos, por lo tanto, solo su referencia los diferencia
