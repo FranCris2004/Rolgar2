@@ -7,4 +7,11 @@ public class StealingCard extends CardWithCharacterTarget {
     public void use() {
         validateTarget();
     }
+
+    public static class Factory implements Card.Factory<StealingCard> {
+        @Override
+        public StealingCard create() {
+            return new StealingCard();
+        }
+    }
 }
