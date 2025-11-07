@@ -5,8 +5,8 @@ import org.thegoats.rolgar2.character.effects.DoubleStrengthEffect;
 import java.util.Random;
 
 public class StrengthCard extends CardWithStatusEffect {
-    public StrengthCard(int remainingTurns) {
-        super(remainingTurns);
+    public StrengthCard(int duration) {
+        super(duration);
     }
 
     @Override
@@ -16,8 +16,8 @@ public class StrengthCard extends CardWithStatusEffect {
     }
 
     public static class Factory extends CardWithStatusEffect.Factory<StrengthCard> {
-        public Factory(Random random, int remainingTurnsFloor, int remainingTurnsRoof) {
-            super(random, remainingTurnsFloor, remainingTurnsRoof);
+        public Factory(Random random, int durationFloor, int durationRoof) {
+            super(random, durationFloor, durationRoof);
         }
 
         @Override

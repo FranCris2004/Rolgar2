@@ -9,8 +9,8 @@ import java.util.Random;
  * del correspondiente config.json
  */
 public class DoubleMoveCard extends CardWithStatusEffect {
-    public DoubleMoveCard(int remainingTurns) {
-        super(remainingTurns);
+    public DoubleMoveCard(int duration) {
+        super(duration);
     }
 
 
@@ -37,8 +37,8 @@ public class DoubleMoveCard extends CardWithStatusEffect {
 
     public static class Factory extends CardWithStatusEffect.Factory<DoubleMoveCard> {
         public Factory(Random random, int
-                remainingTurnsFloor, int remainingTurnsRoof) {
-            super(random, remainingTurnsFloor, remainingTurnsRoof);
+                durationFloor, int durationRoof) {
+            super(random, durationFloor, durationRoof);
         }
 
         @Override

@@ -8,8 +8,8 @@ import java.util.Random;
 public class ShieldCard extends CardWithStatusEffect {
     private final double incomingDamageFactorModifier;
 
-    public ShieldCard(int remainingTurns, double incomingDamageFactorModifier) {
-        super(remainingTurns);
+    public ShieldCard(int duration, double incomingDamageFactorModifier) {
+        super(duration);
         Assert.positive(incomingDamageFactorModifier, "incomingDamageFactorModifier debe ser positivo");
         this.incomingDamageFactorModifier = incomingDamageFactorModifier;
     }
@@ -26,11 +26,11 @@ public class ShieldCard extends CardWithStatusEffect {
         private final double incomingDamageFactorModifierRoof;
 
         public Factory(Random random,
-                       int remainingTurnsFloor,
-                       int remainingTurnsRoof,
+                       int durationFloor,
+                       int durationRoof,
                        double incomingDamageFactorModifierFloor,
                        double incomingDamageFactorModifierRoof) {
-            super(random, remainingTurnsFloor, remainingTurnsRoof);
+            super(random, durationFloor, durationRoof);
             Assert.positive(incomingDamageFactorModifierFloor, "incomingDamageFactorModifierFloor debe ser positivo");
             Assert.positive(incomingDamageFactorModifierRoof, "incomingDamageFactorModifierRoof debe ser positivo");
             Assert.isTrue(incomingDamageFactorModifierFloor <= incomingDamageFactorModifierRoof,

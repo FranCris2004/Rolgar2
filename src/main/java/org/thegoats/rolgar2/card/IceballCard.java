@@ -7,8 +7,8 @@ import org.thegoats.rolgar2.character.effects.FreezeEffect;
  */
 
 public class IceballCard extends CardWithStatusEffect {
-    public IceballCard(int remainingTurns) {
-        super(remainingTurns);
+    public IceballCard(int duration) {
+        super(duration);
     }
 
     /**
@@ -32,8 +32,8 @@ public class IceballCard extends CardWithStatusEffect {
     }
 
     public static class Factory extends CardWithStatusEffect.Factory<IceballCard> {
-        public Factory(Random random, int remainingTurnsFloor, int remainingTurnsRoof) {
-            super(random, remainingTurnsFloor, remainingTurnsRoof);
+        public Factory(Random random, int durationFloor, int durationRoof) {
+            super(random, durationFloor, durationRoof);
         }
 
         @Override

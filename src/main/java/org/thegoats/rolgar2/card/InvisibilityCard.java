@@ -9,8 +9,8 @@ import java.util.Random;
  */
 
 public class InvisibilityCard extends CardWithStatusEffect {
-    public InvisibilityCard(int remainingTurns) {
-        super(remainingTurns);
+    public InvisibilityCard(int duration) {
+        super(duration);
     }
 
     /**
@@ -34,8 +34,8 @@ public class InvisibilityCard extends CardWithStatusEffect {
     }
 
     public static class Factory extends CardWithStatusEffect.Factory<InvisibilityCard> {
-        public Factory(Random random, int remainingTurnsFloor, int remainingTurnsRoof) {
-            super(random, remainingTurnsFloor, remainingTurnsRoof);
+        public Factory(Random random, int durationFloor, int durationRoof) {
+            super(random, durationFloor, durationRoof);
         }
 
         @Override
