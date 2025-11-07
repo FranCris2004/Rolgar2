@@ -6,10 +6,9 @@ import java.util.Set;
 
 public final class Game {
     private int turnCount = 0;
-
-    private final Logger logger;
-    private final DifficultyData difficulty;
-    private final MapData map;
+    public final Logger logger;
+    public final DifficultyData difficulty;
+    public final MapData map;
     private final Set<GameCharacter> gameCharacters;
 
     public Game(Logger logger, DifficultyData difficulty, MapData map, Set<GameCharacter> gameCharacters) {
@@ -56,22 +55,7 @@ public final class Game {
         logger.logDebug("Turn " + turnCount);
 
         for (GameCharacter gameCharacter : gameCharacters) {
-            if (gameCharacter.isPlayerCharacter())
-            {
-                playerDoTurn(gameCharacter);
-            } else {
-                enemyDoTurn(gameCharacter);
-            }
+            gameCharacter.turnManager.doTurn();
         }
-    }
-
-    private void playerDoTurn(GameCharacter gameCharacter)
-    {
-        logger.logDebug("El jugador " + gameCharacter.characterData.getName() + " realiza su turno.");
-    }
-
-    private void enemyDoTurn(GameCharacter gameCharacter)
-    {
-        logger.logDebug("El enemigo " + gameCharacter.characterData.getName() + " realiza su turno.");
     }
 }
