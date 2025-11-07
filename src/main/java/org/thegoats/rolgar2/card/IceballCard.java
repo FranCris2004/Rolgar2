@@ -12,4 +12,11 @@ public class IceballCard extends CardWithStatusEffect {
         validateRemainingTurns();
         getTarget().applyEffect(new FreezeEffect(getTarget(), getRemainingTurns()));
     }
+
+    public static class Factory implements CardFactory<IceballCard> {
+        @Override
+        public IceballCard create() {
+            return new IceballCard();
+        }
+    }
 }
