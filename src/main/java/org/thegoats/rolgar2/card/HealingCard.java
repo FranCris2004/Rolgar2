@@ -29,7 +29,7 @@ public class HealingCard extends CardWithCharacterTarget {
 
     /**
      * Fabrica de cartas de curación, construye la fabrica de
-     * CardWithStatusEffect con un generador aleatorio, piso y techo de duraciones,
+     * Card con un generador aleatorio, piso y techo de duraciones,
      * y a partir de ahí permite utilizar el metodo create() para abstraerse de la implementacion
      * y generar una carta con curacion aleatoria
      */
