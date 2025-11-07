@@ -4,27 +4,42 @@ import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.character.StatusEffect;
 
 /**
- * Reduce el daño recibido
+ * Efecto de mitad de daño: reduce el daño recibido a la mitad
  */
 public class HalfDamageEffect extends StatusEffect {
-    public HalfDamageEffect(CharacterData character, int remainingTurns){
-        super(character, remainingTurns);
+    /**
+     * Construye el efecto con character como objetivo y duracion 'duration'
+     * @param character no null, personaje al que se le aplicara el efecto
+     * @param duration mayor a cero
+     */
+    public HalfDamageEffect(CharacterData character, int duration){
+        super(character, duration);
     }
 
+    /**
+     * Aplica el efecto sobre character (ver padre)
+     */
     @Override
     public void onApply() {
         getCharacter().setIncomingDamageFactor(getCharacter().getIncomingDamageFactor()/2);
     }
 
+    /**
+     * Remueve el efecto de character (ver padre)
+     */
     @Override
     public void onRemove() {
         getCharacter().setIncomingDamageFactor(getCharacter().getIncomingDamageFactor()*2);
     }
 
+    /**
+     * @return version en formato String del efecto
+     */
     @Override
     public String toString() {
         return String.format(
-                "HalfDamageEffect[remainingTurns=%d]",
+                "HalfDamageEffect[character=%s, remainingTurns=%d]",
+                getCharacter(),
                 getRemainingTurns()
         );
     }
