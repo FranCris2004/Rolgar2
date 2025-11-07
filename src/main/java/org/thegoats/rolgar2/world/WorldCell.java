@@ -6,7 +6,6 @@ import org.thegoats.rolgar2.util.Assert;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 public class WorldCell {
     //
@@ -61,12 +60,20 @@ public class WorldCell {
         return content;
     }
     
-    public Optional<CharacterData> getCharacter() {
-        return Optional.ofNullable((CharacterData)content);
+    public CharacterData getCharacter() {
+        if (!hasCharacter()) {
+            throw new IllegalStateException("No hay un Character que obtener en la celda.");
+        }
+
+        return ((CharacterData)content);
     }
     
-    public Optional<Block> getBlock() {
-        return Optional.ofNullable((Block)content);
+    public Block getBlock() {
+        if (!hasBlock()) {
+            throw new IllegalArgumentException("No hay un Block que obtener en la celda.");
+        }
+
+        return ((Block)content);
     }
 
     public Position getPosition() {
@@ -79,6 +86,16 @@ public class WorldCell {
 
     public Iterator<WorldCell> getNeighborsIterator() {
         return neighbors.iterator();
+    }
+
+    public WorldCell getFloor() {
+        return neighbors.stream()
+                .filter(WorldCell::hasBlock)
+                .filter((neighbor) ->
+                        this.getPosition().getRow() == neighbor.getPosition().getRow() &&
+                        this.getPosition().getColumn() == neighbor.getPosition().getColumn() &&
+                        this.getPosition().getLayer() == neighbor.getPosition().getLayer() + 1
+                ).findFirst().orElse(null);
     }
 
     //
