@@ -1,48 +1,55 @@
 package org.thegoats.rolgar2.card;
-
 import org.thegoats.rolgar2.character.effects.HalfDamageEffect;
-import org.thegoats.rolgar2.util.Assert;
 import java.util.Random;
 
-
+/**
+ * Carta de escudo: al aplicarse sobre el personaje 'target' reduce su daño recibido al 50%
+ */
 public class ShieldCard extends CardWithStatusEffect {
-    private final double incomingDamageFactorModifier;
 
-    public ShieldCard(int duration, double incomingDamageFactorModifier) {
+    /**
+     * Construye la carta de escudo
+     * @param duration mayor a cero
+     */
+    public ShieldCard(int duration) {
         super(duration);
-        Assert.positive(incomingDamageFactorModifier, "incomingDamageFactorModifier debe ser positivo");
-        this.incomingDamageFactorModifier = incomingDamageFactorModifier;
     }
 
+    /**
+     * Aplica el efecto de la carta sobre el personaje destino, 'target' no puede ser nulo llegado este punto
+     */
     @Override
     public void use() {
         validateTarget();
-        Assert.notNull(incomingDamageFactorModifier, "incomingDamageFactorModifier no ha sido setteado");
         getTarget().applyEffect(new HalfDamageEffect(getTarget(), getDuration()));
     }
 
+    /**
+     * Fábrica de cartas de escudo, construye la fábrica de
+     * CardWithStatusEffect con un generador aleatorio, piso y techo de duraciones,
+     * y a partir de ahí permite utilizar el metodo create() para abstraerse de la implementación
+     * y generar una carta cuyo efecto de estado a aplicar tenga duración aleatoria
+     */
     public static class Factory extends CardWithStatusEffect.Factory<ShieldCard> {
-        private final double incomingDamageFactorModifierFloor;
-        private final double incomingDamageFactorModifierRoof;
 
-        public Factory(Random random,
-                       int durationFloor,
-                       int durationRoof,
-                       double incomingDamageFactorModifierFloor,
-                       double incomingDamageFactorModifierRoof) {
+         /**
+         * Construye la fábrica de cartas de escudo
+         * @param random no null, objeto generador aleatorio
+         * @param durationFloor mayor a cero, menor a 'durationRoof'
+         * @param durationRoof mayor a cero, mayor a 'durationFloor'
+         */
+        public Factory(Random random, int durationFloor, int durationRoof) {
             super(random, durationFloor, durationRoof);
-            Assert.positive(incomingDamageFactorModifierFloor, "incomingDamageFactorModifierFloor debe ser positivo");
-            Assert.positive(incomingDamageFactorModifierRoof, "incomingDamageFactorModifierRoof debe ser positivo");
-            Assert.isTrue(incomingDamageFactorModifierFloor <= incomingDamageFactorModifierRoof,
-                    "incomingDamageFactorModifierFloor debe ser menor o igual a incomingDamageFactorModifierRoof");
-            this.incomingDamageFactorModifierFloor = incomingDamageFactorModifierFloor;
-            this.incomingDamageFactorModifierRoof = incomingDamageFactorModifierRoof;
         }
 
+        /**
+         * Crea una carta de escudo cuyo efecto de estado tiene una duración aleatoria entre
+         * 'durationFloor' y 'durationRoof' pasados por parámetro al constructor de Factory
+         * @return carta de escudo
+         */
         @Override
         public ShieldCard create() {
-            return new ShieldCard(getRandomDuration(),
-                    random.nextDouble(incomingDamageFactorModifierFloor, incomingDamageFactorModifierRoof));
+            return new ShieldCard(getRandomDuration());
         }
     }
 }

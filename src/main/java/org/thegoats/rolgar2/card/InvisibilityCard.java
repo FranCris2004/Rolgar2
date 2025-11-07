@@ -9,6 +9,10 @@ import java.util.Random;
  */
 
 public class InvisibilityCard extends CardWithStatusEffect {
+    /**
+     * Construye la carta de invisibilidad
+     * @param duration mayor a cero
+     */
     public InvisibilityCard(int duration) {
         super(duration);
     }
