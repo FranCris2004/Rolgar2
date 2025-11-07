@@ -1,3 +1,4 @@
+package org.thegoats.rolgar2.game;
 
 public record GrassBlockData(
 		boolean isWalkable,
