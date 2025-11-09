@@ -1,5 +1,8 @@
 package org.thegoats.rolgar2.game;
 
+import org.thegoats.rolgar2.game.config.DifficultyConfig;
+import org.thegoats.rolgar2.game.config.GameConfig;
+import org.thegoats.rolgar2.game.config.MapConfig;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.Logger;
 
@@ -7,14 +10,14 @@ import java.util.Set;
 
 public class GameBuilder {
     private Logger logger;
-    private Set<DifficultyData> difficulties;
-    private Set<MapData> maps;
+    private Set<GameConfig> difficulties;
+    private Set<MapConfig> maps;
     private Set<GameCharacter> characters;
 
     public GameBuilder() {}
 
     public Game build() {
-        return new Game(logger, selectDifficulty(), selectMap(), characters);
+        return new Game(logger, new GameConfig(selectDifficulty(), selectMap()), characters);
     }
 
     public GameBuilder setLogger(Logger logger) {
@@ -31,11 +34,11 @@ public class GameBuilder {
         return this;
     }
 
-    private DifficultyData selectDifficulty() {
+    private DifficultyConfig selectDifficulty() {
         return null;
     }
 
-    private MapData selectMap() {
+    private MapConfig selectMap() {
         return null;
     }
 }
