@@ -1,16 +1,15 @@
 package org.thegoats.rolgar2.game;
 
-import org.thegoats.rolgar2.game.config.DifficultyConfig;
-import org.thegoats.rolgar2.game.config.GameConfig;
-import org.thegoats.rolgar2.game.config.MapConfig;
+import org.thegoats.rolgar2.game.config.*;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.Logger;
+import org.thegoats.rolgar2.util.Options;
 
 import java.util.Set;
 
 public class GameBuilder {
     private Logger logger;
-    private Set<GameConfig> difficulties;
+    private Set<DifficultyConfig> difficulties;
     private Set<MapConfig> maps;
     private Set<GameCharacter> characters;
 
@@ -27,18 +26,44 @@ public class GameBuilder {
     }
 
     public GameBuilder loadDifficulties(String difficultiesDirectoryPath) {
+        difficulties = DifficultyLoader.loadDifficulties(difficultiesDirectoryPath);
         return this;
     }
 
     public GameBuilder loadMaps(String mapsDirectoryPath) {
+        maps = MapLoader.loadMaps(mapsDirectoryPath);
         return this;
     }
 
     private DifficultyConfig selectDifficulty() {
-        return null;
+        String difficultyName = new Options(
+                "Seleccione la dificultad",
+                (String[])difficulties.stream().map(DifficultyConfig::name).toArray(),
+                "Dificultad invalida, intentelo denuevo.",
+                5,
+                false)
+                .choose()
+                .orElseThrow(() -> new RuntimeException("El usuario no pudo seleccionar una dificultad."));
+
+        return difficulties.stream()
+                .filter(difficultyConfig -> difficultyConfig.name().equals(difficultyName))
+                .findFirst()
+                .orElseThrow();
     }
 
     private MapConfig selectMap() {
-        return null;
+        String mapName = new Options(
+                "Seleccione el mapa",
+                (String[])maps.stream().map(MapConfig::name).toArray(),
+                "Mapa invalido, intentelo denuevo.",
+                5,
+                false)
+                .choose()
+                .orElseThrow(() -> new RuntimeException("El usuario no pudo seleccionar un mapa."));
+
+        return maps.stream()
+                .filter(difficultyConfig -> difficultyConfig.name().equals(mapName))
+                .findFirst()
+                .orElseThrow();
     }
 }
