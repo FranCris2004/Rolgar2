@@ -33,7 +33,7 @@ public class GameBuilder {
     }
 
     public GameBuilder selectDifficulty(String difficultiesDirectoryPath) {
-        Set<DifficultyConfig> difficulties;
+        Set<DifficultyConfig> difficulties = null;
         try {
             difficulties = DifficultyLoader.loadDifficulties(Path.of(difficultiesDirectoryPath));
         } catch (IOException e) {
@@ -58,7 +58,12 @@ public class GameBuilder {
     }
 
     public GameBuilder selectMap(String mapsDirectoryPath) {
-        var maps = MapLoader.loadMaps(mapsDirectoryPath);
+        Set<MapConfig> maps = null;
+        try {
+            maps = MapLoader.loadMaps(Path.of(mapsDirectoryPath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         String mapName = new Options(
                 "Seleccione el mapa",
