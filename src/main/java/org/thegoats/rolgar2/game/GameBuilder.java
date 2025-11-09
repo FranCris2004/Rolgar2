@@ -16,6 +16,10 @@ public class GameBuilder {
 
     public GameBuilder() {}
 
+    public static GameBuilder createBuilder() {
+        return new GameBuilder();
+    }
+
     public Game build() {
         return new Game(logger, new GameConfig(difficultyConfig, mapConfig), characters);
     }
@@ -66,7 +70,7 @@ public class GameBuilder {
         return this;
     }
 
-    public GameBuilder initPlayers(String playersDirectoryPath) {
+    public GameBuilder initPlayers() {
         Scanner scanner = new Scanner(System.in);
 
         int playerCount = 3; // TODO: leerlo desde el input del usuario
