@@ -26,7 +26,7 @@ public class GameBuilder {
         return this;
     }
 
-    private GameBuilder selectDifficulty(String difficultiesDirectoryPath) {
+    public GameBuilder selectDifficulty(String difficultiesDirectoryPath) {
         var difficulties = DifficultyLoader.loadDifficulties(difficultiesDirectoryPath);
 
         String difficultyName = new Options(
@@ -46,7 +46,7 @@ public class GameBuilder {
         return this;
     }
 
-    private GameBuilder selectMap(String mapsDirectoryPath) {
+    public GameBuilder selectMap(String mapsDirectoryPath) {
         var maps = MapLoader.loadMaps(mapsDirectoryPath);
 
         String mapName = new Options(
@@ -66,7 +66,7 @@ public class GameBuilder {
         return this;
     }
 
-    private GameBuilder initPlayers(String playersDirectoryPath) {
+    public GameBuilder initPlayers(String playersDirectoryPath) {
         Scanner scanner = new Scanner(System.in);
 
         int playerCount = 3; // TODO: leerlo desde el input del usuario
@@ -76,5 +76,7 @@ public class GameBuilder {
             var playerName = scanner.nextLine();
             Assert.validName(playerName, "Nombre del jugador " + (i + 1) + " invalido.");
         }
+
+        return this;
     }
 }
