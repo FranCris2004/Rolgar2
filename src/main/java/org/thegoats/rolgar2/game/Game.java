@@ -15,6 +15,11 @@ public final class Game {
         this.logger = logger;
         this.config = config;
         this.gameCharacters = gameCharacters;
+
+        logger.logDebug("Game constructor:");
+        logger.logDebug("logger: " + logger);
+        logger.logDebug("config: " + config);
+        logger.logDebug("gameCharacters: " + gameCharacters);
     }
 
     /**
@@ -26,10 +31,9 @@ public final class Game {
      */
     public void run()
     {
-        logger.logDebug("Game run");
+        logger.logDebug("Game run:");
 
         while (hasNextTurn()) {
-            logger.logDebug("Game loop");
             nextTurn();
         }
     }
