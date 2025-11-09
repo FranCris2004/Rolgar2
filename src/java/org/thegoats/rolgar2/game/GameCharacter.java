@@ -1,0 +1,10 @@
+package org.thegoats.rolgar2.game;
+
+import org.thegoats.rolgar2.character.CharacterData;
+import org.thegoats.rolgar2.world.Position;
+
+public class GameCharacter {
+    public CharacterData characterData;
+    public CharacterController characterController;
+    public Position position;
+}
