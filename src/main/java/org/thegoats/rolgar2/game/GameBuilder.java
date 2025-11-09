@@ -5,18 +5,19 @@ import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.Logger;
 import org.thegoats.rolgar2.util.Options;
 
+import java.util.Scanner;
 import java.util.Set;
 
 public class GameBuilder {
     private Logger logger;
-    private Set<DifficultyConfig> difficulties;
-    private Set<MapConfig> maps;
+    private DifficultyConfig difficultyConfig;
+    private MapConfig mapConfig;
     private Set<GameCharacter> characters;
 
     public GameBuilder() {}
 
     public Game build() {
-        return new Game(logger, new GameConfig(selectDifficulty(), selectMap()), characters);
+        return new Game(logger, new GameConfig(difficultyConfig, mapConfig), characters);
     }
 
     public GameBuilder setLogger(Logger logger) {
@@ -25,17 +26,9 @@ public class GameBuilder {
         return this;
     }
 
-    public GameBuilder loadDifficulties(String difficultiesDirectoryPath) {
-        difficulties = DifficultyLoader.loadDifficulties(difficultiesDirectoryPath);
-        return this;
-    }
+    private GameBuilder selectDifficulty(String difficultiesDirectoryPath) {
+        var difficulties = DifficultyLoader.loadDifficulties(difficultiesDirectoryPath);
 
-    public GameBuilder loadMaps(String mapsDirectoryPath) {
-        maps = MapLoader.loadMaps(mapsDirectoryPath);
-        return this;
-    }
-
-    private DifficultyConfig selectDifficulty() {
         String difficultyName = new Options(
                 "Seleccione la dificultad",
                 (String[])difficulties.stream().map(DifficultyConfig::name).toArray(),
@@ -45,13 +38,17 @@ public class GameBuilder {
                 .choose()
                 .orElseThrow(() -> new RuntimeException("El usuario no pudo seleccionar una dificultad."));
 
-        return difficulties.stream()
+        difficultyConfig = difficulties.stream()
                 .filter(difficultyConfig -> difficultyConfig.name().equals(difficultyName))
                 .findFirst()
                 .orElseThrow();
+
+        return this;
     }
 
-    private MapConfig selectMap() {
+    private GameBuilder selectMap(String mapsDirectoryPath) {
+        var maps = MapLoader.loadMaps(mapsDirectoryPath);
+
         String mapName = new Options(
                 "Seleccione el mapa",
                 (String[])maps.stream().map(MapConfig::name).toArray(),
@@ -61,9 +58,23 @@ public class GameBuilder {
                 .choose()
                 .orElseThrow(() -> new RuntimeException("El usuario no pudo seleccionar un mapa."));
 
-        return maps.stream()
+        mapConfig = maps.stream()
                 .filter(difficultyConfig -> difficultyConfig.name().equals(mapName))
                 .findFirst()
                 .orElseThrow();
+
+        return this;
+    }
+
+    private GameBuilder initPlayers(String playersDirectoryPath) {
+        Scanner scanner = new Scanner(System.in);
+
+        int playerCount = 3; // TODO: leerlo desde el input del usuario
+
+        for (int i = 0; i < playerCount; i++) {
+            System.out.print("Nombre del jugador " + (i + 1) + ":");
+            var playerName = scanner.nextLine();
+            Assert.validName(playerName, "Nombre del jugador " + (i + 1) + " invalido.");
+        }
     }
 }
