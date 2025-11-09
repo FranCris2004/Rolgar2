@@ -2,11 +2,14 @@ package org.thegoats.rolgar2;
 
 import org.thegoats.rolgar2.game.GameBuilder;
 import org.thegoats.rolgar2.util.ConsoleLogger;
+import org.thegoats.rolgar2.util.LogLevel;
 import org.thegoats.rolgar2.util.Options;
 
 public class Rolgar {
     public static void main(String[] args) {
-        System.out.println("Rolgar 2");
+        var logger = new ConsoleLogger(LogLevel.DEBUG);
+
+        logger.logInfo("Iniciando Rolgar 2.");
 
         var playAgainPrompt = new Options(
                 "Jugar de nuevo?",
@@ -16,11 +19,13 @@ public class Rolgar {
                 false
                 );
 
+        logger.logDebug("playAgainPrompt: " + playAgainPrompt);
+
         boolean playAgain = true;
         while (playAgain) {
             GameBuilder.createBuilder()
                     // configura el juego
-                    .setLogger(new ConsoleLogger())
+                    .setLogger(logger)
                     .selectDifficulty("./assets/difficulties/")
                     .selectMap("./assets/maps/")
                     .initPlayers()
