@@ -5,6 +5,8 @@ import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.Logger;
 import org.thegoats.rolgar2.util.Options;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -31,7 +33,12 @@ public class GameBuilder {
     }
 
     public GameBuilder selectDifficulty(String difficultiesDirectoryPath) {
-        var difficulties = DifficultyLoader.loadDifficulties(difficultiesDirectoryPath);
+        Set<DifficultyConfig> difficulties;
+        try {
+            difficulties = DifficultyLoader.loadDifficulties(Path.of(difficultiesDirectoryPath));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         String difficultyName = new Options(
                 "Seleccione la dificultad",
