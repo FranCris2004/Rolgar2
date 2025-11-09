@@ -1,4 +1,4 @@
-package org.thegoats.rolgar2.rolgar;
+package org.thegoats.rolgar2.game;
 
 public record DifficultyData(String name) {
 
