@@ -17,6 +17,12 @@ import java.util.stream.Stream;
 public class World implements Iterable<WorldCell> {
     private final Board3d<WorldCell> board;
 
+    /**
+     * Crea un mundo de Rows.ColumnsxLayers
+     * @param rows filas del tablero, mayor a cero
+     * @param columns columnas del tablero, mayor a cero
+     * @param layers capas del tablero, mayor a cero
+     */
     public World(int rows, int columns, int layers) {
         board = new Board3d<>(rows, columns, layers, WorldCell::new);
         initWorldCells();
@@ -83,7 +89,13 @@ public class World implements Iterable<WorldCell> {
         return board.get(position);
     }
 
+    /**
+     * Obtiene una celda aleatoria vacia en la que se pueda caminar, es decir, que no contenga objetos
+     * @param random generador aleatorio de valores
+     * @return una celda vacia en la que se pueda caminar
+     */
     public WorldCell getRandomEmptyWalkableCell(Random random) {
+        Assert.notNull(random, "Random no puede ser null");
         List<WorldCell> emptyWalkableCells = new ArrayList<>();
 
         board.forEach(cell -> {
