@@ -7,9 +7,9 @@ import java.util.Set;
 
 public final class Game {
     private int turnCount = 0;
-    public final Logger logger;
-    public final DifficultyData difficulty;
-    public final MapData map;
+    private final Logger logger;
+    private final DifficultyData difficulty;
+    private final MapData map;
     private final Set<GameCharacter> gameCharacters;
 
     /**
@@ -31,7 +31,40 @@ public final class Game {
         this.gameCharacters = gameCharacters;
     }
 
-    /**
+        /**
+         * Construc de copia
+         * @param game
+         *  copia al objeto
+         */
+    public Game(Game game) {
+            Assert.notNull(game, "Game no puede ser null");
+            this.turnCount = game.turnCount;
+            this.logger = game.logger;
+            this.difficulty = game.difficulty;
+            this.map = game.map;
+            this.gameCharacters = game.gameCharacters;
+    }
+
+        /**
+         *
+         * @return devuelve la dificultad
+         */
+    public DifficultyData getDifficulty() {
+            return difficulty;
+    }
+        /**
+         *
+         * @return devuelve la dificultad
+         */
+    public MapData getMap() {
+            return map;
+    }
+
+    public Logger getLogger() {
+            return logger;
+    }
+
+        /**
      * Inicia la ejecucion del juego, esto implica:
      * Cargar las configuraciones y mapas
      * Realizar las impresiones de inicio de juego
@@ -65,7 +98,7 @@ public final class Game {
     {
         logger.logDebug("Turn " + ++turnCount);
         for (GameCharacter gameCharacter : gameCharacters) {
-            gameCharacter.turnManager.doTurn();
+            gameCharacter.getTurnManager().doTurn();
         }
     }
 }

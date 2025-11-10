@@ -17,7 +17,6 @@ public class Player {
     public Player(String name) {
         setName(name);
     }
-
     /**
      * @return nombre del jugador
      */

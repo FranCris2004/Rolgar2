@@ -9,10 +9,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 public final class GameCharacter {
-    public final Game game;
-    public final Player player;
-    public final CharacterData characterData;
-    public final GameCharacterTurnManager turnManager;
+    private final Game game;
+    private final Player player;
+    private final CharacterData characterData;
+    private final GameCharacterTurnManager turnManager;
     private WorldCell worldCell;
 
     public GameCharacter(Game game, Player player, CharacterData characterData, WorldCell initialWorldCell, Class<? extends GameCharacterTurnManager> gameCharacterTurnManagerClass) {
@@ -30,6 +30,19 @@ public final class GameCharacter {
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Game getGame() {
+            return game;
+    }
+    public Player getPlayer() {
+            return player;
+    }
+    public CharacterData getCharacterData() {
+            return characterData;
+    }
+    public GameCharacterTurnManager getTurnManager() {
+            return turnManager;
     }
 
     public void setWorldCell(WorldCell worldCell) {

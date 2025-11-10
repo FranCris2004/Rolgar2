@@ -40,7 +40,7 @@ public class CharacterData {
      * @param strength Debe ser mayor o 0, daño del personaje
      * @param deckSize Debe ser mayor a 0, tamaño maximo que puede tomar el inventario (mazo de cartas)
      * @param moves Debe ser mayor a cero
-     * @param incomingDamageFactor
+     * @param incomingDamageFactor debe ser mayor a cero
      */
     public CharacterData(String name, int maxHealth, int strength, int deckSize, int moves, double incomingDamageFactor) {
         setName(name);

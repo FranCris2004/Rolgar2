@@ -28,6 +28,7 @@ public class GameBuilder {
     public GameBuilder setLogger(Logger logger) {
         Assert.notNull(logger, "El logger no puede ser nulo.");
         this.logger = logger;
+        return this;
     }
 
     public GameBuilder loadDifficulties(String difficultiesDirectoryPath) {
