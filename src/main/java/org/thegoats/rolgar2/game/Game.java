@@ -1,5 +1,6 @@
-package org.thegoats.rolgar2.rolgar;
+package org.thegoats.rolgar2.game;
 
+import org.thegoats.rolgar2.game.config.GameConfig;
 import org.thegoats.rolgar2.util.Logger;
 
 import java.util.Set;
@@ -7,15 +8,18 @@ import java.util.Set;
 public final class Game {
     private int turnCount = 0;
     public final Logger logger;
-    public final DifficultyData difficulty;
-    public final MapData map;
+    public final GameConfig config;
     private final Set<GameCharacter> gameCharacters;
 
-    public Game(Logger logger, DifficultyData difficulty, MapData map, Set<GameCharacter> gameCharacters) {
+    public Game(Logger logger, GameConfig config, Set<GameCharacter> gameCharacters) {
         this.logger = logger;
-        this.difficulty = difficulty;
-        this.map = map;
+        this.config = config;
         this.gameCharacters = gameCharacters;
+
+        logger.logDebug("Game constructor:");
+        logger.logDebug("logger: " + logger);
+        logger.logDebug("config: " + config);
+        logger.logDebug("gameCharacters: " + gameCharacters);
     }
 
     /**
@@ -27,10 +31,9 @@ public final class Game {
      */
     public void run()
     {
-        logger.logDebug("Game run");
+        logger.logDebug("Game run:");
 
         while (hasNextTurn()) {
-            logger.logDebug("Game loop");
             nextTurn();
         }
     }
