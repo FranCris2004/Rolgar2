@@ -1,7 +1,6 @@
 package org.thegoats.rolgar2.world;
 
 import org.thegoats.rolgar2.card.Card;
-import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.game.GameCharacter;
 import org.thegoats.rolgar2.util.Assert;
 
