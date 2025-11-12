@@ -1,18 +1,23 @@
 package org.thegoats.rolgar2.world;
 
+import org.thegoats.rolgar2.card.Card;
 import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.util.Assert;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public class WorldCell {
     //
     // Atributos privados
     //
 
-    private Object content;
+    private Floor floor;
+    private Wall wall;
+    private CharacterData character;
+    private Card card;
+
     private final Position position;
     private List<WorldCell> neighbors = null;
 
@@ -22,19 +27,6 @@ public class WorldCell {
 
     public WorldCell(Position position) {
         Assert.notNull(position, "'position' debe ser no nulo.");
-        setNull();
-        this.position = position;
-    }
-    
-    public WorldCell(Position position, CharacterData character) {
-        Assert.notNull(position, "'position' debe ser no nulo.");
-        set(character);
-        this.position = position;
-    }
-
-    public WorldCell(Position position, Block block) {
-        Assert.notNull(position, "'position' debe ser no nulo.");
-        set(block);
         this.position = position;
     }
 
@@ -56,24 +48,20 @@ public class WorldCell {
     // Getters
     //
 
-    public Object get() {
-        return content;
+    public Optional<Floor> getFloor() {
+        return Optional.ofNullable(floor);
     }
-    
-    public CharacterData getCharacter() {
-        if (!hasCharacter()) {
-            throw new IllegalStateException("No hay un Character que obtener en la celda.");
-        }
 
-        return ((CharacterData)content);
+    public Optional<Wall> getWall() {
+        return Optional.ofNullable(wall);
     }
-    
-    public Block getBlock() {
-        if (!hasBlock()) {
-            throw new IllegalArgumentException("No hay un Block que obtener en la celda.");
-        }
 
-        return ((Block)content);
+    public Optional<CharacterData> getCharacter() {
+        return Optional.ofNullable(character);
+    }
+
+    public Optional<Card> getCard() {
+        return Optional.ofNullable(card);
     }
 
     public Position getPosition() {
@@ -84,52 +72,53 @@ public class WorldCell {
         return List.copyOf(neighbors);
     }
 
-    public Iterator<WorldCell> getNeighborsIterator() {
-        return neighbors.iterator();
-    }
-
-    public WorldCell getFloor() {
-        return neighbors.stream()
-                .filter(WorldCell::hasBlock)
-                .filter((neighbor) ->
-                        this.getPosition().getRow() == neighbor.getPosition().getRow() &&
-                        this.getPosition().getColumn() == neighbor.getPosition().getColumn() &&
-                        this.getPosition().getLayer() == neighbor.getPosition().getLayer() + 1
-                ).findFirst().orElse(null);
-    }
-
     //
     // Setters
     //
-    
-    public void setNull() {
-        this.content = null;
-    }
-    
-    public void set(CharacterData characterData) {
-        this.content = characterData;
-    }
-    
-    public void set(Block block) {
-        this.content = block;
+
+    public void clear() {
+        floor = null;
+        wall = null;
+        character = null;
+        card = null;
     }
 
-    //
-    // Validaciones de estado
-    //
-
-    public boolean hasNull() {
-        return content == null;
+    public void setFloor(Floor floor) {
+        this.floor = floor;
     }
 
-    public boolean hasCharacter()
-    {
-        return !hasNull() && content instanceof CharacterData;
+    public void setWall(Wall wall) {
+        if (wall == null) {
+            this.wall = null;
+        } else {
+            if (character != null) {
+                throw new IllegalStateException("La celda contiene un personaje actualmente");
+            }
+            if (card != null) {
+                throw new IllegalStateException("La celda contiene una carta actualmente");
+            }
+
+            this.wall = wall;
+        }
     }
 
-    public boolean hasBlock()
-    {
-        return !hasNull() && content instanceof Block;
+    public void setCharacter(CharacterData character) {
+        if (character == null) {
+            this.character = null;
+        } else {
+            if (wall != null) {
+                throw new IllegalStateException("La celda contiene un muro actualmente");
+            }
+            if (card != null) {
+                throw new IllegalStateException("La celda contiene una carta actualmente");
+            }
+
+            this.character = character;
+        }
+    }
+
+    public void setCard(Card card) {
+        this.card = card;
     }
 
     //
@@ -141,8 +130,8 @@ public class WorldCell {
         // ADVERTENCIA: No imprimir los vecinos, ya que se generaria una impresion recursiva,
         // cada vecino imprimira sus vecinos, en donde también entra este y asi sucesivamente
         return String.format(
-                "WorldCell[position=%s, content=%s]",
-                position, content
+                "WorldCell[position=%s, floor=%s, wall=%s, character=%s, card=%s]",
+                position, floor, wall, character, card
         );
     }
 
