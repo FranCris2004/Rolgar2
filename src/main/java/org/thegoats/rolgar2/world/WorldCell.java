@@ -121,6 +121,18 @@ public class WorldCell {
         this.card = card;
     }
 
+    public boolean hasFloor() {
+        return floor != null;
+    }
+
+    public boolean isOccupied() {
+        return wall != null || character != null || card != null;
+    }
+
+    public boolean isWalkable() {
+        return hasFloor() && !isOccupied() && floor.isWalkable();
+    }
+
     //
     // Implementacion de Object
     //
