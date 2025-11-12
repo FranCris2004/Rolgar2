@@ -14,11 +14,10 @@ public class GameCharacterEnemyTurnManager extends GameCharacterTurnManager {
 
         // busca un personaje de jugador en una celda vecina, si lo encuentra lo ataca
         gameCharacter.getWorldCell().getNeighbors().stream()
-                .filter(cell -> cell.hasCharacter() && cell.getCharacter().isPlayerCharacter())
+                .filter(cell -> cell.getCharacter().isPresent())
                 .findAny()
                 .ifPresent(worldCell -> {
-                    var playerCharacter = worldCell.getCharacter();
-                    gameCharacter.attack(playerCharacter);
+                    gameCharacter.attack(worldCell.getCharacter().get());
                 });
     }
 }
