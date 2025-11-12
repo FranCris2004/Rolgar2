@@ -2,6 +2,7 @@ package org.thegoats.rolgar2.world;
 
 import org.thegoats.rolgar2.card.Card;
 import org.thegoats.rolgar2.character.CharacterData;
+import org.thegoats.rolgar2.game.GameCharacter;
 import org.thegoats.rolgar2.util.Assert;
 
 import java.util.List;
@@ -15,8 +16,8 @@ public class WorldCell {
 
     private Floor floor;
     private Wall wall;
-    private CharacterData character;
     private Card card;
+    private GameCharacter character;
 
     private final Position position;
     private List<WorldCell> neighbors = null;
@@ -56,7 +57,7 @@ public class WorldCell {
         return Optional.ofNullable(wall);
     }
 
-    public Optional<CharacterData> getCharacter() {
+    public Optional<GameCharacter> getCharacter() {
         return Optional.ofNullable(character);
     }
 
@@ -102,7 +103,7 @@ public class WorldCell {
         }
     }
 
-    public void setCharacter(CharacterData character) {
+    public void setCharacter(GameCharacter character) {
         if (character == null) {
             this.character = null;
         } else {
