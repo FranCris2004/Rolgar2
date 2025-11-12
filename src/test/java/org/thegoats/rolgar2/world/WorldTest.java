@@ -8,7 +8,7 @@ public class WorldTest {
         World world = new World(3, 2, 4);
 
         world.forEach(worldCell -> {
-            worldCell.set(new Block(worldCell.hashCode() % 2 == 0));
+            worldCell.setFloor(new Floor(worldCell.hashCode() % 2 == 0));
         });
 
         world.forEach(System.out::println);
