@@ -2,10 +2,7 @@ package org.thegoats.rolgar2.util.io;
 
 import org.thegoats.rolgar2.util.Assert;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -165,6 +162,10 @@ public class Bitmap {
         g.setColor(color);
         g.drawString(text, x, y);
         g.dispose();
+    }
+
+    public void scale(int width, int height) {
+        image = (BufferedImage) image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
     }
 
     public void pasteBitmap(Bitmap other, int x, int y) {
