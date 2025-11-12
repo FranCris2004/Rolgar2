@@ -7,6 +7,7 @@ import org.thegoats.rolgar2.world.WorldCell;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 
 public final class GameCharacter {
     public final Game game;
@@ -43,5 +44,27 @@ public final class GameCharacter {
 
     public boolean isPlayerCharacter() {
         return player != null;
+    }
+
+    public void attack(GameCharacter character) {
+        Assert.notNull(character, "character no puede ser nulo");
+
+        game.logger.logInfo(this + " ataca a " + character);
+        character.characterData.takeDamage(this.characterData.getStrength());
+    }
+
+    @Override
+    public String toString() {
+        return characterData.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof GameCharacter && Objects.equals(characterData, ((GameCharacter) o).characterData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(characterData);
     }
 }
