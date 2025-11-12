@@ -113,9 +113,8 @@ public class WorldCell {
                 throw new IllegalStateException("La celda contiene una carta actualmente");
             }
 
-    public boolean hasCharacter()
-    {
-        return !hasNull() && content instanceof CharacterData;
+            this.character = character;
+        }
     }
 
     public void setCard(Card card) {
