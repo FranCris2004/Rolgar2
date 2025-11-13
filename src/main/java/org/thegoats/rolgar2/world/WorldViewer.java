@@ -3,8 +3,10 @@ package org.thegoats.rolgar2.world;
 import org.thegoats.rolgar2.card.Card;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.io.Bitmap;
+import org.thegoats.rolgar2.util.io.BitmapViewer;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.Map;
 
 public class WorldViewer {
@@ -83,6 +85,7 @@ public class WorldViewer {
         }
 
         applyDepthEffect(layerBitmap.getImage(), relativeDepth);
+        BitmapViewer.showBitmaps(Collections.singleton(layerBitmap));
     }
 
     // aplica un efecto de degradado dependiendo de la profundidad relativa de esta capa
