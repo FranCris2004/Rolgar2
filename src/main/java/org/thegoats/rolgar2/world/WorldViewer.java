@@ -1,34 +1,29 @@
 package org.thegoats.rolgar2.world;
 
 import org.thegoats.rolgar2.card.Card;
+import org.thegoats.rolgar2.game.GameCharacter;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.io.Bitmap;
 import org.thegoats.rolgar2.util.io.BitmapViewer;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
 public class WorldViewer {
-    private final Map<Floor, Bitmap> floorBitmapMap;
-    private final Map<Wall, Bitmap> wallBitmapMap;
     private final Map<Card, Bitmap> cardBitmapMap;
-    private final Bitmap CharacterBitmap;
     private final int cellWidth;
     private final int cellHeight;
     private final Color gradientFrom;
     private final Color gradientTo;
 
-    private WorldViewer(Map<Floor, Bitmap> floorBitmapMap,
-                        Map<Wall, Bitmap> wallBitmapMap,
-                        Map<Card, Bitmap> cardBitmapMap,
+    private WorldViewer(Map<Card, Bitmap> cardBitmapMap,
                         Bitmap CharacterBitmap,
                         Color gradientFrom,
                         Color gradientTo,
                         int cellWidth,
                         int cellHeight) {
-        Assert.notNull(floorBitmapMap, "'floorBitmapMap' no puede ser nulo");
-        Assert.notNull(wallBitmapMap, "'wallBitmapMap' no puede ser nulo");
         Assert.notNull(CharacterBitmap, "'cardBitmapMap' no puede ser nulo");
         Assert.notNull(CharacterBitmap, "'CharacterBitmap' no puede ser nulo");
         Assert.notNull(gradientFrom, "'gradientFrom' no puede ser nulo");
@@ -36,10 +31,7 @@ public class WorldViewer {
         Assert.positive(cellWidth, "'cellWidth' debe ser positivo");
         Assert.positive(cellHeight, "'cellHeight' debe ser positivo");
 
-        this.floorBitmapMap = floorBitmapMap;
-        this.wallBitmapMap = wallBitmapMap;
         this.cardBitmapMap = cardBitmapMap;
-        this.CharacterBitmap = CharacterBitmap;
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
         this.gradientFrom = gradientFrom;
@@ -70,17 +62,29 @@ public class WorldViewer {
                 int offsetX = column * cellWidth;
                 int offsetY = row * cellHeight;
 
-                cell.getFloor().ifPresent(worldFloor ->
-                        layerBitmap.pasteBitmap(floorBitmapMap.get(worldFloor), offsetX, offsetY));
+                cell.getFloor().ifPresent(floor ->
+                {
+                    try {
+                        layerBitmap.pasteBitmap(floor.config().getBitmap(), offsetX, offsetY);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
-                cell.getWall().ifPresent(worldWall ->
-                        layerBitmap.pasteBitmap(wallBitmapMap.get(worldWall), offsetX, offsetY));
+                cell.getWall().ifPresent(wall ->
+                {
+                    try {
+                        layerBitmap.pasteBitmap(wall.config().getBitmap(), offsetX, offsetY);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
                 cell.getCard().ifPresent(worldCard ->
                         layerBitmap.pasteBitmap(cardBitmapMap.get(worldCard), offsetX, offsetY));
 
                 cell.getCharacter().ifPresent(worldCharacter ->
-                        layerBitmap.pasteBitmap(CharacterBitmap, offsetX, offsetY));
+                        layerBitmap.pasteBitmap(GameCharacter.getBitmap(), offsetX, offsetY));
             }
         }
 
