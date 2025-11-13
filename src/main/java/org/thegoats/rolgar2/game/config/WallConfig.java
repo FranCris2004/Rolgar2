@@ -1,8 +1,9 @@
 package org.thegoats.rolgar2.game.config;
 
 import org.thegoats.rolgar2.util.Assert;
+import org.thegoats.rolgar2.util.io.Bitmap;
 
-import java.io.File;
+import java.io.IOException;
 
 public record WallConfig(String name, String spritePath, Boolean isClimbable) {
     public WallConfig {
@@ -15,7 +16,7 @@ public record WallConfig(String name, String spritePath, Boolean isClimbable) {
         }
     }
 
-    public File getSpriteFile() {
-        return new File(spritePath);
+    public Bitmap getBitmap() throws IOException {
+        return Bitmap.loadFromFile(spritePath);
     }
 }
