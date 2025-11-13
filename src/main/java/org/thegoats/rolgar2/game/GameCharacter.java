@@ -3,8 +3,10 @@ package org.thegoats.rolgar2.game;
 import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.player.Player;
 import org.thegoats.rolgar2.util.Assert;
+import org.thegoats.rolgar2.util.io.Bitmap;
 import org.thegoats.rolgar2.world.WorldCell;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
@@ -15,6 +17,7 @@ public final class GameCharacter {
     public final CharacterData characterData;
     public final GameCharacterTurnManager turnManager;
     private WorldCell worldCell;
+    private static Bitmap bitmap;
 
     public GameCharacter(Game game, Player player, CharacterData characterData, WorldCell initialWorldCell, Class<? extends GameCharacterTurnManager> gameCharacterTurnManagerClass) {
         Assert.notNull(game, "game no puede ser nulo");
@@ -51,6 +54,14 @@ public final class GameCharacter {
 
         game.logger.logInfo(this + " ataca a " + character);
         character.characterData.takeDamage(this.characterData.getStrength());
+    }
+
+    public static Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public static void loadBitmapFromFile(String path) throws IOException {
+        bitmap = Bitmap.loadFromFile(path);
     }
 
     @Override
