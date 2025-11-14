@@ -16,6 +16,10 @@ public class Board3dLinearIterator<T> implements Iterator<T> {
     private Iterator<List<T>> columnIterator;
     private Iterator<T> rowIterator;
 
+    /**
+     * Construye un iterador del tablero
+     * @param board no null, tablero a iterar
+     */
     public Board3dLinearIterator(List<List<List<T>>> board) {
         Assert.notNull(board, "board debe ser no nulo");
         layerIterator = board.iterator();
@@ -36,6 +40,10 @@ public class Board3dLinearIterator<T> implements Iterator<T> {
         rowIterator = columnIterator.next().iterator();
     }
 
+    /**
+     * Devuelve true si sigue al menos un elemento, caso contrario devuelve false.
+     * @return false si ya no hay mas elementos en el tablero
+     */
     @Override
     public boolean hasNext() {
         if (!rowIterator.hasNext()) { // si no hay otro elemento en la fila
@@ -51,6 +59,9 @@ public class Board3dLinearIterator<T> implements Iterator<T> {
         return rowIterator.hasNext();
     }
 
+    /**
+     * @return el siguiente elemento que encuentre el iterador
+     */
     @Override
     public T next() {
         if (!hasNext()) {
