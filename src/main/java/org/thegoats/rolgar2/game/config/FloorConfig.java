@@ -1,8 +1,10 @@
 package org.thegoats.rolgar2.game.config;
 
 import org.thegoats.rolgar2.util.Assert;
+import org.thegoats.rolgar2.util.io.Bitmap;
+import org.thegoats.rolgar2.world.Floor;
 
-import java.io.File;
+import java.io.IOException;
 
 public record FloorConfig(String name, String spritePath, Boolean isWalkable) {
     public FloorConfig {
@@ -15,7 +17,11 @@ public record FloorConfig(String name, String spritePath, Boolean isWalkable) {
         }
     }
 
-    public File getSpriteFile() {
-        return new File(spritePath);
+    public Bitmap getBitmap() throws IOException {
+        return Bitmap.loadFromFile(spritePath);
+    }
+
+    public Floor getFloor() {
+        return new Floor(this);
     }
 }
