@@ -299,8 +299,8 @@ public class CharacterData {
      */
     @Override
     public String toString() {
-        return String.format("CharacterData[name=%s, health=%d, maxHealth=%d, strength=%d, visible=%s, isFreezed=%s, incomingDamageFactor=%.2f, moves=%d, effects=%s, deck=%s]",
-                name, health, maxHealth, strength, visible, isFreezed, incomingDamageFactor, moves, effects.toString(), deck.toString()
+        return String.format("CharacterData[name=%s, health=%d, maxHealth=%d, strength=%d, visible=%s, isFreezed=%s, incomingDamageFactor=%.2f, moves=%d, deck=%s]",
+                name, health, maxHealth, strength, visible, isFreezed, incomingDamageFactor, moves, deck.toString()
         );
     }
 
