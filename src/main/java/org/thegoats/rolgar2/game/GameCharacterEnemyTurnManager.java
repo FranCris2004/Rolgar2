@@ -1,5 +1,6 @@
 package org.thegoats.rolgar2.game;
 
+import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.util.Assert;
 
 public class GameCharacterEnemyTurnManager extends GameCharacterTurnManager {
@@ -14,7 +15,7 @@ public class GameCharacterEnemyTurnManager extends GameCharacterTurnManager {
 
         // busca un personaje de jugador en una celda vecina, si lo encuentra lo ataca
         gameCharacter.getWorldCell().getNeighbors().stream()
-                .filter(cell -> cell.getCharacter().isPresent())
+                .filter(cell -> cell.getCharacter().isPresent() && cell.getCharacter().get().isPlayerCharacter())
                 .findAny()
                 .ifPresent(worldCell -> {
                     gameCharacter.attack(worldCell.getCharacter().get());
