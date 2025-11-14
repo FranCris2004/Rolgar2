@@ -2,8 +2,6 @@ package org.thegoats.rolgar2.world;
 
 import org.thegoats.rolgar2.card.Card;
 import org.thegoats.rolgar2.game.GameCharacter;
-import org.thegoats.rolgar2.card.Card;
-import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.util.Assert;
 
 import java.util.List;
@@ -58,18 +56,30 @@ public class WorldCell {
     // Getters
     //
 
+    /**
+     * @return floor si es distinto de null, Options.EMPTY si floor es null
+     */
     public Optional<Floor> getFloor() {
         return Optional.ofNullable(floor);
     }
 
+    /**
+     * @return wall si es distinto de null, Options.EMPTY si wall es null
+     */
     public Optional<Wall> getWall() {
         return Optional.ofNullable(wall);
     }
 
+    /**
+     * @return GameCharacter si character es distinto de null, Options.EMPTY si character es null
+     */
     public Optional<GameCharacter> getCharacter() {
         return Optional.ofNullable(character);
     }
 
+    /**
+     * @return Card si card es distinto de null, Options.EMPTY si card es null
+     */
     public Optional<Card> getCard() {
         return Optional.ofNullable(card);
     }
@@ -94,6 +104,9 @@ public class WorldCell {
     // Setters
     //
 
+    /**
+     * Vacía la celda totalmente
+     */
     public void clear() {
         floor = null;
         wall = null;
@@ -101,10 +114,17 @@ public class WorldCell {
         card = null;
     }
 
+    /**
+     * @param floor se permite que sea null. No se hace ninguna validacion porque puede haber piso y otra cosa
+     * simultáneamente
+     */
     public void setFloor(Floor floor) {
         this.floor = floor;
     }
 
+    /**
+     * @param wall puede ser null. Lanza una excepcion si ya habia un character o card
+     */
     public void setWall(Wall wall) {
         if (wall == null) {
             this.wall = null;
@@ -120,6 +140,9 @@ public class WorldCell {
         }
     }
 
+    /**
+     * @param character null o character. Lanza una excepcion si ya habia una carta o un muro en la celda
+     */
     public void setCharacter(GameCharacter character) {
         if (character == null) {
             this.character = null;
@@ -135,18 +158,61 @@ public class WorldCell {
         }
     }
 
+    /**
+     * @param card null o card. Lanza una excepcion si ya habia un personaje o un muro en la celda.
+     */
     public void setCard(Card card) {
-        this.card = card;
+        if (card == null) {
+            this.card = null;
+        } else {
+            if (wall != null) {
+                throw new IllegalStateException("La celda contiene un muro actualmente");
+            }
+            if (character != null) {
+                throw new IllegalStateException("La celda contiene un personaje actualmente");
+            }
+            this.card = card;
+        }
     }
 
+    /**
+     * @return true si tiene suelo
+     */
     public boolean hasFloor() {
         return floor != null;
     }
 
+    /**
+     * @return true si contiene algun cha
+     */
     public boolean isOccupied() {
-        return wall != null || character != null || card != null;
+        return hasWall() || hasCharacter() || hasCard();
     }
 
+    /**
+     * @return true si hay una carta
+     */
+    public boolean hasCard(){
+        return card != null;
+    }
+
+    /**
+     * @return true si hay un muro
+     */
+    public boolean hasWall(){
+        return wall != null;
+    }
+
+    /**
+     * @return true si hay un character
+     */
+    public boolean hasCharacter(){
+        return character != null;
+    }
+
+    /**
+     * @return true si es caminable
+     */
     public boolean isWalkable() {
         return hasFloor() && !isOccupied() && floor.isWalkable();
     }
