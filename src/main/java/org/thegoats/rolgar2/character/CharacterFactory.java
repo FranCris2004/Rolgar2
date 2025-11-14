@@ -14,7 +14,14 @@ public class CharacterFactory {
     private final Random random;
     public final CharacterConfig config;
 
+    /**
+     *
+     * @param random no null, generador aleatorio de valores
+     * @param config no null, configuracion de Character
+     */
     public CharacterFactory(Random random, CharacterConfig config) {
+        Assert.notNull(random, "Random no debe ser null");
+        Assert.notNull(config, "Config no debe ser null");
         this.random = random;
         this.config = config;
     }
@@ -22,10 +29,12 @@ public class CharacterFactory {
     /**
      *
      * @param name entre 3 y 20 caracteres alfanumericos, y '.-_'
-     * @return CharacterData con stats ya predefinidos por el CharacterFactory y name recibido por parametro
+     * @return CharacterData con stats predefinidos en config, y otros con valores aleatorios de floor y roof definidos
+     * en config. Name no null recibido por parametro
      */
     public CharacterData create(String name)
     {
+        Assert.validName(name, "Name debe tener entre 3 y 20 caracteres alfanumericos, incluyendo ' .-_ ' ");
         return new CharacterData(
                 name,
                 random.nextInt(config.healthFloor(), config.healthRoof()),
