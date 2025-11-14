@@ -4,24 +4,29 @@ import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.player.Player;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.world.Position;
+import org.thegoats.rolgar2.world.World;
 import org.thegoats.rolgar2.world.WorldCell;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Objects;
 
 public final class GameCharacter {
-    public final Game game;
-    public final Player player;
-    public final CharacterData characterData;
-    public final GameCharacterTurnManager turnManager;
+    private final Game game;
+    private final World world;
+    private final Player player;
+    private final CharacterData characterData;
+    private final GameCharacterTurnManager turnManager;
     private WorldCell worldCell;
 
-    public GameCharacter(Game game, Player player, CharacterData characterData, WorldCell initialWorldCell, Class<? extends GameCharacterTurnManager> gameCharacterTurnManagerClass) {
+    public GameCharacter(Game game, World world, Player player, CharacterData characterData, WorldCell initialWorldCell, Class<? extends GameCharacterTurnManager> gameCharacterTurnManagerClass) {
         Assert.notNull(game, "game no puede ser nulo");
         Assert.notNull(characterData, "characterData no puede ser nulo");
         Assert.notNull(player, "player no puede ser nulo");
+        Assert.notNull(world, "world no puede ser nulo");
         setWorldCell(initialWorldCell);
+        this.world = world;
         this.game = game;
         this.player = player;
         this.characterData = characterData;
@@ -37,6 +42,18 @@ public final class GameCharacter {
     public void setWorldCell(WorldCell worldCell) {
         Assert.notNull(worldCell, "worldCell no puede ser nulo.");
         this.worldCell = worldCell;
+    }
+
+    public CharacterData getCharacterData(){
+        return characterData;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Game getGame(){
+        return game;
     }
 
     public WorldCell getWorldCell() {
@@ -63,6 +80,7 @@ public final class GameCharacter {
         for(WorldCell cell: this.worldCell.getNeighbors()){
             if(cell.getPosition() == position){
                 this.worldCell.setCharacter(null);
+                this.setWorldCell(cell);
                 cell.setCharacter(this);
                 return;
             }
