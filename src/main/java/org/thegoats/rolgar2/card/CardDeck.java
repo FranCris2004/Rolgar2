@@ -77,4 +77,11 @@ public class CardDeck {
         return maxSize;
     }
 
+    /**
+     * @return true si el mazo ya esta lleno
+     */
+    public boolean isFull(){
+        return maxSize == cards.size();
+    }
+
 }
