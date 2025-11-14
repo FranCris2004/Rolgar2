@@ -1,0 +1,21 @@
+{
+  "name": "Facil",
+  "playerConfig": {
+    "healthFloor": 100,
+    "healthRoof": 120,
+    "strengthFloor": 50,
+    "strengthRoof": 100,
+    "inventorySize": 5,
+    "moves": 3,
+    "incomingDamageFactor": 1.0
+  },
+  "enemyConfig": {
+    "healthFloor": 100,
+    "healthRoof": 120,
+    "strengthFloor": 40,
+    "strengthRoof": 85,
+    "inventorySize": 5,
+    "moves": 3,
+    "incomingDamageFactor": 1.0
+  }
+}
