@@ -5,8 +5,6 @@ import org.thegoats.rolgar2.util.Assert;
 
 import java.util.Random;
 
-// TODO: comentar
-
 /**
  *  Fábrica de Character
  */

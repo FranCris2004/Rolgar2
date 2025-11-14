@@ -9,6 +9,11 @@ public abstract class StatusEffect {
     private int remainingTurns;
     private CharacterData character = null;
 
+    /**
+     * Crea un efecto de estado y se lo asocia a {@code character}, con {@code remainingTurns} turnos
+     * @param character no null, personaje al que aplicarle el efecto de estado
+     * @param remainingTurns mayor a cero, duracion que tendra el efecto
+     */
     public StatusEffect(CharacterData character, int remainingTurns) {
         setCharacter(character);
         setRemainingTurns(remainingTurns);
