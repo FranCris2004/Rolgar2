@@ -22,6 +22,11 @@ public record FloorConfig(String name, String spritePath, Boolean isWalkable) {
     }
 
     public Floor getFloor() {
-        return new Floor(this);
+        return new Floor(name, isWalkable);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof FloorConfig && ((FloorConfig) o).name.equals(name);
     }
 }

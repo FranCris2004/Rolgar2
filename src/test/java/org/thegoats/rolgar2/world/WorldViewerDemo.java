@@ -62,15 +62,14 @@ public class WorldViewerDemo {
         iceFloorBmp.fill(Color.CYAN);
 
         // === Mapeos requeridos por WorldViewer ===
-        Map<Floor, Bitmap> floorMap = new HashMap<>();
-        floorMap.put(grassFloor, grassFloorBmp);
-        floorMap.put(rockFloor, rockFloorBmp);
-        floorMap.put(iceFloor, iceFloorBmp);
+        Map<String, Bitmap> floorMap = new HashMap<>();
+        floorMap.put(grassFloor.name(), grassFloorBmp);
+        floorMap.put(rockFloor.name(), rockFloorBmp);
+        floorMap.put(iceFloor.name(), iceFloorBmp);
 
-        Map<Wall, Bitmap> wallMap = new HashMap<>();
+        Map<String, Bitmap> wallMap = new HashMap<>();
 
-        Map<Card, Bitmap> cardMap = new HashMap<>();
-        // si no usás cards, dejar vacío está bien
+        Map<String, Bitmap> cardMap = new HashMap<>();
 
         // === Crear viewer con parámetros reales ===
         WorldViewer viewer = new WorldViewer(
@@ -85,9 +84,9 @@ public class WorldViewerDemo {
                 32
         );
 
-        for (int layer = 5; layer < world.getLayerCount(); layer++) {
-            System.out.println("Mostrando las capas 0-" + layer);
-            viewer.showLayers(world, 5, layer);
+        for (int layer = -5; layer < world.getLayerCount()+6; layer++) {
+            System.out.println("Mostrando las capas " + (layer-5) + "-" + layer);
+            viewer.showLayers(world, Math.max(0, layer-5), Math.min(layer+5, world.getLayerCount()-1));
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

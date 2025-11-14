@@ -22,6 +22,11 @@ public record WallConfig(String name, String spritePath, Boolean isClimbable) {
     }
 
     public Wall getWall() {
-        return new Wall(this);
+        return new Wall(name, isClimbable);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof WallConfig && ((WallConfig) o).name().equals(name);
     }
 }
