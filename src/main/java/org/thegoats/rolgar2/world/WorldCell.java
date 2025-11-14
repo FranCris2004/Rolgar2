@@ -168,9 +168,7 @@ public class WorldCell {
     public void setCharacter(CharacterData characterData) {
         Assert.notNull(characterData, "characterData no debe ser null");
         WorldCell floor = this.getFloor();
-        Assert.notNull(floor, "El suelo debe tener una celda");
-        Assert.isTrue(floor.hasBlock(), "La celda debe tener un bloque");
-        Assert.isTrue(floor.getBlock().isWalkable(), "la celda debe ser caminable para ubicar el personaje");
+        Assert.isTrue(hasWalkableFloor(), "la celda debajo deberia contener un bloque caminable");
         this.content = characterData;
     }
 
@@ -187,6 +185,7 @@ public class WorldCell {
      */
     public void setCard(Card card){
         Assert.notNull(card, "card no puede ser null");
+        Assert.isTrue(hasWalkableFloor(), "la celda debajo deberia contener un bloque caminable");
         this.content = card;
     }
 
