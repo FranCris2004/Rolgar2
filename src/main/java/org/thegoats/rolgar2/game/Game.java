@@ -1,6 +1,6 @@
-package org.thegoats.rolgar2.rolgar;
+package org.thegoats.rolgar2.game;
 
-import org.thegoats.rolgar2.util.Assert;
+import org.thegoats.rolgar2.game.config.GameConfig;
 import org.thegoats.rolgar2.util.Logger;
 
 import java.util.Set;
@@ -8,27 +8,18 @@ import java.util.Set;
 public final class Game {
     private int turnCount = 0;
     public final Logger logger;
-    public final DifficultyData difficulty;
-    public final MapData map;
+    public final GameConfig config;
     private final Set<GameCharacter> gameCharacters;
 
-    /**
-     * Crea Game dado un logger para impresiones, dificultad, mapa y personajes.
-     * @param logger interfaz que representa un sistema de Logs
-     * @param difficulty configuracion general de la dificultad
-     * @param map informacion general del mapa
-     * @param gameCharacters conjunto de GameCharacters
-     */
-    public Game(Logger logger, DifficultyData difficulty, MapData map, Set<GameCharacter> gameCharacters) {
-        Assert.notNull(logger, "Logger no puede ser null");
-        Assert.notNull(difficulty, "Difficulty no puede ser null");
-        Assert.notNull(map, "Map no puede ser null");
-        Assert.notNull(gameCharacters, "GameCharacters no puede ser null");
-        Assert.isTrue(gameCharacters.size() >= 2, "No se puede jugar si no hay al menos dos jugadores");
+    public Game(Logger logger, GameConfig config, Set<GameCharacter> gameCharacters) {
         this.logger = logger;
-        this.difficulty = difficulty;
-        this.map = map;
+        this.config = config;
         this.gameCharacters = gameCharacters;
+
+        logger.logDebug("Game constructor:");
+        logger.logDebug("logger: " + logger);
+        logger.logDebug("config: " + config);
+        logger.logDebug("gameCharacters: " + gameCharacters);
     }
 
     /**
@@ -40,10 +31,9 @@ public final class Game {
      */
     public void run()
     {
-        logger.logDebug("Game run");
+        logger.logDebug("Game run:");
 
         while (hasNextTurn()) {
-            logger.logDebug("Game loop");
             nextTurn();
         }
     }

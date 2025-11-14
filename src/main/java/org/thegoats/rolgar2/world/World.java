@@ -28,24 +28,6 @@ public class World implements Iterable<WorldCell> {
         initWorldCells();
     }
 
-    /**
-     * @param position no nulo, dentro de los limites del mundo
-     * @param character no nulo
-     */
-    public void setCell(Position position, CharacterData character) {
-        Assert.notNull(character, "character debe ser no nulo");
-        board.get(position).set(character);
-    }
-
-    /**
-     * @param position no nulo, dentro de los limites del mundo
-     * @param block no nulo
-     */
-    public void setCell(Position position, Block block) {
-        Assert.notNull(block, "block debe ser no nulo");
-        board.get(position).set(block);
-    }
-
     //
     // Getters simples
     //
@@ -99,8 +81,7 @@ public class World implements Iterable<WorldCell> {
         List<WorldCell> emptyWalkableCells = new ArrayList<>();
 
         board.forEach(cell -> {
-            var floor = cell.getFloor();
-            if (cell.hasNull() && floor.hasBlock() && floor.getBlock().isWalkable) {
+            if (cell.isWalkable()) {
                 emptyWalkableCells.add(cell);
             }
         });

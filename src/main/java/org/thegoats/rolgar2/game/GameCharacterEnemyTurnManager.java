@@ -1,4 +1,4 @@
-package org.thegoats.rolgar2.rolgar;
+package org.thegoats.rolgar2.game;
 
 import org.thegoats.rolgar2.util.Assert;
 
@@ -11,5 +11,13 @@ public class GameCharacterEnemyTurnManager extends GameCharacterTurnManager {
     @Override
     public void doTurn() {
         gameCharacter.game.logger.logDebug("El enemigo " + gameCharacter.characterData.getName() + " realiza su turno.");
+
+        // busca un personaje de jugador en una celda vecina, si lo encuentra lo ataca
+        gameCharacter.getWorldCell().getNeighbors().stream()
+                .filter(cell -> cell.getCharacter().isPresent())
+                .findAny()
+                .ifPresent(worldCell -> {
+                    gameCharacter.attack(worldCell.getCharacter().get());
+                });
     }
 }

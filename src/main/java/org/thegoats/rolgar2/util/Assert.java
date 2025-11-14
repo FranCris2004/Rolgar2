@@ -1,5 +1,9 @@
 package org.thegoats.rolgar2.util;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Assert {
     /**
      * @param o No null
@@ -111,6 +115,12 @@ public class Assert {
      */
     public static void isTrue(boolean condition, String message){
         if(!condition){
+            throw new RuntimeException(message);
+        }
+    }
+
+    public static void fileExists(String path, String message) {
+        if (!Files.exists(Paths.get(path))) {
             throw new RuntimeException(message);
         }
     }
