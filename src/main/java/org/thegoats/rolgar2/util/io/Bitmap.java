@@ -102,7 +102,7 @@ public class Bitmap {
      * @param centerX: pixel entre 1 y ancho (origen)
      * @param centerY: pixel entre 1 y alto (origen)
      * @param radius: mayor a cero
-     * @param color
+     * @param color: no nulo
      */
     public void drawCircle(int centerX, int centerY, int radius, Color color) {
     	Assert.inRange(centerX, 0, getWidth(), "x1");
@@ -164,23 +164,52 @@ public class Bitmap {
         g.dispose();
     }
 
+    /**
+     * Genera una copia redimensionada de la imagen
+     * @param width ancho mayor a cero
+     * @param height alto mayor a cero
+     */
     public void scale(int width, int height) {
+        Assert.positive(width, "ancho debe ser positivo");
+        Assert.positive(height, "alto debe ser positivo");
         image = (BufferedImage) image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
     }
 
+    /**
+     * Pega otro bitmap en this en la posicion (x,y)
+     * @param other no null, otro bitmap
+     * @param x entre 0 y ancho, posicion en el eje horizontal donde pegar el bitmap
+     * @param y entre 0 y alto, posicion en el eje vertical donde pegar el bitmap
+     */
     public void pasteBitmap(Bitmap other, int x, int y) {
+        Assert.notNull(other, "other no puede ser null");
+
         Graphics2D g = image.createGraphics();
         g.drawImage(other.image, x, y, null);
         g.dispose();
     }
 
+    /**
+     * Guarda el bitmap en un archivo
+     * @param path no null, ruta relativa donde guardar el bitmap
+     * @return ruta absoluta donde fue guardado el bitmap
+     * @throws IOException Si hay un error en la escritura del archivo
+     */
     public String saveToFile(String path) throws IOException {
+        Assert.notNull(path, "path no puede ser null");
     	File output = new File(path);
         ImageIO.write(image, "bmp", output);
         return output.getAbsolutePath();
     }
 
+    /**
+     * Carga un bitmap desde la ruta {@code path} y lo devuelve
+     * @param path no null, ruta del archivo a cargar
+     * @return bitmap leído del archivo
+     * @throws IOException si no pudo leer el archivo de ruta {@code path}
+     */
     public static Bitmap loadFromFile(String path) throws IOException {
+        Assert.notNull(path, "la ruta no puede ser null");
         BufferedImage img = ImageIO.read(new File(path));
         Bitmap bmp = new Bitmap(img.getWidth(), img.getHeight());
         bmp.image = img;
@@ -195,7 +224,18 @@ public class Bitmap {
         return (int) (this.height / 2 - y * distanceToCamera / (z + distanceToCamera));
     }
 
+    /**
+     * Dibuja un segmento de color {@code color} y extremos { (x1, y1, z1), (x2, y2, z2) }
+     * @param x1 coordenada x del extremo A
+     * @param y1 coordenada y del extremo A
+     * @param z1 coordenada z del extremo A
+     * @param x2 coordenada x del extremo B
+     * @param y2 coordenada y del extremo B
+     * @param z2 coordenada z del extremo B
+     * @param color no null, color de la linea
+     */
     public void drawLine3D(double x1, double y1, double z1, double x2, double y2, double z2, Color color) {
+        Assert.notNull(color, "color no puede ser null");
         int x1p = projectX(x1, z1);
         int y1p = projectY(y1, z1);
         int x2p = projectX(x2, z2);
@@ -203,7 +243,17 @@ public class Bitmap {
         this.drawLine(x1p, y1p, x2p, y2p, color);
     }
 
+    /**
+     * Dibuja un cubo con una de sus aristas ubicada en { {@code cx}, {@code cy}, {@code cz} }
+     * @param size mayor a cero
+     * @param cx coordenada x de la ubicacion de la arista origen
+     * @param cy coordenada y de la ubicacion de la arista origen
+     * @param cz coordenada z de la ubicacion de la arista origen
+     * @param color no null
+     */
     public void drawCube(double size, double cx, double cy, double cz, Color color) {
+        Assert.notNull(color, "color no puede ser null");
+        Assert.positive(size, "size debe ser mayor a cero");
         double[][] vertices = new double[8][3];
         int i = 0;
         for (int dx = -1; dx <= 1; dx += 2) {
