@@ -38,9 +38,8 @@ public class WorldCell {
      */
     public WorldCell(Position position, CharacterData character) {
         Assert.notNull(position, "'position' debe ser no nulo.");
-        Assert.notNull(character, "character no puede ser null");
-        set(character);
         this.position = position;
+        setCharacter(character);
     }
 
     /**
@@ -50,9 +49,13 @@ public class WorldCell {
      */
     public WorldCell(Position position, Block block) {
         Assert.notNull(position, "'position' debe ser no nulo.");
-        Assert.notNull(block, "block no debe ser null");
-        set(block);
         this.position = position;
+        setBlock(block);
+    }
+
+    public WorldCell(Position position, Card card){
+        Assert.notNull(position, "position no puede ser null");
+        setCard(card);
     }
 
     //
@@ -162,7 +165,7 @@ public class WorldCell {
      *
      * @param characterData no null, personaje a ubicar en la celda
      */
-    public void set(CharacterData characterData) {
+    public void setCharacter(CharacterData characterData) {
         Assert.notNull(characterData, "characterData no debe ser null");
         WorldCell floor = this.getFloor();
         Assert.notNull(floor, "El suelo debe tener una celda");
@@ -174,9 +177,17 @@ public class WorldCell {
     /**
      * @param block no null, bloque a ubicar en la celda
      */
-    public void set(Block block) {
+    public void setBlock(Block block) {
         Assert.notNull(block, "block no debe ser null");
         this.content = block;
+    }
+
+    /**
+     * @param card no null, carta a ubicar en la celda
+     */
+    public void setCard(Card card){
+        Assert.notNull(card, "card no puede ser null");
+        this.content = card;
     }
 
     //
@@ -204,6 +215,16 @@ public class WorldCell {
     public boolean hasBlock()
     {
         return !hasNull() && content instanceof Block;
+    }
+
+    /**
+     * @return true si la celda debajo contiene un bloque caminable
+     */
+    public boolean hasWalkableFloor(){
+        if(getFloor() != null && getFloor().hasBlock()){
+            return getFloor().getBlock().isWalkable();
+        }
+        return false;
     }
 
     //
