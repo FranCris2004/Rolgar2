@@ -56,6 +56,13 @@ public final class GameCharacter {
         return game;
     }
 
+    /**
+     * @return mundo
+     */
+    public World getWorld() {
+        return world;
+    }
+
     public WorldCell getWorldCell() {
         return worldCell;
     }
@@ -102,5 +109,12 @@ public final class GameCharacter {
     @Override
     public int hashCode() {
         return Objects.hash(characterData);
+    }
+
+    /**
+     * @return administrador de turnos del jugador
+     */
+    public GameCharacterTurnManager getTurnManager() {
+        return turnManager;
     }
 }
