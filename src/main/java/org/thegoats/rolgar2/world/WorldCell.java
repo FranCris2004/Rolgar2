@@ -72,6 +72,12 @@ public class WorldCell {
         return List.copyOf(neighbors);
     }
 
+    public Optional<WorldCell> getUpperNeighbor(){
+        return getNeighbors().stream()
+                .filter(neighbor -> neighbor.position.getLayer() == position.getLayer() +1)
+                .findFirst();
+    }
+
     //
     // Setters
     //
@@ -126,11 +132,35 @@ public class WorldCell {
     }
 
     public boolean isOccupied() {
-        return wall != null || character != null || card != null;
+        return wall != null || character != null;
+    }
+
+    public boolean isFree(){
+        return !isOccupied();
     }
 
     public boolean isWalkable() {
-        return hasFloor() && !isOccupied() && floor.isWalkable();
+        return isFree() || hasWalkableFloor() && hasClimbableWall();
+    }
+
+    public boolean hasCard(){
+        return card != null;
+    }
+
+    public boolean hasCharacter(){
+        return character != null;
+    }
+
+    public boolean hasWall(){
+        return wall != null;
+    }
+
+    public boolean hasWalkableFloor(){
+        return hasFloor() && floor.isWalkable();
+    }
+
+    public boolean hasClimbableWall(){
+        return hasWall() && wall.isClimbable();
     }
 
     //
