@@ -107,7 +107,7 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         if(optionalChoice.isPresent()){
             var choice = optionalChoice.get();
             Position oldPosition = gameCharacter.getWorldCell().getPosition();
-            Position newPosition = null;
+            Position newPosition;
             switch (choice) {
                 case "w":
                     newPosition = clampedPosition(oldPosition.getRow(), oldPosition.getColumn() + 1, oldPosition.getLayer());

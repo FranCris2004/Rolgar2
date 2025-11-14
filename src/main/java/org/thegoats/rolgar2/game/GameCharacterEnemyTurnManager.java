@@ -1,6 +1,4 @@
 package org.thegoats.rolgar2.game;
-
-import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.util.Assert;
 
 public class GameCharacterEnemyTurnManager extends GameCharacterTurnManager {
