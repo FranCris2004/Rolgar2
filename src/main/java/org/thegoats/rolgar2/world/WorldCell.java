@@ -55,6 +55,7 @@ public class WorldCell {
 
     public WorldCell(Position position, Card card){
         Assert.notNull(position, "position no puede ser null");
+        this.position = position;
         setCard(card);
     }
 
