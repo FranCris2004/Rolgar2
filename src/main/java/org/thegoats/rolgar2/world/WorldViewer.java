@@ -3,8 +3,10 @@ package org.thegoats.rolgar2.world;
 import org.thegoats.rolgar2.card.Card;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.io.Bitmap;
+import org.thegoats.rolgar2.util.io.BitmapViewer;
 
 import java.awt.*;
+import java.util.Collections;
 import java.util.Map;
 
 public class WorldViewer {
@@ -14,13 +16,15 @@ public class WorldViewer {
     private final Bitmap CharacterBitmap;
     private final int cellWidth;
     private final int cellHeight;
+    private final Color backgroundColor;
     private final Color gradientFrom;
     private final Color gradientTo;
 
-    private WorldViewer(Map<Floor, Bitmap> floorBitmapMap,
+    public WorldViewer(Map<Floor, Bitmap> floorBitmapMap,
                         Map<Wall, Bitmap> wallBitmapMap,
                         Map<Card, Bitmap> cardBitmapMap,
                         Bitmap CharacterBitmap,
+                        Color backgroundColor,
                         Color gradientFrom,
                         Color gradientTo,
                         int cellWidth,
@@ -29,6 +33,7 @@ public class WorldViewer {
         Assert.notNull(wallBitmapMap, "'wallBitmapMap' no puede ser nulo");
         Assert.notNull(CharacterBitmap, "'cardBitmapMap' no puede ser nulo");
         Assert.notNull(CharacterBitmap, "'CharacterBitmap' no puede ser nulo");
+        Assert.notNull(backgroundColor, "'backgroundColor' no puede ser nulo");
         Assert.notNull(gradientFrom, "'gradientFrom' no puede ser nulo");
         Assert.notNull(gradientTo, "'gradientTo' no puede ser nulo");
         Assert.positive(cellWidth, "'cellWidth' debe ser positivo");
@@ -40,6 +45,7 @@ public class WorldViewer {
         this.CharacterBitmap = CharacterBitmap;
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
+        this.backgroundColor = backgroundColor;
         this.gradientFrom = gradientFrom;
         this.gradientTo = gradientTo;
     }
@@ -48,19 +54,32 @@ public class WorldViewer {
         var max = Math.max(from, to);
         var min = Math.min(from, to);
 
-        // imprime las capas desde abajo hacia arriba
+        Bitmap layersBitmap = new Bitmap(
+                cellWidth * world.getColumnCount(),
+                cellHeight * world.getRowCount()
+        );
+
+        // CORRECCIÓN: dibujar el fondo completo
+        layersBitmap.fill(backgroundColor);
+
+        // pintar capas
         for (var i = min; i <= max; i++) {
-            int relativeDepth = i - min; // va de 0 a max - min
-            showLayer(world, i, relativeDepth);
+            int relativeDepth = i - min;
+            layersBitmap.pasteBitmap(createLayerBitmap(world, i, relativeDepth), 0, 0);
         }
+
+        BitmapViewer.showBitmaps(Collections.singleton(layersBitmap));
     }
 
-    public void showLayer(World world, int layer, int relativeDepth) {
+    private Bitmap createLayerBitmap(World world, int layer, int relativeDepth) {
         Assert.notNull(world, "'world' no puede ser nulo");
         Assert.inRange(layer, 0, world.getLayerCount()-1, "layer debe estar entre 0 y world.getLayerCount()-1");
 
         Bitmap layerBitmap = new Bitmap(cellWidth * world.getColumnCount(), cellHeight * world.getRowCount());
 
+        layerBitmap.fill(new Color(255, 0, 255, 0));
+
+        // dibuja el contenido
         for (int row = 0; row < world.getRowCount(); row++) {
             for (int column = 0; column < world.getColumnCount(); column++) {
                 var cell = world.getCell(row, column, layer);
@@ -82,29 +101,25 @@ public class WorldViewer {
             }
         }
 
+        // aplica el efecto de profundidad
         applyDepthEffect(layerBitmap.getImage(), relativeDepth);
+
+        return layerBitmap;
     }
 
     // aplica un efecto de degradado dependiendo de la profundidad relativa de esta capa
     // con respecto a la capa con la que se empezó a dibujar
     private void applyDepthEffect(Image image, int relativeDepth) {
-        // (obviamente, esto lo hizo chatgpt)
-
-        if (!(image instanceof java.awt.image.BufferedImage bufferedImage)) {
-            return;
-        }
+        if (!(image instanceof java.awt.image.BufferedImage bufferedImage)) return;
 
         int width = bufferedImage.getWidth();
         int height = bufferedImage.getHeight();
 
-        // Crear un nuevo gráfico sobre la imagen existente
         Graphics2D g = bufferedImage.createGraphics();
 
-        // Calcular la opacidad del degradado según la profundidad
-        // Cuanto mayor sea relativeDepth, más fuerte será el efecto
-        float alpha = Math.min(1.0f, Math.max(0.1f, Math.abs(relativeDepth) * 0.15f));
+        float alpha = 0.05f + (relativeDepth * 0.05f);
+        if (alpha > 0.40f) alpha = 0.40f;  // nunca opacar del todo
 
-        // Crear degradado vertical
         GradientPaint gradient = new GradientPaint(
                 0, 0, gradientFrom,
                 0, height, gradientTo
@@ -116,4 +131,5 @@ public class WorldViewer {
 
         g.dispose();
     }
+
 }
