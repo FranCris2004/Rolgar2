@@ -61,6 +61,7 @@ public final class GameCharacter {
     }
 
     public static void loadBitmapFromFile(String path) throws IOException {
+        Assert.notNull(path, "path no puede ser nulo.");
         bitmap = Bitmap.loadFromFile(path);
     }
 
