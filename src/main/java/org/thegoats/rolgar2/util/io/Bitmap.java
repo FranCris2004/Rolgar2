@@ -24,7 +24,15 @@ public class Bitmap {
         Assert.positive(height, "alto");
         this.width = width;
         this.height = height;
-        this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    }
+
+    public void fill(Color color) {
+        for(int x = 0; x < width; x++) {
+            for(int y = 0; y < height; y++) {
+                image.setRGB(x, y, color.getRGB());
+            }
+        }
     }
 
     /**
