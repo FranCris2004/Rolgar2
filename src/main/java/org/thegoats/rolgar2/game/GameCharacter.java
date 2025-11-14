@@ -3,6 +3,7 @@ package org.thegoats.rolgar2.game;
 import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.player.Player;
 import org.thegoats.rolgar2.util.Assert;
+import org.thegoats.rolgar2.world.Position;
 import org.thegoats.rolgar2.world.WorldCell;
 
 import java.lang.reflect.Constructor;
@@ -52,6 +53,23 @@ public final class GameCharacter {
         game.logger.logInfo(this + " ataca a " + character);
         character.characterData.takeDamage(this.characterData.getStrength());
     }
+
+    /**
+     * Dada una position vecina, coloca al personaje en esa celda
+     * @param position no null, posicion de una celda vecina
+     */
+    public void moveCharacter(Position position){
+        Assert.notNull(position, "la nueva position no puede ser null");
+        for(WorldCell cell: this.worldCell.getNeighbors()){
+            if(cell.getPosition() == position){
+                this.worldCell.setCharacter(null);
+                cell.setCharacter(this);
+                return;
+            }
+        }
+    }
+
+    // TODO: TELEPORT CHARACTER URGENTE !!!!!!!!!!
 
     @Override
     public String toString() {
