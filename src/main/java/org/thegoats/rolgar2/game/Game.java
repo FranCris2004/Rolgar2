@@ -2,6 +2,7 @@ package org.thegoats.rolgar2.game;
 
 import org.thegoats.rolgar2.game.config.GameConfig;
 import org.thegoats.rolgar2.util.Logger;
+import org.thegoats.rolgar2.world.World;
 
 import java.util.Set;
 
@@ -10,11 +11,13 @@ public final class Game {
     public final Logger logger;
     public final GameConfig config;
     private final Set<GameCharacter> gameCharacters;
+    private final World world = new World(5, 5, 5);
 
     public Game(Logger logger, GameConfig config, Set<GameCharacter> gameCharacters) {
         this.logger = logger;
         this.config = config;
         this.gameCharacters = gameCharacters;
+        // TODO: construir el mundo segun el config
 
         logger.logDebug("Game constructor:");
         logger.logDebug("logger: " + logger);
@@ -55,7 +58,7 @@ public final class Game {
     {
         logger.logDebug("Turn " + ++turnCount);
         for (GameCharacter gameCharacter : gameCharacters) {
-            gameCharacter.turnManager.doTurn();
+            gameCharacter.getTurnManager().doTurn();
         }
     }
 }
