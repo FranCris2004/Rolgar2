@@ -36,19 +36,35 @@ public final class GameCharacter {
         }
     }
 
+    /**
+     * Cambia la celda en el mapa en la que se encuentra el personaje
+     * @param worldCell no puede ser nulo
+     */
     public void setWorldCell(WorldCell worldCell) {
         Assert.notNull(worldCell, "worldCell no puede ser nulo.");
         this.worldCell = worldCell;
     }
 
+    /**
+     * @return Devuelve la celda en el mapa en la que se encuentra el personaje
+     */
     public WorldCell getWorldCell() {
         return worldCell;
     }
 
+    /**
+     * Determina si el personaje es un jugador
+     * @return Devuelve True si el es un jugador, False en caso contrario
+     */
     public boolean isPlayerCharacter() {
         return player != null;
     }
 
+    /**
+     * Realiza un ataque al personaje enviado por parametro, lo registra en el logger,
+     * y se le aplica daño en funcion de la fuerza del atacante
+     * @param character no puede ser nulo
+     */
     public void attack(GameCharacter character) {
         Assert.notNull(character, "character no puede ser nulo");
 
@@ -56,10 +72,18 @@ public final class GameCharacter {
         character.characterData.takeDamage(this.characterData.getStrength());
     }
 
+    /**
+     * @return Devuelve el bitmap cargado para el personaje
+     */
     public static Bitmap getBitmap() {
         return bitmap;
     }
 
+    /**
+     * Carga un bitmap desde un archivo externo
+     * @param path no puede ser nulo
+     * @throws IOException si ocurre algun error al leer el archivo
+     */
     public static void loadBitmapFromFile(String path) throws IOException {
         Assert.notNull(path, "path no puede ser nulo.");
         bitmap = Bitmap.loadFromFile(path);
