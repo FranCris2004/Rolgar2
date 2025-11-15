@@ -7,6 +7,7 @@ import org.thegoats.rolgar2.world.Position;
 import org.thegoats.rolgar2.world.World;
 import org.thegoats.rolgar2.world.WorldCell;
 
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -19,6 +20,7 @@ public final class GameCharacter {
     private final CharacterData characterData;
     private final GameCharacterTurnManager turnManager;
     private WorldCell worldCell;
+    private static Bitmap bitmap;
 
     public GameCharacter(Game game, World world, Player player, CharacterData characterData, WorldCell initialWorldCell, Class<? extends GameCharacterTurnManager> gameCharacterTurnManagerClass) {
         Assert.notNull(game, "game no puede ser nulo");

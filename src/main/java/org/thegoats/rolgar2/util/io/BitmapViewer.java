@@ -23,7 +23,7 @@ public class BitmapViewer {
     
     /**
      * Genera un visualizador de bitmaps con los bitmaps adjuntos
-     * @param bitmaps
+     * @param bitmaps no null, no vacio
      */
     private BitmapViewer(List<Bitmap> bitmaps) {
     	Assert.notNull(bitmaps, "bitmaps");
@@ -34,14 +34,16 @@ public class BitmapViewer {
 
     /**
      * Inicia el visualizador de bitmaps
-     * @param bitmaps
+     * @param bitmaps no null, no vacio
      */
     public static void showBitmaps(Collection<Bitmap> bitmaps) {
+        Assert.notNull(bitmaps, "bitmaps no debe ser null");
+        Assert.positive(bitmaps.size(), "bitmaps debe contener al menos un bitmap");
         new BitmapViewer(bitmaps.stream().toList());
     }
 
     /**
-     * Genera una grafica con los bitmaps
+     * Genera una gráfica con los bitmaps
      * Luego los refresca cada 0.5 segundo
      */
     private void createAndShowGUI() {
