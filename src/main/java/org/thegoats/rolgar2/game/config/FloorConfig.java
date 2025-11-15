@@ -17,10 +17,17 @@ public record FloorConfig(String name, String spritePath, Boolean isWalkable) {
         }
     }
 
+    /**
+     * @return Devuelve el bitmap cargado correspondiente al piso
+     * @throws IOException si ocurre un error al leer el archivo de imagen
+     */
     public Bitmap getBitmap() throws IOException {
         return Bitmap.loadFromFile(spritePath);
     }
 
+    /**
+     * @return Devuelve una nueva instancia de Floor segun la configuracion
+     */
     public Floor getFloor() {
         return new Floor(name, isWalkable);
     }
