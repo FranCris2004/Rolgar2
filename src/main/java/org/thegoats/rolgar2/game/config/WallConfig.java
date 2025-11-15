@@ -17,10 +17,17 @@ public record WallConfig(String name, String spritePath, Boolean isClimbable) {
         }
     }
 
+    /**
+     * @return Devuelve el bitmap cargado correspondiente a la pared
+     * @throws IOException si ocurre un error al leer el archivo de imagen
+     */
     public Bitmap getBitmap() throws IOException {
         return Bitmap.loadFromFile(spritePath);
     }
 
+    /**
+     * @return Devuelve una nueva instancia de Wall segun la configuracion
+     */
     public Wall getWall() {
         return new Wall(name, isClimbable);
     }
