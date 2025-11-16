@@ -1,0 +1,80 @@
+{
+  "name": "map0",
+  "floorConfigs": [
+    {
+      "name": "pasto",
+      "spritePath": "sprites/floor/pasto.png",
+      "isWalkable": true
+    },
+    {
+      "name": "roca",
+      "spritePath": "sprites/floor/roca.png",
+      "isWalkable": false
+    },
+    {
+      "name": "arena",
+      "spritePath": "sprites/floor/arena.png",
+      "isWalkable": true
+    }
+    ],
+  "wallConfigs": [
+    {
+      "name": "roca",
+      "spritePath": "sprites/wall/roca.png",
+      "isClimbable": false
+    },
+    {
+      "name": "madera",
+      "spritePath": "sprites/wall/madera.png",
+      "isClimbable": false
+    },
+    {
+      "name": "escalera",
+      "spritePath": "sprites/wall/escalera.png",
+      "isClimbable": true
+    },
+    {
+      "name": "pasto",
+      "spritePath": "sprites/wall/pasto.png",
+      "isClimbable": false
+    }
+
+  ],
+  "mapData": [
+    [
+      [               null                    , {"floor": "arena", "wall": "roca"},          {"floor": "madera"}          ,{"floor": "arena"},null],
+      [               null                    , {"floor": "rocas", "wall": "roca"},          {"floor": "madera"}          ,{"floor": "rocas"},null],
+      [{"floor": "pasto", "wall": "roca"}     , {"floor": "rocas", "wall": "roca"},          {"floor": "madera"}          ,{"floor": "rocas"},null],
+      [{"floor": "rocas", "wall": "roca"}     , {"floor": "rocas", "wall": "roca"}, {"floor": "rocas", "wall": "escalera"},{"floor": "rocas"},null],
+      [{"floor": "rocas", "wall": "roca"}     , {"floor": "rocas", "wall": "roca"}, {"floor": "rocas", "wall": "roca"}    ,{"floor": "rocas"},null]
+    ],
+    [
+      [{"floor": "pasto", "wall": "madera"}   ,  {"floor": "pasto"}               , {"floor": "madera", "wall": "escalera"},{"floor": "roca"},null],
+      [{"floor": "pasto", "wall": "madera"}   ,  {"floor": "pasto"}               , {"floor": "madera"}                    ,{"floor": "arena"},null],
+      [{"floor": "pasto", "wall": "madera"}   ,  {"floor": "pasto"}               , {"floor": "madera"}                    ,{"floor": "roca"},null],
+      [{"floor": "pasto", "wall": "madera"}   ,  {"floor": "pasto"}               , {"floor": "madera"}                    ,{"floor": "roca"},null],
+      [{"floor": "pasto", "wall": "madera"}   ,  {"floor": "pasto"}               , {"floor": "pasto"}                     ,{"floor": "roca"},null]
+    ],
+    [
+      [{"floor": "roca", "wall": null}        ,  {"floor": "roca"}                , {"floor": "madera"}                    ,{"floor": "roca"},null],
+      [{"floor": "roca", "wall": "roca"}      ,  {"floor": "roca"}                , {"floor": "roca"}                      ,{"floor": "roca"},null],
+      [{"floor": "roca", "wall": "roca"}      ,  {"floor": "roca"}                , {"floor": "roca", "wall": "roca"}      ,{"floor": "arena"},null],
+      [{"floor": "roca", "wall": "roca"}      ,  {"floor": "roca"}                , {"floor": "roca", "wall": "roca"}      ,{"floor": "roca"},null],
+      [{"floor": "roca", "wall": "escalera"}  ,  {"floor": "roca"}                , {"floor": "roca", "wall": "roca"}      ,{"floor": "roca"},null]
+    ],
+    [
+      [{"floor": "madera", "wall": "escalera"},        null                       , {"floor": "madera", "wall": "roca"}     ,{"floor": "rocas"},null],
+      [{"floor": "madera", "wall": "roca"}    ,        null                       , {"floor": "madera"}                     ,{"floor": "madera"},null],
+      [{"floor": "madera", "wall": "roca"}    ,        null                       , {"floor": "madera"}                     ,{"floor": "madera"},null],
+      [{"floor": "madera", "wall": null}      ,        null                       , {"floor": "madera"}                     ,{"floor": "arena"},null],
+      [{"floor": "madera", "wall": null}      ,        null                       , {"floor": "madera"}                     ,{"floor": "madera"},null]
+    ],
+    [
+      [{"floor": "madera", "wall": null}      ,        null                       , {"floor": "roca"}                        ,{"floor": "roca"},null],
+      [{"floor": "madera", "wall": "roca"}    ,        null                       , {"floor": "roca"}                        ,{"floor": "roca"},null],
+      [{"floor": "madera", "wall": "roca"}    ,        null                       , {"floor": "roca", "wall": "roca"}        ,{"floor": "roca"},null],
+      [{"floor": "madera", "wall": "roca"}    ,        null                       , {"floor": "roca"}                        ,{"floor": "roca"},null],
+      [{"floor": "madera", "wall": "roca"}    ,        null                       , {"floor": "roca", "wall": "roca"}        ,{"floor": "arena"},null]
+    ]
+  ]
+}
