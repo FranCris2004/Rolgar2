@@ -7,7 +7,10 @@ import org.thegoats.rolgar2.util.Options;
 import org.thegoats.rolgar2.world.Position;
 import org.thegoats.rolgar2.world.WorldCell;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.Vector;
 
 public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     private final Options turnOptions = new Options("¿Cual sera su próxima acción?",
@@ -28,6 +31,11 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     private final Options pickCardOptions = new Options("¿Desea tomar la carta?",
             new String[]{"Si", "No"},
             "Opcion inválida",
+            3,
+            true);
+    private final Options useCardOptions = new Options("¿Qué carta quiere usar?",
+            gameCharacter.getCharacterData().getDeck().getCardNames(),
+            "Opción inválida",
             3,
             true);
 
@@ -65,6 +73,13 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
                         }
                         break;
                     case "carta":
+                        int cardTries = 3;
+                        if(gameCharacter.getCharacterData().getDeck().isEmpty()){
+                            break;
+                        }
+                        while(!useCard() && cardTries > 0){
+                            cardTries--;
+                        };
                         //         useCards();
                         break;
                     case "alianza":
@@ -96,6 +111,16 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
             });
             actualMoves--;
         }
+    }
+
+
+    public boolean useCard(){
+        Assert.isTrue(!gameCharacter.getCharacterData().getDeck().isEmpty(), "El jugador tiene que tener cartas");
+        var optionalChoice = useCardOptions.choose();
+        if(optionalChoice.isPresent()){
+            var choice = optionalChoice.get();
+
+
     }
 
     /**
