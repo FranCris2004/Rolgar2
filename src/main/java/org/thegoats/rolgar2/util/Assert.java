@@ -74,6 +74,18 @@ public class Assert {
     }
 
     /**
+     * @param n Debe ser un valor en el rango de 'a' a 'b'
+     * @param message Mensaje en caso de excepcion
+     * @throws RuntimeException Si n no es un valor entre 'a' a 'b'
+     */
+    public static void inRange(double n, double a, double b, String message) {
+        Assert.isTrue(a > b, "a > b para rangos");
+        if (n < a || n > b) {
+            throw new RuntimeException(message);
+        }
+    }
+
+    /**
      * @param a Entero
      * @param b Entero
      * @param message Mensaje en caso de excepcion
@@ -108,6 +120,11 @@ public class Assert {
         }
     }
 
+    /**
+     * @param condition debe ser verdadera
+     * @param message mensaje de la excepcion
+     * @throws RuntimeException si la condicion era false
+     */
     public static void isTrue(boolean condition, String message){
         if(!condition){
             throw new RuntimeException(message);

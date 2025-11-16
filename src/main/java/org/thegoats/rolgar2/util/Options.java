@@ -46,19 +46,30 @@ public final class Options {
         return Optional.empty();
     }
 
+    /**
+     * @return prompt message, es decir, el mensaje a mostrar al pedir la entrada al usuario
+     */
     public String getPromptMessage() {
         return promptMessage;
     }
 
+    /**
+     * @return clon inmutable de las opciones
+     */
     public String[] getOptions() {
-        // se devuelve un clon para evitar la modificacion externa de de options
         return options.clone();
     }
 
+    /**
+     * @return mensaje de reintento
+     */
     public String getRetryMessage() {
         return retryMessage;
     }
 
+    /**
+     * @return numero maximo de reintentos
+     */
     public int getMaxRetries() {
         return maxRetries;
     }

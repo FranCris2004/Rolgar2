@@ -1,45 +1,99 @@
 package org.thegoats.rolgar2.game.config;
 
 import org.thegoats.rolgar2.util.Assert;
+import org.thegoats.rolgar2.util.io.Bitmap;
+import org.thegoats.rolgar2.world.Floor;
+import org.thegoats.rolgar2.world.Wall;
+import org.thegoats.rolgar2.world.World;
 
-import java.util.Arrays;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public record MapConfig(
         String name,
         FloorConfig[] floorConfigs,
         WallConfig[] wallConfigs,
-        CellConfig[] cellConfigs,
-        Character[][][] mapData
+        CellConfig[][][] mapData
 ) {
     public MapConfig {
         Assert.notNull(name, "name no puede ser nulo");
         Assert.notNull(floorConfigs, "floorConfigs no puede ser nulo");
         Assert.notNull(wallConfigs, "wallConfigs no puede ser nulo");
-        Assert.notNull(cellConfigs, "cellConfigs no puede ser nulo");
         Assert.notNull(mapData, "mapData no puede ser nulo");
 
-        for (CellConfig cellConfig : cellConfigs) {
-            Assert.isTrue(Arrays.stream(wallConfigs)
-                            .anyMatch(wallConfig -> wallConfig.name() == cellConfig.wallConfigName()),
-                    "'%s' no coincide con ninguna configuracion de muros en wallConfigs".formatted(cellConfig.wallConfigName()));
+        Assert.positive(mapData.length, "mapData.length debe ser positivo");
+        Assert.positive(mapData[0].length, "mapData[0].length debe ser positivo");
+        Assert.positive(mapData[0][0].length, "mapData[0][0].length debe ser positivo");
+    }
 
-            Assert.isTrue(Arrays.stream(floorConfigs)
-                            .anyMatch(floorConfig -> floorConfig.name() == cellConfig.floorConfigName()),
-                    "'%s' no coincide con ninguna configuracion de suelos en floorConfigs".formatted(cellConfig.floorConfigName()));
+    public Map<String, FloorConfig> getFloorConfigsMap() {
+        Map<String, FloorConfig> map = new HashMap<>();
+
+        for (FloorConfig floorConfig : floorConfigs) {
+            map.put(floorConfig.name(), floorConfig);
         }
 
-        for (int i = 0; i < mapData.length; i++) {
-            Assert.notNull(mapData[i], "mapData[%d] no puede ser nulo".formatted(i));
-            for (int j = 0; j < mapData.length; j++) {
-                Assert.notNull(mapData[i][j], "mapData[%d][%d] no puede ser nulo".formatted(i, j));
-                for (int k = 0; k < mapData.length; k++) {
-                    Assert.notNull(mapData[i][j][k], "mapData[%d][%d][%d] no puede ser nulo".formatted(i, j, k));
-                    var cellRepresentation = mapData[i][j][k];
-                    Assert.isTrue(Arrays.stream(cellConfigs)
-                            .anyMatch(cellConfig -> cellConfig.representation() == cellRepresentation),
-                            "mapData[%d][%d][%d] no coincide con ninguna configuracion de celda en cellConfig".formatted(i, j, k));
+        return map;
+    }
+
+    public Map<String, WallConfig> getWallConfigsMap() {
+        Map<String, WallConfig> map = new HashMap<>();
+
+        for (WallConfig wallConfig : wallConfigs) {
+            map.put(wallConfig.name(), wallConfig);
+        }
+
+        return map;
+    }
+
+    public Map<String, Bitmap> getFloorBitmapMap() throws IOException {
+        Map<String, Bitmap> map = new HashMap<>();
+
+        for (FloorConfig floorConfig : floorConfigs) {
+            map.put(floorConfig.name(), floorConfig.getBitmap());
+        }
+
+        return map;
+    }
+
+    public Map<String,Bitmap> getWallBitmapMap() throws IOException {
+        Map<String, Bitmap> map = new HashMap<>();
+
+        for (WallConfig wallConfig : wallConfigs) {
+            map.put(wallConfig.name(), wallConfig.getBitmap());
+        }
+
+        return map;
+    }
+
+    public World generateWorld() {
+        World world = new World(mapData[0][0].length, mapData[0].length, mapData.length);
+        var floorConfigsMap = getFloorConfigsMap();
+        var wallConfigsMap = getWallConfigsMap();
+
+        for (int layer = 0; layer < mapData.length; layer++) {
+            for (int row = 0; row < mapData[0].length; row++) {
+                for (int column = 0; column < mapData[0][0].length; column++) {
+                    CellConfig cellConfig = mapData[layer][row][column];
+
+                    if (cellConfig != null) {
+                        var cell = world.getCell(row, column, layer);
+
+                        FloorConfig floorConfig = floorConfigsMap.getOrDefault(cellConfig.floor(), null);
+                        if (floorConfig != null) {
+                            cell.setFloor(floorConfigsMap.getOrDefault(cellConfig.floor(), null).getFloor());
+                        }
+
+                        WallConfig wallConfig = wallConfigsMap.getOrDefault(cellConfig.wall(), null);
+                        if (wallConfig != null) {
+                            cell.setWall(wallConfigsMap.getOrDefault(cellConfig.wall(), null).getWall());
+                        }
+                    }
                 }
             }
         }
+
+        return world;
     }
 }
