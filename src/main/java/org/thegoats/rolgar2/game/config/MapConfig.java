@@ -1,5 +1,7 @@
 package org.thegoats.rolgar2.game.config;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.io.Bitmap;
 import org.thegoats.rolgar2.world.Floor;
@@ -10,6 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record MapConfig(
         String name,
         FloorConfig[] floorConfigs,
@@ -27,6 +30,7 @@ public record MapConfig(
         Assert.positive(mapData[0][0].length, "mapData[0][0].length debe ser positivo");
     }
 
+    @JsonIgnore
     public Map<String, FloorConfig> getFloorConfigsMap() {
         Map<String, FloorConfig> map = new HashMap<>();
 
@@ -37,6 +41,7 @@ public record MapConfig(
         return map;
     }
 
+    @JsonIgnore
     public Map<String, WallConfig> getWallConfigsMap() {
         Map<String, WallConfig> map = new HashMap<>();
 
@@ -47,6 +52,7 @@ public record MapConfig(
         return map;
     }
 
+    @JsonIgnore
     public Map<String, Bitmap> getFloorBitmapMap() throws IOException {
         Map<String, Bitmap> map = new HashMap<>();
 
@@ -57,6 +63,7 @@ public record MapConfig(
         return map;
     }
 
+    @JsonIgnore
     public Map<String,Bitmap> getWallBitmapMap() throws IOException {
         Map<String, Bitmap> map = new HashMap<>();
 
@@ -67,6 +74,7 @@ public record MapConfig(
         return map;
     }
 
+    @JsonIgnore
     public World generateWorld() {
         World world = new World(mapData[0][0].length, mapData[0].length, mapData.length);
         var floorConfigsMap = getFloorConfigsMap();
