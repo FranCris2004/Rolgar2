@@ -4,8 +4,10 @@ import org.thegoats.rolgar2.util.Assert;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 public class Bitmap {
@@ -25,6 +27,25 @@ public class Bitmap {
         this.width = width;
         this.height = height;
         this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    }
+
+    public Bitmap copy() {
+        // Crear un nuevo BufferedImage del mismo tamaño y tipo
+        BufferedImage copiedImage = new BufferedImage(
+                image.getWidth(),
+                image.getHeight(),
+                image.getType()
+        );
+
+        // Dibujar la imagen original en la nueva
+        Graphics2D g2d = copiedImage.createGraphics();
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        // Crear un nuevo Bitmap con la copia
+        Bitmap copy = new Bitmap(copiedImage.getWidth(), copiedImage.getHeight());
+        copy.image = copiedImage;
+        return copy;
     }
 
     public void fill(Color color) {
@@ -180,7 +201,14 @@ public class Bitmap {
     public void scale(int width, int height) {
         Assert.positive(width, "ancho debe ser positivo");
         Assert.positive(height, "alto debe ser positivo");
-        image = (BufferedImage) image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+
+        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = scaledImage.createGraphics();
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.drawImage(image, 0, 0, width, height, null);
+        g2d.dispose();
+
+        this.image = scaledImage;
     }
 
     /**
@@ -218,7 +246,17 @@ public class Bitmap {
      */
     public static Bitmap loadFromFile(String path) throws IOException {
         Assert.notNull(path, "la ruta no puede ser null");
-        BufferedImage img = ImageIO.read(new File(path));
+
+        InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(path);
+        if (in == null) {
+            throw new IOException("No existe el recurso: " + path);
+        }
+
+        BufferedImage img = ImageIO.read(in);
+        if (img == null) {
+            throw new IOException("No se pudo leer la imagen: " + path);
+        }
+
         Bitmap bmp = new Bitmap(img.getWidth(), img.getHeight());
         bmp.image = img;
         return bmp;
