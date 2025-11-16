@@ -62,14 +62,14 @@ public class Assert {
 
     /**
      * @param n Debe ser un valor en el rango de 'a' a 'b'
-     * @param message Mensaje en caso de excepcion
+     * @param nombreVariable Mensaje en caso de excepcion
      * @throws RuntimeException Si n no es un valor entre 'a' a 'b'
      */
-    public static void inRange(int n, int a, int b, String message) {
+    public static void inRange(int n, int a, int b, String nombreVariable) {
         int floor = Math.min(a, b);
         int roof = Math.max(a, b);
         if (n < floor || n > roof) {
-            throw new RuntimeException(message);
+            throw new RuntimeException("%s debe estar entre %d y %d. Vale: %d".formatted(nombreVariable, floor, roof, n));
         }
     }
 
@@ -104,7 +104,7 @@ public class Assert {
      * @throws RuntimeException Si 'nombre' es invalido
      */
     public static void validName(String name, String message) {
-        if (name != null && name.matches("^[a-zA-Z0-9._-]{3,20}$")) {
+        if (name == null || !name.matches("^[a-zA-Z0-9._-]{3,20}$")) {
             throw new RuntimeException(message);
         }
     }
@@ -134,6 +134,13 @@ public class Assert {
     public static void fileExists(String path, String message) {
         if (!Files.exists(Paths.get(path))) {
             throw new RuntimeException(message);
+        }
+    }
+
+    public static void resourceExists(String path, String message) {
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        if (cl.getResourceAsStream(path) == null) {
+            throw new RuntimeException(message + ": " + path);
         }
     }
 }
