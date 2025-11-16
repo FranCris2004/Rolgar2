@@ -118,8 +118,9 @@ public class WorldViewer {
 
         // pintar capas
         for (var i = min; i <= max; i++) {
-            int relativeDepth = i - min;
-            layersBitmap.pasteBitmap(createLayerBitmap(world, i, relativeDepth), 0, 0);
+            int relativeDepth = i - min - 1;
+            var layerBitmap = createLayerBitmap(world, i, relativeDepth);
+            layersBitmap.pasteBitmap(layerBitmap, 0, 0);
         }
 
         BitmapViewer.showBitmaps(Collections.singleton(layersBitmap));
@@ -127,7 +128,7 @@ public class WorldViewer {
 
     private Bitmap createLayerBitmap(World world, int layer, int relativeDepth) {
         Assert.notNull(world, "'world' no puede ser nulo");
-        Assert.inRange(layer, 0, world.getLayerCount()-1, "layer debe estar entre 0 y world.getLayerCount()-1");
+        Assert.inRange(layer, 0, world.getLayerCount()-1, "layer");
 
         Bitmap layerBitmap = new Bitmap(cellWidth * world.getColumnCount(), cellHeight * world.getRowCount());
 
@@ -143,8 +144,9 @@ public class WorldViewer {
 
                 cell.getFloor().ifPresent(floor ->
                 {
-                    var bitmap = floorBitmapMap.get(floor.name());
+                    var bitmap = floorBitmapMap.get(floor.name()).copy();
                     if (bitmap != null) {
+                        bitmap.scale(cellWidth, cellHeight);
                         layerBitmap.pasteBitmap(bitmap, offsetX, offsetY);
                     }
                 });
@@ -153,15 +155,22 @@ public class WorldViewer {
                 {
                     var bitmap = wallBitmapMap.get(wall.name());
                     if (bitmap != null) {
+                        bitmap.scale(cellWidth, cellHeight);
                         layerBitmap.pasteBitmap(bitmap, offsetX, offsetY);
                     }
                 });
 
-                cell.getCard().ifPresent(card ->
-                        layerBitmap.pasteBitmap(cardBitmapMap.get(card.getClass().getName()), offsetX, offsetY));
+                cell.getCard().ifPresent(card -> {
+                    var bitmap = cardBitmapMap.get(card.getClass().getName()).copy();
+                    bitmap.scale(cellWidth, cellHeight);
+                    layerBitmap.pasteBitmap(bitmap, offsetX, offsetY);
+                });
 
-                cell.getCharacter().ifPresent(worldCharacter ->
-                        layerBitmap.pasteBitmap(characterBitmap, offsetX, offsetY));
+                cell.getCharacter().ifPresent(worldCharacter -> {
+                    var bitmap = characterBitmap.copy();
+                    bitmap.scale(cellWidth, cellHeight);
+                    layerBitmap.pasteBitmap(bitmap, offsetX, offsetY);
+                });
             }
         }
 
