@@ -9,6 +9,8 @@ public interface Card {
      */
     void use();
 
+    String getName();
+
     /**
      * Abstract Factory de la clase Card
      * @see <a href="https://refactoring.guru/es/design-patterns/abstract-factory">Abstract Factory</a>

@@ -24,6 +24,10 @@ public class ShieldCard extends CardWithStatusEffect {
         getTarget().applyEffect(new HalfDamageEffect(getTarget(), getDuration()));
     }
 
+    public String getName(){
+        return "Escudo";
+    }
+
     /**
      * Fábrica de cartas de escudo, construye la fábrica de
      * CardWithStatusEffect con un generador aleatorio, piso y techo de duraciones,

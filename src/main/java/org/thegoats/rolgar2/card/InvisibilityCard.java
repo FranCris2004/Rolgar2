@@ -38,6 +38,11 @@ public class InvisibilityCard extends CardWithStatusEffect {
                 getDuration());
     }
 
+    public String getName(){
+        return "Invisibilidad";
+    }
+
+
     /**
      * Fábrica de cartas de invisibilidad, construye la fábrica de
      * CardWithStatusEffect con un generador aleatorio, piso y techo de duraciones,

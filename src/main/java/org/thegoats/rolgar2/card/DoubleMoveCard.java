@@ -34,6 +34,10 @@ public class DoubleMoveCard extends CardWithStatusEffect {
                 getDuration());
     }
 
+    public String getName(){
+        return "Doble movimiento";
+    }
+
 
     /**
      * Fabrica de cartas de doble movimiento, construye la fabrica de
