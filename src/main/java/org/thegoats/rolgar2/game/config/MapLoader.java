@@ -73,7 +73,7 @@ public final class MapLoader {
 
     /**
      * Carga un único MapConfig desde el archivo JSON indicado por la ruta.
-     * @param path ruta del archivo JSON que contiene la configuración del mapa
+     * @param path Ruta del archivo JSON que contiene la configuración del mapa
      * @return un objeto MapConfig generado a partir del contenido del archivo
      * @throws IOException si ocurre un error de lectura o el JSON es inválido
      */
