@@ -96,12 +96,9 @@ public class DifficultyLoader {
         throw new IOException("Protocolo no soportado: " + protocol);
     }
 
-    /**
-     * Carga una única configuración de dificultad desde un archivo JSON ubicado en el filesystem
-     * @param path ruta del archivo JSON que define la dificultad
-     * @return un objeto DifficultyConfig creado a partir del contenido del archivo
-     * @throws IOException si no se puede leer el archivo o el JSON es inválido
-     */
+    // ------------------------------------------
+    // Lectura desde filesystem
+    // ------------------------------------------
     public static DifficultyConfig loadDifficulty(Path path) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(path.toFile(), DifficultyConfig.class);
@@ -110,14 +107,6 @@ public class DifficultyLoader {
     // ------------------------------------------
     // Lectura desde JAR
     // ------------------------------------------
-
-    /**
-     * Carga una única configuración de dificultad leyendo los datos desde
-     * un flujo de entrada (InputStream).
-     * @param in flujo de entrada desde el cual se leen los datos JSON
-     * @return un objeto DifficultyConfig creado a partir del contenido del flujo
-     * @throws IOException si ocurre un error de lectura o el JSON es inválido
-     */
     public static DifficultyConfig loadDifficulty(InputStream in) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(in, DifficultyConfig.class);
