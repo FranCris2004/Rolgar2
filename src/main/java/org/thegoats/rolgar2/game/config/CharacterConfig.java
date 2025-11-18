@@ -6,6 +6,17 @@ import org.thegoats.rolgar2.util.Assert;
 
 import java.util.Random;
 
+/**
+ * define los rangos y parámetros base que se usarán para crear
+ * un personaje en el juego (por ejemplo, el jugador o un enemigo)
+ * @param healthFloor minimo de vida posible
+ * @param healthRoof maximo de vida posible
+ * @param strengthFloor minimo de fuerza posible
+ * @param strengthRoof maximo de fuerza posible
+ * @param inventorySize tamaño del inventario del personaje
+ * @param moves  cantidad de movimientos disponibles por turno
+ * @param incomingDamageFactor factor que multiplica el daño que recibe el personaje
+ */
 public record CharacterConfig(
         int healthFloor,
         int healthRoof,
@@ -15,6 +26,10 @@ public record CharacterConfig(
         int moves,
         double incomingDamageFactor
 ) {
+    /**
+     * constructor compacto del record.
+     * valida las correspodientes validaciones para cada campo. Si no se cumple lanza excepcion
+     */
     public CharacterConfig {
         Assert.positive(healthFloor, "healthFloor debe ser positivo");
         Assert.positive(healthRoof, "healthRoof debe ser positivo");
@@ -26,6 +41,11 @@ public record CharacterConfig(
         Assert.nonNegative(moves, "moves debe mayor o igual a cero");
     }
 
+    /**
+     * Crea y devuelve un CharacterFactory basada en esta configuracion
+     * @param random generador de números aleatorios que se usará para elegir valores concretos de vida y fuerza
+     * @return un objeto CharacterFactory configurado con estos parámetros
+     */
     @JsonIgnore
     public CharacterFactory getCharacterFactory(Random random) {
         return new CharacterFactory(random, this);
