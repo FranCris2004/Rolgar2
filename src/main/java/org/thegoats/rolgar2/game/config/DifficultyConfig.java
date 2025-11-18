@@ -17,7 +17,7 @@ public record DifficultyConfig(
         CardConfigBundle cardConfig
 ) {
     /**
-     * Constructor del record. Valida que los campos no sean nulos si no lanza excepcion
+     * Constructor compacto del record. Valida que los campos no sean nulos si no lanza excepcion
      *
      */
     public DifficultyConfig {

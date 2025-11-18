@@ -12,7 +12,7 @@ public record GameConfig(
         MapConfig mapConfig
 ) {
     /**
-     * Constructor del record.
+     * Constructor compacto del record.
      *  Además de asignar los campos, valida que no sean null los campos, si lo es alguno lanza excepcion
      */
     public GameConfig {

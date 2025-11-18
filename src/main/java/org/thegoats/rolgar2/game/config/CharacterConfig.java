@@ -27,7 +27,7 @@ public record CharacterConfig(
         double incomingDamageFactor
 ) {
     /**
-     * constructor del record.
+     * constructor compacto del record.
      * valida las correspodientes validaciones para cada campo. Si no se cumple lanza excepcion
      */
     public CharacterConfig {

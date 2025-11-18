@@ -28,7 +28,7 @@ public record MapConfig(
         CellConfig[][][] mapData
 ) {
     /**
-     * Constructor del record. Ademas de asignar los campos
+     * Constructor compacto del record. Ademas de asignar los campos
      * valida que no sean null ciertos campos y otros que sean positivos
      * si alguna validacion no se cumple lanza excepcion
      */
