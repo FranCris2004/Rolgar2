@@ -12,4 +12,10 @@ public class TeleportCard implements Card {
             return new TeleportCard();
         }
     }
+
+
+    public String getName(){
+        return "teletransporte";
+    }
+
 }

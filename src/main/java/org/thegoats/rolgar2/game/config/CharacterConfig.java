@@ -1,6 +1,10 @@
 package org.thegoats.rolgar2.game.config;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.thegoats.rolgar2.character.CharacterFactory;
 import org.thegoats.rolgar2.util.Assert;
+
+import java.util.Random;
 
 public record CharacterConfig(
         int healthFloor,
@@ -20,5 +24,10 @@ public record CharacterConfig(
         Assert.isTrue(strengthFloor < strengthRoof, "strengthFloor debe ser menor a strengthRoof");
         Assert.nonNegative(inventorySize, "inventorySize debe ser mayor o igual a cero");
         Assert.nonNegative(moves, "moves debe mayor o igual a cero");
+    }
+
+    @JsonIgnore
+    public CharacterFactory getCharacterFactory(Random random) {
+        return new CharacterFactory(random, this);
     }
 }

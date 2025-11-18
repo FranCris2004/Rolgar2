@@ -58,6 +58,10 @@ public class StealingCard implements Card {
         stolenDeck.remove(stolenCard);
     }
 
+    public String getName(){
+        return "Robo de carta";
+    }
+
     /**
      * Fábrica de cartas de robo de carta, construye la fábrica de Card
      * y a partir de ahí permite utilizar el metodo create() para abstraerse de la implementación

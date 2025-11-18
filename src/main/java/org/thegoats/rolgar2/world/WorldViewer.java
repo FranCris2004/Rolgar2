@@ -158,109 +158,62 @@ public class WorldViewer {
     /**
      * Muestra las capas del mundo
      * @param world no puede ser nulo
-     * @param from debe ser positivo
-     * @param to debe ser positivo
+     * @param layer debe ser positivo
      */
-    public void showLayers(World world, int from, int to) {
-        var max = Math.max(from, to);
-        var min = Math.min(from, to);
-
-        Bitmap layersBitmap = new Bitmap(
+    public void showLayer(World world, int layer) {
+        Assert.notNull(world, "'world' no puede ser nulo");
+        Assert.inRange(layer, 0, world.getLayerCount() - 1,
+                "layer debe estar entre 0 y world.getLayerCount()-1");
+        Bitmap layerBitmap = new Bitmap(
                 cellWidth * world.getColumnCount(),
                 cellHeight * world.getRowCount()
         );
 
-        // CORRECCIÓN: dibujar el fondo completo
-        layersBitmap.fill(backgroundColor);
+        layerBitmap.fill(backgroundColor);
 
-        // pintar capas
-        for (var i = min; i <= max; i++) {
-            int relativeDepth = i - min;
-            layersBitmap.pasteBitmap(createLayerBitmap(world, i, relativeDepth), 0, 0);
-        }
-
-        BitmapViewer.showBitmaps(Collections.singleton(layersBitmap));
-    }
-
-    /**
-     * Crea un bitmap para una capa del mundo
-     * @param world no puede ser nulo
-     * @param layer debe estar entre 0 y el numero de capas del mundo - 1
-     * @param relativeDepth distancia relativa respecto de la primera capa
-     * @return Devuelve un Bitmap representando graficamente la capa
-     */
-    private Bitmap createLayerBitmap(World world, int layer, int relativeDepth) {
-        Assert.notNull(world, "'world' no puede ser nulo");
-        Assert.inRange(layer, 0, world.getLayerCount()-1, "layer debe estar entre 0 y world.getLayerCount()-1");
-
-        Bitmap layerBitmap = new Bitmap(cellWidth * world.getColumnCount(), cellHeight * world.getRowCount());
-
-        layerBitmap.fill(new Color(255, 0, 255, 0));
-
-        // dibuja el contenido
         for (int row = 0; row < world.getRowCount(); row++) {
-            for (int column = 0; column < world.getColumnCount(); column++) {
-                var cell = world.getCell(row, column, layer);
+            for (int col = 0; col < world.getColumnCount(); col++) {
 
-                int offsetX = column * cellWidth;
-                int offsetY = row * cellHeight;
+                var cell = world.getCell(row, col, layer);
 
-                cell.getFloor().ifPresent(floor ->
-                {
-                    var bitmap = floorBitmapMap.get(floor.name());
-                    if (bitmap != null) {
-                        layerBitmap.pasteBitmap(bitmap, offsetX, offsetY);
+                int x = col * cellWidth;
+                int y = row * cellHeight;
+
+                // floor
+                cell.getFloor().ifPresent(floor -> {
+                    var bmp = floorBitmapMap.get(floor.name());
+                    if (bmp != null) {
+                        var scaled = bmp.scaled(cellWidth, cellHeight);
+                        layerBitmap.pasteBitmap(scaled, x, y);
                     }
                 });
 
-                cell.getWall().ifPresent(wall ->
-                {
-                    var bitmap = wallBitmapMap.get(wall.name());
-                    if (bitmap != null) {
-                        layerBitmap.pasteBitmap(bitmap, offsetX, offsetY);
+                // wall
+                cell.getWall().ifPresent(wall -> {
+                    var bmp = wallBitmapMap.get(wall.name());
+                    if (bmp != null) {
+                        var scaled = bmp.scaled(cellWidth, cellHeight);
+                        layerBitmap.pasteBitmap(scaled, x, y);
                     }
                 });
 
-                cell.getCard().ifPresent(card ->
-                        layerBitmap.pasteBitmap(cardBitmapMap.get(card.getClass().getName()), offsetX, offsetY));
+                // card
+                cell.getCard().ifPresent(card -> {
+                    var bmp = cardBitmapMap.get(card.getClass().getName());
+                    if (bmp != null) {
+                        var scaled = bmp.scaled(cellWidth, cellHeight);
+                        layerBitmap.pasteBitmap(scaled, x, y);
+                    }
+                });
 
-                cell.getCharacter().ifPresent(worldCharacter ->
-                        layerBitmap.pasteBitmap(characterBitmap, offsetX, offsetY));
+                // character
+                cell.getCharacter().ifPresent(character -> {
+                    var scaled = characterBitmap.scaled(cellWidth, cellHeight);
+                    layerBitmap.pasteBitmap(scaled, x, y);
+                });
             }
         }
 
-        // aplica el efecto de profundidad
-        applyDepthEffect(layerBitmap.getImage(), relativeDepth);
-
-        return layerBitmap;
-    }
-
-    /**
-     * Aplica un efecto de degradado dependiendo de la profundidad relativa de esta capa
-     * con respecto a la capa con la que se empezó a dibujar
-     * @param image es la imagen sobre la cual se aplica el efecto, debe ser una BufferedImage
-     * @param relativeDepth es el nivel de profundidad relativo usado para calcular la opacidad
-     */
-    private void applyDepthEffect(Image image, int relativeDepth) {
-        if (!(image instanceof java.awt.image.BufferedImage bufferedImage)) return;
-
-        int width = bufferedImage.getWidth();
-        int height = bufferedImage.getHeight();
-
-        Graphics2D g = bufferedImage.createGraphics();
-
-        float alpha = 0.05f + (relativeDepth * 0.05f);
-        if (alpha > 0.40f) alpha = 0.40f;  // nunca opacar del todo
-
-        GradientPaint gradient = new GradientPaint(
-                0, 0, gradientFrom,
-                0, height, gradientTo
-        );
-
-        g.setPaint(gradient);
-        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-        g.fillRect(0, 0, width, height);
-
-        g.dispose();
+        BitmapViewer.showBitmaps(Collections.singleton(layerBitmap));
     }
 }

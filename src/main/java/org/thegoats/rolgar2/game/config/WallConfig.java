@@ -1,11 +1,14 @@
 package org.thegoats.rolgar2.game.config;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.io.Bitmap;
 import org.thegoats.rolgar2.world.Wall;
 
 import java.io.IOException;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public record WallConfig(String name, String spritePath, Boolean isClimbable) {
     public WallConfig {
         Assert.notNull(name, "name no puede ser nulo");
@@ -21,6 +24,7 @@ public record WallConfig(String name, String spritePath, Boolean isClimbable) {
      * @return Devuelve el bitmap cargado correspondiente a la pared
      * @throws IOException si ocurre un error al leer el archivo de imagen
      */
+    @JsonIgnore
     public Bitmap getBitmap() throws IOException {
         return Bitmap.loadFromFile(spritePath);
     }
@@ -28,6 +32,7 @@ public record WallConfig(String name, String spritePath, Boolean isClimbable) {
     /**
      * @return Devuelve una nueva instancia de Wall segun la configuracion
      */
+    @JsonIgnore
     public Wall getWall() {
         return new Wall(name, isClimbable);
     }

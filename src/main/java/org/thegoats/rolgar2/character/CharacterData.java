@@ -143,6 +143,12 @@ public class CharacterData {
     }
 
     /**
+     * @return true si no esta congelado
+     */
+    public boolean isNotFreezed(){
+        return !isFreezed;
+    }
+    /**
      * @return Factor por el cual se multiplica el daño entrante, estará entre MIN_INCOMING_DAMAGE_FACTOR y MAX_INCOMING_DAMAGE_FACTOR
      */
     public double getIncomingDamageFactor() {
