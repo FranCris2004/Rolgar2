@@ -99,7 +99,7 @@ public class Board3d<T> implements Iterable<T> {
      */
     public T get(Position position) {
         Assert.notNull(position, "'position' debe ser no null");
-        return get(position.getLayer(), position.getRow(), position.getRow());
+        return get(position.getRow(), position.getColumn(), position.getLayer());
     }
 
     //
