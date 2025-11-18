@@ -103,21 +103,6 @@ public final class GameCharacter {
     }
 
     /**
-     * @return Devuelve el bitmap cargado para el personaje
-     */
-    public static Bitmap getBitmap() {
-        return bitmap;
-    }
-
-    /**
-     * Carga un bitmap desde un archivo externo
-     * @param path no puede ser nulo
-     * @throws IOException si ocurre algun error al leer el archivo
-     */
-    public static void loadBitmapFromFile(String path) throws IOException {
-        Assert.notNull(path, "path no puede ser nulo.");
-        bitmap = Bitmap.loadFromFile(path);
-    /**
      * Coloca al personaje en la celda correspondiente a position
      * @param position no null, nueva posicion del personaje
      */
