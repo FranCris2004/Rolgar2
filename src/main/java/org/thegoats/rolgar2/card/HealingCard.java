@@ -27,6 +27,10 @@ public class HealingCard extends CardWithCharacterTarget {
         getTarget().recoverHealth(healingPoints);
     }
 
+    public String getName(){
+        return "Curacion";
+    }
+
     /**
      * Fabrica de cartas de curación, construye la fabrica de
      * Card con un generador aleatorio, piso y techo de duraciones,

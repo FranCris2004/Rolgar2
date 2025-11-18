@@ -1,0 +1,56 @@
+{
+  "name": "map0",
+  "floorConfigs": [
+    {
+      "name": "pasto",
+      "spritePath": "sprites/floor/pasto.png",
+      "isWalkable": true
+    },
+    {
+      "name": "arena",
+      "spritePath": "sprites/floor/arena.png",
+      "isWalkable": false
+    }
+    ],
+  "wallConfigs": [
+    {
+      "name": "madera",
+      "spritePath": "sprites/wall/madera.png",
+      "isClimbable": false
+    },
+    {
+      "name": "escalera",
+      "spritePath": "sprites/wall/escalera.png",
+      "isClimbable": true
+    }
+  ],
+  "mapData": [
+    [
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "escalera"},                {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}]
+    ],
+    [
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, null,                                 {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "arena"},                   {"floor": "arena"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "escalera"},                {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}]
+    ],
+    [
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, null,                                 {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto"},                   {"floor": "arena"},                   null,                                 {"floor": "arena"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto"},                   {"floor": "pasto", "wall": "madera"}],
+      [ {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}, {"floor": "pasto", "wall": "madera"}]
+    ]
+  ]
+}

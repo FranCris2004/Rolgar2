@@ -19,6 +19,10 @@ public class FireballCard extends CardWithCharacterTarget {
         this.damage = damage;
     }
 
+    public String getName(){
+        return "Bola de fuego";
+    }
+
     /**
      * Chequea que a la carta ya se le haya asignado un personaje 'target' objetivo, y que se le haya setteado un
      * damage válido.

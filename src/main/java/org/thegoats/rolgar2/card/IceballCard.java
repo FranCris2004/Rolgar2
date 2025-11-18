@@ -36,6 +36,10 @@ public class IceballCard extends CardWithStatusEffect {
                 getDuration());
     }
 
+    public String getName(){
+        return "Bola de nieve";
+    }
+
     /**
      * Fabrica de cartas de bola de nieve, construye la fabrica de
      * CardWithStatusEffect con un generador aleatorio, piso y techo de duraciones,

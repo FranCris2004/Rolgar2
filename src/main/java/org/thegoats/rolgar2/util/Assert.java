@@ -1,5 +1,6 @@
 package org.thegoats.rolgar2.util;
 
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -104,7 +105,7 @@ public class Assert {
      * @throws RuntimeException Si 'nombre' es invalido
      */
     public static void validName(String name, String message) {
-        if (name != null && name.matches("^[a-zA-Z0-9._-]{3,20}$")) {
+        if (!GameUtils.validName(name)) {
             throw new RuntimeException(message);
         }
     }
@@ -132,7 +133,12 @@ public class Assert {
     }
 
     public static void fileExists(String path, String message) {
-        if (!Files.exists(Paths.get(path))) {
+        ClassLoader cl = Assert.class.getClassLoader();
+
+        // Busca el recurso dentro del classpath
+        URL url = cl.getResource(path);
+
+        if (url == null) {
             throw new RuntimeException(message);
         }
     }

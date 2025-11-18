@@ -100,6 +100,12 @@ public class WorldCell {
         return List.copyOf(neighbors);
     }
 
+    public Optional<WorldCell> getUpperNeighbor(){
+        return getNeighbors().stream()
+                .filter(neighbor -> neighbor.position.getLayer() == position.getLayer() +1)
+                .findFirst();
+    }
+
     //
     // Setters
     //
@@ -186,7 +192,11 @@ public class WorldCell {
      * @return true si contiene algun cha
      */
     public boolean isOccupied() {
-        return hasWall() || hasCharacter() || hasCard();
+        return !hasWall() || !hasCharacter();
+    }
+
+    public boolean isFree(){
+        return !isOccupied();
     }
 
     /**
@@ -210,11 +220,16 @@ public class WorldCell {
         return character != null;
     }
 
-    /**
-     * @return true si es caminable
-     */
-    public boolean isWalkable() {
-        return hasFloor() && !isOccupied() && floor.isWalkable();
+    public boolean hasWalkableFloor(){
+        return hasFloor() && floor.isWalkable();
+    }
+
+    public boolean hasClimbableWall(){
+        return hasWall() && wall.isClimbable();
+    }
+
+    public boolean characterCanMove() {
+        return !hasCharacter() && (hasWalkableFloor() || hasClimbableWall());
     }
 
     //

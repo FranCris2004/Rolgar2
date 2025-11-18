@@ -24,6 +24,11 @@ public class StrengthCard extends CardWithStatusEffect {
         getTarget().applyEffect(new DoubleStrengthEffect(getTarget(), getDuration()));
     }
 
+    public String getName(){
+        return "Fuerza";
+    }
+
+
     /**
      * Fábrica de cartas de fuerza, construye la fábrica de
      * CardWithStatusEffect con un generador aleatorio, piso y techo de duraciones,

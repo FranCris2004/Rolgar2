@@ -77,4 +77,23 @@ public class CardDeck {
         return maxSize;
     }
 
+    /**
+     * @return true si el mazo ya esta lleno
+     */
+    public boolean isFull() {
+        return maxSize == cards.size();
+    }
+
+    public boolean isEmpty(){
+        return cards.isEmpty();
+    }
+
+    public String[] getCardNames(){
+        String[] cardNames = new String[cards.size()];
+        int i=0;
+        for(Card card: cards){
+            cardNames[i] = card.getName();
+        }
+        return cardNames;
+    }
 }

@@ -3,27 +3,36 @@ package org.thegoats.rolgar2.game;
 import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.player.Player;
 import org.thegoats.rolgar2.util.Assert;
-import org.thegoats.rolgar2.util.io.Bitmap;
+import org.thegoats.rolgar2.world.Position;
+import org.thegoats.rolgar2.world.World;
 import org.thegoats.rolgar2.world.WorldCell;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
 public final class GameCharacter {
-    public final Game game;
-    public final Player player;
-    public final CharacterData characterData;
-    public final GameCharacterTurnManager turnManager;
+    private final Game game;
+    private final World world;
+    private final Player player;
+    private final CharacterData characterData;
+    private final GameCharacterTurnManager turnManager;
     private WorldCell worldCell;
-    private static Bitmap bitmap;
 
-    public GameCharacter(Game game, Player player, CharacterData characterData, WorldCell initialWorldCell, Class<? extends GameCharacterTurnManager> gameCharacterTurnManagerClass) {
+    public GameCharacter(
+            Game game,
+            World world,
+            Player player,
+            CharacterData characterData,
+            WorldCell initialWorldCell,
+            Class<? extends GameCharacterTurnManager> gameCharacterTurnManagerClass
+    ) {
         Assert.notNull(game, "game no puede ser nulo");
         Assert.notNull(characterData, "characterData no puede ser nulo");
         Assert.notNull(player, "player no puede ser nulo");
+        Assert.notNull(world, "world no puede ser nulo");
         setWorldCell(initialWorldCell);
+        this.world = world;
         this.game = game;
         this.player = player;
         this.characterData = characterData;
@@ -41,6 +50,25 @@ public final class GameCharacter {
         this.worldCell = worldCell;
     }
 
+    public CharacterData getCharacterData(){
+        return characterData;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Game getGame(){
+        return game;
+    }
+
+    /**
+     * @return mundo
+     */
+    public World getWorld() {
+        return world;
+    }
+
     public WorldCell getWorldCell() {
         return worldCell;
     }
@@ -56,14 +84,24 @@ public final class GameCharacter {
         character.characterData.takeDamage(this.characterData.getStrength());
     }
 
-    public static Bitmap getBitmap() {
-        return bitmap;
+    /**
+     * Coloca al personaje en la celda correspondiente a position
+     * @param position no null, nueva posicion del personaje
+     */
+    public void moveCharacter(Position position){
+        Assert.notNull(position, "la nueva position no puede ser null");
+
+        var newCell = world.getCell(position);
+        Assert.isTrue(newCell.characterCanMove(), "El personaje no puede moverse a la posicion: " + position);
+
+        var previousCell = world.getCell(newCell.getPosition());
+
+        previousCell.setCharacter(null);
+        newCell.setCharacter(this);
+        setWorldCell(newCell);
     }
 
-    public static void loadBitmapFromFile(String path) throws IOException {
-        Assert.notNull(path, "path no puede ser nulo.");
-        bitmap = Bitmap.loadFromFile(path);
-    }
+    // TODO: TELEPORT CHARACTER URGENTE !!!!!!!!!!
 
     @Override
     public String toString() {
@@ -78,5 +116,12 @@ public final class GameCharacter {
     @Override
     public int hashCode() {
         return Objects.hash(characterData);
+    }
+
+    /**
+     * @return administrador de turnos del jugador
+     */
+    public GameCharacterTurnManager getTurnManager() {
+        return turnManager;
     }
 }

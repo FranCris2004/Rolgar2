@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 
 public class Bitmap {
@@ -174,13 +175,19 @@ public class Bitmap {
 
     /**
      * Genera una copia redimensionada de la imagen
-     * @param width ancho mayor a cero
-     * @param height alto mayor a cero
+     * @param width nuevo ancho mayor a cero
+     * @param height nuevo alto mayor a cero
      */
-    public void scale(int width, int height) {
-        Assert.positive(width, "ancho debe ser positivo");
-        Assert.positive(height, "alto debe ser positivo");
-        image = (BufferedImage) image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    public Bitmap scaled(int width, int height) {
+        BufferedImage output = new BufferedImage(width, height, image.getType());
+        Graphics2D g = output.createGraphics();
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.drawImage(image, 0, 0, width, height, null);
+        g.dispose();
+
+        Bitmap result = new Bitmap(width, height);
+        result.image = output;
+        return result;
     }
 
     /**
@@ -211,14 +218,27 @@ public class Bitmap {
     }
 
     /**
-     * Carga un bitmap desde la ruta {@code path} y lo devuelve
-     * @param path no null, ruta del archivo a cargar
-     * @return bitmap leído del archivo
-     * @throws IOException si no pudo leer el archivo de ruta {@code path}
+     * Carga un bitmap desde la ruta {@code path} dentro de resources y lo devuelve.
+     * @param path no null, ruta del archivo dentro del classpath
+     * @return bitmap leído del recurso
+     * @throws IOException si no pudo leer el recurso
      */
     public static Bitmap loadFromFile(String path) throws IOException {
         Assert.notNull(path, "la ruta no puede ser null");
-        BufferedImage img = ImageIO.read(new File(path));
+
+        // Obtener recurso dentro del classpath
+        ClassLoader cl = Bitmap.class.getClassLoader();
+        InputStream in = cl.getResourceAsStream(path);
+
+        if (in == null) {
+            throw new IOException("No se encontró el recurso en el classpath: " + path);
+        }
+
+        BufferedImage img = ImageIO.read(in);
+        if (img == null) {
+            throw new IOException("No se pudo leer la imagen: " + path);
+        }
+
         Bitmap bmp = new Bitmap(img.getWidth(), img.getHeight());
         bmp.image = img;
         return bmp;
