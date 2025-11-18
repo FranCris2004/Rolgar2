@@ -94,7 +94,7 @@ public class DifficultyLoader {
     /**
      * Carga una configuracion de dificultad desde un archivo,
      * lo convierte a un objeto DifficultyConfig y lo devuelve
-     * @param difficultyPath ruta del archivo que contiene la configuracion de dificultad
+     * @param path ruta del archivo que contiene la configuracion de dificultad
      * @return Devuelve un objeto DifficultyConfig construido a partir del contenido del archivo
      * @throws IOException si ocurre un error al leer el archivo
      */

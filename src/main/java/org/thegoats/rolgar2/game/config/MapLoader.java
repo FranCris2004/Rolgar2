@@ -17,7 +17,7 @@ public final class MapLoader {
       /**
      * Carga todas las configuraciones de mapas,
      * cada mapa cargado se almacena en un conjunto que luego se devuelve
-     * @param mapsDirectoryPath ruta al directorio que contiene los archivos de mapas
+     * @param path ruta al directorio que contiene los archivos de mapas
      * @return Devuelve un conjunto de objetos MapConfig
      * @throws IOException si ocurre un error al acceder al directorio o al leer alguno de los archivos
      */
