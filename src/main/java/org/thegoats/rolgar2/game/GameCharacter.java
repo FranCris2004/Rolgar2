@@ -7,10 +7,8 @@ import org.thegoats.rolgar2.world.Position;
 import org.thegoats.rolgar2.world.World;
 import org.thegoats.rolgar2.world.WorldCell;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.Objects;
 
 public final class GameCharacter {
@@ -20,9 +18,15 @@ public final class GameCharacter {
     private final CharacterData characterData;
     private final GameCharacterTurnManager turnManager;
     private WorldCell worldCell;
-    private static Bitmap bitmap;
 
-    public GameCharacter(Game game, World world, Player player, CharacterData characterData, WorldCell initialWorldCell, Class<? extends GameCharacterTurnManager> gameCharacterTurnManagerClass) {
+    public GameCharacter(
+            Game game,
+            World world,
+            Player player,
+            CharacterData characterData,
+            WorldCell initialWorldCell,
+            Class<? extends GameCharacterTurnManager> gameCharacterTurnManagerClass
+    ) {
         Assert.notNull(game, "game no puede ser nulo");
         Assert.notNull(characterData, "characterData no puede ser nulo");
         Assert.notNull(player, "player no puede ser nulo");
@@ -81,19 +85,20 @@ public final class GameCharacter {
     }
 
     /**
-     * Dada una position vecina, coloca al personaje en esa celda
-     * @param position no null, posicion de una celda vecina
+     * Coloca al personaje en la celda correspondiente a position
+     * @param position no null, nueva posicion del personaje
      */
     public void moveCharacter(Position position){
         Assert.notNull(position, "la nueva position no puede ser null");
-        for(WorldCell cell: this.worldCell.getNeighbors()){
-            if(cell.getPosition() == position){
-                this.worldCell.setCharacter(null);
-                this.setWorldCell(cell);
-                cell.setCharacter(this);
-                return;
-            }
-        }
+
+        var newCell = world.getCell(position);
+        Assert.isTrue(newCell.characterCanMove(), "El personaje no puede moverse a la posicion: " + position);
+
+        var previousCell = world.getCell(newCell.getPosition());
+
+        previousCell.setCharacter(null);
+        newCell.setCharacter(this);
+        setWorldCell(newCell);
     }
 
     // TODO: TELEPORT CHARACTER URGENTE !!!!!!!!!!
