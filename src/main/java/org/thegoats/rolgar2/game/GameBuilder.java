@@ -25,10 +25,18 @@ public class GameBuilder {
 
     public GameBuilder() {}
 
+    /**
+     * Crea una nueva instancia de GameBuilder
+     * @return Devuelve la instancia creada
+     */
     public static GameBuilder createBuilder() {
         return new GameBuilder();
     }
 
+    /**
+     * Crea una nueva instancia de Game
+     * @return Devuelve una instancia configurada de Game
+     */
     public Game build() {
         Assert.notNull(players, "players");
         Assert.notNull(logger, "logger");
@@ -42,6 +50,11 @@ public class GameBuilder {
         return new Game(logger, random, players, new GameConfig(difficultyConfig, mapConfig));
     }
 
+    /**
+     * Establece el logger que usara Game para registrar eventos
+     * @param logger no puede ser nulo
+     * @return Devuelve esta misma instancia de GameBuilder
+     */
     public GameBuilder setLogger(Logger logger) {
         Assert.notNull(logger, "El logger no puede ser nulo.");
         this.logger = logger;
@@ -60,6 +73,14 @@ public class GameBuilder {
         return this;
     }
 
+
+  
+    /**
+     * Permite al usuario seleccionar una dificultad desde un directorio que contiene las configuraciones válidas de dificultad
+     * @param difficultiesDirectoryPath ruta al directorio que contiene los archivos de dificultad
+     * @return Devuelve esta misma instancia de GameBuilder
+     * @throws RuntimeException si ocurre un error al cargar las dificultades o si el usuario no selecciona ninguna
+     */
     public GameBuilder selectDifficulty(String difficultiesDirectoryPath) {
         Set<DifficultyConfig> difficulties = null;
         try {
@@ -89,6 +110,12 @@ public class GameBuilder {
         return this;
     }
 
+    /**
+     * Permite al usuario seleccionar un mapa desde un directorio que contiene las configuraciones válidas de mapas
+     * @param mapsDirectoryPath ruta al directorio que contiene los archivos de mapa
+     * @return Devuelve esta misma instancia de GameBuilder
+     * @throws RuntimeException si ocurre un error al cargar los mapas o si el usuario no elige ninguno
+     */
     public GameBuilder selectMap(String mapsDirectoryPath) {
         Set<MapConfig> maps = null;
         try {
@@ -112,6 +139,8 @@ public class GameBuilder {
         return this;
     }
 
+
+
     public GameBuilder setPlayers(Set<Player> players) {
         Assert.notNull(players, "players");
         Assert.isTrue(!players.isEmpty(), "players no debe estar vacio.");
@@ -119,6 +148,10 @@ public class GameBuilder {
         return this;
     }
 
+    /**
+     * Inicializa la cantidad de jugadores que ingrese el usuario
+     * @return Devuelve esta misma instancia de GameBuilder
+     */
     public GameBuilder initPlayers() {
         Scanner scanner = new Scanner(System.in);
 

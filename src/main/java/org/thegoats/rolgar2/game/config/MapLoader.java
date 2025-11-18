@@ -10,11 +10,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 public final class MapLoader {
-
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private MapLoader() {}
 
+      /**
+     * Carga todas las configuraciones de mapas,
+     * cada mapa cargado se almacena en un conjunto que luego se devuelve
+     * @param path ruta al directorio que contiene los archivos de mapas
+     * @return Devuelve un conjunto de objetos MapConfig
+     * @throws IOException si ocurre un error al acceder al directorio o al leer alguno de los archivos
+     */
     public static Set<MapConfig> loadMaps(String path) throws IOException, URISyntaxException {
         return loadFromResourceDirectory(path);
     }
@@ -57,6 +63,12 @@ public final class MapLoader {
         return configs;
     }
 
+    /**
+     * Carga y devuelve un mapa desde un archivo específico
+     * @param path ruta del archivo que contiene la configuración del mapa
+     * @return Devuelve un objeto MapConfig construido a partir del contenido del archivo
+     * @throws IOException si ocurre un error al leer el archivo
+     */
     private static MapConfig loadOne(Path path) throws IOException {
         return mapper.readValue(path.toFile(), MapConfig.class);
     }
