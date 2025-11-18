@@ -1,6 +1,5 @@
 package org.thegoats.rolgar2.game.config.card;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.thegoats.rolgar2.card.Card;
 import org.thegoats.rolgar2.card.IceballCard;
 import org.thegoats.rolgar2.util.Assert;
@@ -13,10 +12,10 @@ public record IceballCardConfig(
 ) implements CardConfig<IceballCard> {
     public IceballCardConfig {
         Assert.positive(durationFloor, "durationFloor");
-        Assert.isTrue(durationFloor > durationRoof, "durationRoof debe ser mayor a durationFloor");
+        Assert.isTrue(durationRoof > durationFloor, "durationRoof debe ser mayor a durationFloor");
     }
 
-    @Override @JsonIgnore
+    @Override
     public Card.Factory<IceballCard> getFactory(Random random) {
         return new IceballCard.Factory(random, durationFloor, durationRoof);
     }
