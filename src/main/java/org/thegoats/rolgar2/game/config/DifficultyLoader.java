@@ -14,10 +14,22 @@ import java.util.jar.JarFile;
 
 public class DifficultyLoader {
 
+    /**
+     * Carga todas las dificultades a partir de los archivos JSON ubicados en el directorio indicado
+     * @param directoryPath ruta del directorio que contiene los JSON de dificultad
+     * @return conjunto de configuraciones de dificultad leídas desde ese directorio
+     * @throws IOException si ocurre un problema al acceder al directorio o leer los archivos
+     */
     public static Set<DifficultyConfig> loadDifficulties(Path directoryPath) throws IOException {
         return loadDifficulties(directoryPath.toString());
     }
 
+    /**
+     * Carga todas las dificultades desde un directorio de recursos.
+     * @param resourceDirectory ruta del directorio de recursos donde están los JSON de dificultad
+     * @return conjunto de configuraciones de dificultad encontradas en ese directorio
+     * @throws IOException si no se encuentra el directorio, el protocolo no es soportado o ocurre un error de lectura
+     */
     public static Set<DifficultyConfig> loadDifficulties(String resourceDirectory) throws IOException {
         Set<DifficultyConfig> difficulties =
                 new org.thegoats.rolgar2.util.structures.sets.Set<>();
