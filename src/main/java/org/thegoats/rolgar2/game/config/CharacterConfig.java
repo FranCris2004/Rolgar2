@@ -1,5 +1,6 @@
 package org.thegoats.rolgar2.game.config;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.thegoats.rolgar2.character.CharacterFactory;
 import org.thegoats.rolgar2.util.Assert;
 
@@ -25,6 +26,7 @@ public record CharacterConfig(
         Assert.nonNegative(moves, "moves debe mayor o igual a cero");
     }
 
+    @JsonIgnore
     public CharacterFactory getCharacterFactory(Random random) {
         return new CharacterFactory(random, this);
     }

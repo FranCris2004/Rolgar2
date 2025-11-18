@@ -15,4 +15,9 @@ public record DifficultyConfig(
         Assert.notNull(enemyConfig, "enemyConfig");
         Assert.notNull(cardConfig, "cardConfig");
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

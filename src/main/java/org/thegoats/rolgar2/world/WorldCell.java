@@ -192,7 +192,7 @@ public class WorldCell {
      * @return true si contiene algun cha
      */
     public boolean isOccupied() {
-        return wall != null || character != null;
+        return !hasWall() || !hasCharacter();
     }
 
     public boolean isFree(){
@@ -220,31 +220,16 @@ public class WorldCell {
         return character != null;
     }
 
-    /**
-     * @return true si es caminable
-     */
-    public boolean isWalkable() {
-        return isFree() || hasWalkableFloor() && hasClimbableWall();
-    }
-
-    public boolean hasCard(){
-        return card != null;
-    }
-
-    public boolean hasCharacter(){
-        return character != null;
-    }
-
-    public boolean hasWall(){
-        return wall != null;
-    }
-
     public boolean hasWalkableFloor(){
         return hasFloor() && floor.isWalkable();
     }
 
     public boolean hasClimbableWall(){
         return hasWall() && wall.isClimbable();
+    }
+
+    public boolean characterCanMove() {
+        return !hasCharacter() && (hasWalkableFloor() || hasClimbableWall());
     }
 
     //

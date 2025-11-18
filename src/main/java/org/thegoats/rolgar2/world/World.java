@@ -1,6 +1,5 @@
 package org.thegoats.rolgar2.world;
 
-import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.collections.Board3d;
 
@@ -8,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Clase que envuelve Board3d para adicionarle logica, validaciones y metodos propios del juego
@@ -72,16 +69,16 @@ public class World implements Iterable<WorldCell> {
     }
 
     /**
-     * Obtiene una celda aleatoria vacia en la que se pueda caminar, es decir, que no contenga objetos
+     * Obtiene una celda aleatoria vacia en la que un personaje pueda caminar
      * @param random generador aleatorio de valores
      * @return una celda vacia en la que se pueda caminar
      */
-    public WorldCell getRandomEmptyWalkableCell(Random random) {
+    public WorldCell getRandomEmptyCharacterWalkableCell(Random random) {
         Assert.notNull(random, "Random no puede ser null");
         List<WorldCell> emptyWalkableCells = new ArrayList<>();
 
         board.forEach(cell -> {
-            if (cell.isWalkable()) {
+            if (cell.characterCanMove() && !cell.hasWall()) {
                 emptyWalkableCells.add(cell);
             }
         });
