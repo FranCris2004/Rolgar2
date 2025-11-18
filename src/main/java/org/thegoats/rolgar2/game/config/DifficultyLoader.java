@@ -13,7 +13,14 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class DifficultyLoader {
-
+  
+    /**
+     * Carga todas las configuraciones de dificultad desde un directorio que las contiene,
+     * las agrega a un conjunto y devuelve el mismo
+     * @param directoryPath ruta al directorio que contiene los archivos de dificultad
+     * @return Devuelve un conjunto de objetos DifficultyConfig
+     * @throws IOException si ocurre algun error al acceder al directorio o al leer algun archivo
+     */
     public static Set<DifficultyConfig> loadDifficulties(Path directoryPath) throws IOException {
         return loadDifficulties(directoryPath.toString());
     }
@@ -84,9 +91,13 @@ public class DifficultyLoader {
         throw new IOException("Protocolo no soportado: " + protocol);
     }
 
-    // ------------------------------------------
-    // Lectura desde filesystem
-    // ------------------------------------------
+    /**
+     * Carga una configuracion de dificultad desde un archivo,
+     * lo convierte a un objeto DifficultyConfig y lo devuelve
+     * @param path ruta del archivo que contiene la configuracion de dificultad
+     * @return Devuelve un objeto DifficultyConfig construido a partir del contenido del archivo
+     * @throws IOException si ocurre un error al leer el archivo
+     */
     public static DifficultyConfig loadDifficulty(Path path) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(path.toFile(), DifficultyConfig.class);
