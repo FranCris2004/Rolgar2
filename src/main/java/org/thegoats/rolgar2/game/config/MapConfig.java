@@ -12,6 +12,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Representa la configuración de un mapa del juego cargada desde JSON.
+ * @param name  nombre del mapa
+ * @param floorConfigs configuraciones de los distintos tipos de piso disponibles
+ * @param wallConfigs configuraciones de los distintos tipos de pared disponibles
+ * @param mapData arreglo tridimensional con la información de cada celda
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record MapConfig(
         String name,
@@ -19,6 +26,10 @@ public record MapConfig(
         WallConfig[] wallConfigs,
         CellConfig[][][] mapData
 ) {
+    /**
+     * Constructor del record.
+     * Asigna los campos y hace las respectivas validaciones, si alguna falla lanza excepcion
+     */
     public MapConfig {
         Assert.notNull(name, "name no puede ser nulo");
         Assert.notNull(floorConfigs, "floorConfigs no puede ser nulo");
@@ -30,6 +41,10 @@ public record MapConfig(
         Assert.positive(mapData[0][0].length, "mapData[0][0].length debe ser positivo");
     }
 
+    /**
+     * Crea un mapa auxiliar que permite buscar rápidamente una FloorConfig por su nombre
+     * @return un mapa donde la clave es el nombre del piso y el valor es la FloorConfig correspondiente
+     */
     @JsonIgnore
     public Map<String, FloorConfig> getFloorConfigsMap() {
         Map<String, FloorConfig> map = new HashMap<>();
@@ -41,6 +56,10 @@ public record MapConfig(
         return map;
     }
 
+    /**
+     * Crea un mapa auxiliar que permite buscar rápidamente una WallConfig por su nombre
+     * @return un mapa donde la clave es el nombre de la pared y el valor es la WallConfig correspondiente
+     */
     @JsonIgnore
     public Map<String, WallConfig> getWallConfigsMap() {
         Map<String, WallConfig> map = new HashMap<>();
@@ -52,6 +71,12 @@ public record MapConfig(
         return map;
     }
 
+    /**
+     * Devuelve un mapa que asocia el nombre de cada tipo de piso con su Bitmap.
+     *  Para cada FloorConfig se carga o se obtiene el Bitmap correspondiente a la textura de ese piso.
+     * @return un mapa donde la clave es el nombre del piso y el valor es su Bitmap
+     * @throws IOException si ocurre un problema al cargar alguna imagen de piso
+     */
     @JsonIgnore
     public Map<String, Bitmap> getFloorBitmapMap() throws IOException {
         Map<String, Bitmap> map = new HashMap<>();
@@ -63,6 +88,12 @@ public record MapConfig(
         return map;
     }
 
+    /**
+     * Devuelve un mapa que asocia el nombre de cada tipo de pared con su Bitmap.
+     * Para cada WallConfig se carga o se obtiene el Bitmap correspondiente a la textura de esa pared.
+     * @return un mapa donde la clave es el nombre de la pared y el valor es su Bitmap
+     * @throws IOException si ocurre un problema al cargar alguna imagen de pared
+     */
     @JsonIgnore
     public Map<String,Bitmap> getWallBitmapMap() throws IOException {
         Map<String, Bitmap> map = new HashMap<>();
@@ -74,6 +105,10 @@ public record MapConfig(
         return map;
     }
 
+    /**
+     * Genera y devuelve un objeto World a partir de esta configuración.
+     * @return un World con todas sus celdas configuradas según mapData, floorConfigs y wallConfigs
+     */
     @JsonIgnore
     public World generateWorld() {
         World world = new World(mapData[0][0].length, mapData[0].length, mapData.length);
@@ -105,6 +140,11 @@ public record MapConfig(
         return world;
     }
 
+    /**
+     * Devuelve el nombre del mapa.
+     * Se sobrescribe toString para que, al imprimir un MapConfig
+     * @return el nombre del mapa
+     */
     @Override
     public String toString() {
         return name;
