@@ -1,44 +1,48 @@
 package org.thegoats.rolgar2.game;
 
-import org.thegoats.rolgar2.card.Card;
-import org.thegoats.rolgar2.character.CharacterData;
+import org.thegoats.rolgar2.card.*;
 import org.thegoats.rolgar2.util.Assert;
-import org.thegoats.rolgar2.util.Options;
+import org.thegoats.rolgar2.util.io.ConsoleSelection;
+import org.thegoats.rolgar2.util.io.Selection;
 import org.thegoats.rolgar2.world.Position;
 import org.thegoats.rolgar2.world.WorldCell;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.Vector;
 
 public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
-    private final Options turnOptions = new Options("¿Cual sera su próxima acción?",
-            new String[]{"Movimiento", "Carta", "Alianza"},
-            "Opcion inválida",
-            3,
-            true);
-    private final Options freezedTurnOptions = new Options("¿Cual sera su próxima acción?",
-            new String[]{"Carta", "Alianza"},
-            "Opcion inválida",
-            3,
-            true);
-    private final Options directionsOptions = new Options("¿Hacia que direccion se desea mover?",
-            new String[]{"w", "a", "s", "d", "wa", "wd", "sa", "sd"},
-            "Direccion inválida",
-            3,
-            true);
-    private final Options pickCardOptions = new Options("¿Desea tomar la carta?",
-            new String[]{"Si", "No"},
-            "Opcion inválida",
-            3,
-            true);
-    private final Options useCardOptions = new Options("¿Qué carta quiere usar?",
-            gameCharacter.getCharacterData().getDeck().getCardNames(),
-            "Opción inválida",
-            3,
-            true);
+    private enum TurnActionEnum {
+        RealizarMovimiento,
+        UsarCarta,
+        AgarrarCarta,
+        Atacar,
+        GestionarAlianzas;
 
+        public static List<TurnActionEnum> getActions() {
+            return Arrays.asList(values());
+        }
+
+        private static List<TurnActionEnum> getFreezedActions() {
+            return Arrays.asList(values());
+        }
+    }
+
+    private enum MovementDirectionEnum {
+        Norte,
+        Oeste,
+        Sur,
+        Este
+    }
+
+    private final Selection<TurnActionEnum> turnSelection;
+
+    private final Selection<TurnActionEnum> freezedTurnSelection;
+
+    private final Selection<MovementDirectionEnum> directionSelection;
+
+    private final Selection<Boolean> pickCardSelection;
+
+    private final Selection<Card> useCardSelection;
     /**
      * Construye el GameCharacterTurnManager
      * @param gameCharacter no null
@@ -46,6 +50,37 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     public GameCharacterPlayerTurnManager(GameCharacter gameCharacter) {
         super(gameCharacter);
         Assert.isTrue(gameCharacter.isPlayerCharacter(), "gameCharacter debe ser un personaje de un jugador.");
+
+        turnSelection = new ConsoleSelection<TurnActionEnum>()
+                .addAllOptions(TurnActionEnum.getActions())
+                .maxTries(3)
+                .selectionPrompt("¿Cual sera su proxima accion?")
+                .selectionRetryMessage("Opcion invalida.");
+
+        freezedTurnSelection = new ConsoleSelection<TurnActionEnum>()
+                .addAllOptions(TurnActionEnum.getFreezedActions())
+                .maxTries(3)
+                .selectionPrompt("¿Cual sera su proxima accion?")
+                .selectionRetryMessage("Opcion invalida.");
+
+        directionSelection = new ConsoleSelection<MovementDirectionEnum>()
+                .addAllOptions(Arrays.stream(MovementDirectionEnum.values()).toList())
+                .maxTries(3)
+                .selectionPrompt("¿Hacia que direccion se desea mover?")
+                .selectionRetryMessage("Opcion invalida.");
+
+        pickCardSelection = new ConsoleSelection<Boolean>()
+                .addOption("Si", true)
+                .addOption("No", false)
+                .maxTries(3)
+                .selectionPrompt("¿Desea tomar la carta?")
+                .selectionRetryMessage("Opcion invalida.");
+
+        useCardSelection = new ConsoleSelection<Card>()
+                .addAllOptions(gameCharacter.getCharacterData().getDeck().getCards())
+                .maxTries(3)
+                .selectionPrompt("¿Que carta quiere usar?")
+                .selectionRetryMessage("Opcion invalida.");
     }
 
     /**
@@ -53,182 +88,100 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
      */
     @Override
     public void doTurn() {
-        int actualMoves = gameCharacter.getCharacterData().getMoves();
-        while(actualMoves >= 0) {
-            if (gameCharacter.getCharacterData().isFreezed()) {
-                doFreezedTurn();
-                actualMoves--;
-                continue;
+        int remainingMoves = gameCharacter.getCharacterData().getMoves();
+        while(remainingMoves >= 0) {
+            int layer = gameCharacter.getWorldCell().getPosition().getLayer();
+            gameCharacter.getGame().worldViewer.showLayer(gameCharacter.getWorld(), layer);
+
+            logger.logInfo("El jugador " + gameCharacter.getCharacterData().getName() + " realiza su turno.");
+
+            var action = (gameCharacter.getCharacterData().isFreezed() ? freezedTurnSelection.select() : turnSelection.select())
+                    .orElseThrow();
+
+            if (doTurnAction(action)) {
+                remainingMoves--;
+            } else {
+                logger.logWarning("La accion no se ha completado.");
             }
-
-            System.out.println(gameCharacter.getCharacterData().getEffects());
-            gameCharacter.getGame().logger.logDebug("El jugador " + gameCharacter.getCharacterData().getName() + " realiza su turno.");
-
-            turnOptions.choose().ifPresent(choice -> {
-                switch (choice.toLowerCase()) {
-                    case "movimiento":
-                        int moveTries = 3;
-                        while(!move() && moveTries > 0){
-                            moveTries--;
-                        }
-                        break;
-                    case "carta":
-                        int cardTries = 3;
-                        if(gameCharacter.getCharacterData().getDeck().isEmpty()){
-                            break;
-                        }
-                        while(!useCard() && cardTries > 0){
-                            cardTries--;
-                        };
-                        //         useCards();
-                        break;
-                    case "alianza":
-                        //        doAlliance();
-                        break;
-                }
-            });
-            actualMoves--;
         }
     }
 
-    /**
-     * Realiza el turno del personaje en caso de estar congelado
-     */
-    public void doFreezedTurn() {
-        int actualMoves = gameCharacter.getCharacterData().getMoves();
-        while(actualMoves >= 0) {
-            System.out.println(gameCharacter.getCharacterData().getEffects());
-            gameCharacter.getGame().logger.logDebug("El jugador " + gameCharacter.getCharacterData().getName() + " realiza su turno.");
-            freezedTurnOptions.choose().ifPresent(choice -> {
-                switch (choice.toLowerCase()) {
-                    case "carta":
-                        //         useCards();
-                        break;
-                    case "alianza":
-                        //        doAlliance();
-                        break;
-                }
-            });
-            actualMoves--;
-        }
-    }
-
-
-    public boolean useCard(){
-        Assert.isTrue(!gameCharacter.getCharacterData().getDeck().isEmpty(), "El jugador tiene que tener cartas");
-        var optionalChoice = useCardOptions.choose();
-        if(optionalChoice.isPresent()){
-            var choice = optionalChoice.get();
-
-
+    private boolean doTurnAction(TurnActionEnum action) {
+        return switch (action) {
+            case RealizarMovimiento -> move();
+            case Atacar -> atacar();
+            case AgarrarCarta -> agarrarCarta();
+            case UsarCarta -> usarCarta();
+            case GestionarAlianzas -> gestionarAlianzas();
+        };
     }
 
     /**
      * Consulta al usuario en que direccion moverse y realiza el movimiento
      * @return true si se pudo concretar el movimiento
      */
-    private boolean move(){
-        var optionalChoice = directionsOptions.choose();
-        if(optionalChoice.isPresent()){
-            var choice = optionalChoice.get();
-            Position oldPosition = gameCharacter.getWorldCell().getPosition();
-            Position newPosition;
-            switch (choice) {
-                case "w":
-                    newPosition = clampedPosition(oldPosition.getRow(), oldPosition.getColumn() + 1, oldPosition.getLayer());
-                    if(!newPosition.equals(oldPosition)){
-                        return moveToCell(gameCharacter.getWorld().getCell(newPosition), gameCharacter.getWorldCell());
-                    }
-                    return false;
-                case "a":
-                    newPosition = clampedPosition(oldPosition.getRow() - 1, oldPosition.getColumn(), oldPosition.getLayer());
-                    if(!newPosition.equals(oldPosition)){
-                        return moveToCell(gameCharacter.getWorld().getCell(newPosition), gameCharacter.getWorldCell());
-                    }
-                    return false;
-                case "s":
-                    newPosition = clampedPosition(oldPosition.getRow(), oldPosition.getColumn() - 1, oldPosition.getLayer());
-                    if(!newPosition.equals(oldPosition)){
-                        return moveToCell(gameCharacter.getWorld().getCell(newPosition), gameCharacter.getWorldCell());
-                    }
-                    return false;
-                case "d":
-                    newPosition = new Position(oldPosition.getRow() + 1, oldPosition.getColumn(), oldPosition.getLayer());
-                    if(!newPosition.equals(oldPosition)){
-                        return moveToCell(gameCharacter.getWorld().getCell(newPosition), gameCharacter.getWorldCell());
-                    }
-                    return false;
-                case "wa":
-                    newPosition = new Position(oldPosition.getRow() - 1, oldPosition.getColumn() + 1, oldPosition.getLayer());
-                    if(!newPosition.equals(oldPosition)){
-                        return moveToCell(gameCharacter.getWorld().getCell(newPosition), gameCharacter.getWorldCell());
-                    }
-                    return false;
-                case "wd":
-                    newPosition = new Position(oldPosition.getRow() + 1, oldPosition.getColumn() + 1, oldPosition.getLayer());
-                    if(!newPosition.equals(oldPosition)){
-                        return moveToCell(gameCharacter.getWorld().getCell(newPosition), gameCharacter.getWorldCell());
-                    }
-                    return false;
-                case "sa":
-                    newPosition = new Position(oldPosition.getRow() - 1, oldPosition.getColumn() - 1, oldPosition.getLayer());
-                    if(!newPosition.equals(oldPosition)){
-                        return moveToCell(gameCharacter.getWorld().getCell(newPosition), gameCharacter.getWorldCell());
-                    }
-                    return false;
-                case "sd":
-                    newPosition = new Position(oldPosition.getRow() + 1, oldPosition.getColumn() - 1, oldPosition.getLayer());
-                    if(!newPosition.equals(oldPosition)){
-                        return moveToCell(gameCharacter.getWorld().getCell(newPosition), gameCharacter.getWorldCell());
-                    }
-                    return false;
-            }
+    private boolean move() {
+        var direction = directionSelection
+                .select();
+
+        if (direction.isEmpty()) {
+            logger.logInfo("No se pudo realizar el movimiento.");
+            return false;
         }
-        throw new RuntimeException("No se pudo realizar el movimiento");
+
+        var newCell = gameCharacter.getWorld().getCell(
+                switch (direction.get()) {
+                    case Norte -> northPosition();
+                    case Oeste -> westPosition();
+                    case Sur -> southPosition();
+                    case Este -> eastPosition();
+                }
+        );
+
+        if(newCell.characterCanMove()) {
+            gameCharacter.moveCharacter(newCell.getPosition());
+            return true;
+        }
+
+        return false;
     }
 
-    /**
-     * Dada una celda, comprende los casos de movimientos del jugador hacia ella, y lo mueve cuando corresponde.
-     * @param newCell no null, Celda destino
-     * @param oldCell no null, Celda origen
-     * @return true si se pudo realizar el movimiento, false si no se pudo realizar
-     * @throws RuntimeException si ocurre un error inesperado
-     */
-    private boolean moveToCell(WorldCell newCell, WorldCell oldCell){
-        Assert.notNull(newCell, "NewCell no puede ser null");
-        Assert.notNull(oldCell, "OldCell no puede ser null");
-        Assert.isTrue(!oldCell.equals(newCell), "newCell y oldCell deben ser distintas");
-        // DESTINOS CAMINABLES
-        if(newCell.isWalkable()){ // Si la celda es caminable
-            if(newCell.isFree()){// Si la celda esta vacia
-                gameCharacter.moveCharacter(newCell.getPosition());
-                return true;
-            }
-            if(newCell.hasCharacter()){ // Si la celda tiene un personaje o enemigo lo ataca
-                CharacterData other = newCell.getCharacter().get().getCharacterData();
-                other.takeDamage(gameCharacter.getCharacterData().getStrength());
-                return true;
-            }
-            if(newCell.hasWall()) {
-                if (newCell.hasClimbableWall()) { // Si la celda tiene una pared escalable
-                    Optional<WorldCell> upperNeighbor = newCell.getUpperNeighbor();
-                    if (upperNeighbor.isPresent()) {
-                        return moveToCell(upperNeighbor.get(), oldCell); // intenta mover a la celda de arriba
+    private boolean atacar() {
+        return false;
+    }
+
+    private boolean agarrarCarta() {
+        return false;
+    }
+
+    private boolean usarCarta() {
+        Assert.isTrue(!gameCharacter.getCharacterData().getDeck().isEmpty(), "El jugador tiene que tener cartas");
+
+        useCardSelection.select()
+                .ifPresent(card -> {
+                    if (card instanceof CardWithCharacterTarget cardWithCharacterTarget) {
+                        cardWithCharacterTarget.setTarget(gameCharacter.getCharacterData());
                     }
-                }
-                return false; // si la celda tiene una pared no caminable
-            }
-            if(newCell.hasCard()){
-                if(!gameCharacter.getCharacterData().getDeck().isFull()){
-                    if(pickCard(newCell.getCard().get())){
-                        newCell.setCard(null);
+
+                    // TODO: agregar lo que requieran stealcard y teleport card
+
+                    if (card instanceof StealingCard stealingCard) {
+                        gameCharacter.getGame().logger.logWarning("el uso de StealingCard aun no esta implementado.");
                     }
-                }
-                gameCharacter.moveCharacter(newCell.getPosition());
-                return true;
-            }
-        }
-        throw new RuntimeException("No se pudo mover el personaje");
+
+                    if (card instanceof TeleportCard teleportCard) {
+                        gameCharacter.getGame().logger.logWarning("el uso de TeleportCard aun no esta implementado.");
+                    }
+
+                    card.use();
+                    gameCharacter.getCharacterData().getDeck().remove(card);
+                });
+
+        return false;
+    }
+
+    private boolean gestionarAlianzas() {
+        return false;
     }
 
     /**
@@ -238,18 +191,51 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
      */
     public boolean pickCard(Card card) {
         Assert.notNull(card, "card no puede ser null");
-        var optionalChoice = pickCardOptions.choose();
-        if (optionalChoice.isPresent()) {
-            var choice = optionalChoice.get();
-            switch (choice.toLowerCase()) {
-                case "si":
-                    gameCharacter.getCharacterData().getDeck().add(card);
-                    return true;
-                case "no":
-                    return false;
-            }
+
+        var optionalChoice = pickCardSelection.select();
+
+        if (optionalChoice.isPresent() && optionalChoice.get()) {
+            gameCharacter.getCharacterData().getDeck().add(card);
+            return true;
         }
+
         return false;
+    }
+
+    private Position northPosition() {
+        var position = gameCharacter.getWorldCell().getPosition();
+        return clampedPosition(
+                position.getRow() + 1,
+                position.getColumn(),
+                position.getLayer()
+        );
+    }
+
+    private Position southPosition() {
+        var position = gameCharacter.getWorldCell().getPosition();
+        return clampedPosition(
+                position.getRow() - 1,
+                position.getColumn(),
+                position.getLayer()
+        );
+    }
+
+    private Position westPosition() {
+        var position = gameCharacter.getWorldCell().getPosition();
+        return clampedPosition(
+                position.getRow(),
+                position.getColumn() - 1,
+                position.getLayer()
+        );
+    }
+
+    private Position eastPosition() {
+        var position = gameCharacter.getWorldCell().getPosition();
+        return clampedPosition(
+                position.getRow(),
+                position.getColumn() + 1,
+                position.getLayer()
+        );
     }
 
     /**
@@ -259,11 +245,12 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
      * @param layer entero
      * @return Position recortada entre 0 y los limites del mapa
      */
-    public Position clampedPosition(int row, int column, int layer){
+    private Position clampedPosition(int row, int column, int layer) {
+        var world = gameCharacter.getWorld();
         return new Position(
-                Math.clamp(row, 0, gameCharacter.getWorld().getRowCount()),
-                Math.clamp(column, 0, gameCharacter.getWorld().getColumnCount()),
-                Math.clamp(layer, 0, gameCharacter.getWorld().getLayerCount())
+                Math.clamp(row, 0, world.getRowCount()),
+                Math.clamp(column, 0, world.getColumnCount()),
+                Math.clamp(layer, 0, world.getLayerCount())
                 );
     }
 }
