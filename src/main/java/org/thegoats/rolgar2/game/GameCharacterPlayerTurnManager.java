@@ -202,7 +202,7 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     private Position northPosition() {
         var position = gameCharacter.getWorldCell().getPosition();
         return clampedPosition(
-                position.getRow() + 1,
+                position.getRow() - 1,
                 position.getColumn(),
                 position.getLayer()
         );
@@ -211,7 +211,7 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     private Position southPosition() {
         var position = gameCharacter.getWorldCell().getPosition();
         return clampedPosition(
-                position.getRow() - 1,
+                position.getRow() + 1,
                 position.getColumn(),
                 position.getLayer()
         );
