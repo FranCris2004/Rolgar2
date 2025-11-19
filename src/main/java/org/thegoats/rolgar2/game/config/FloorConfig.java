@@ -10,6 +10,11 @@ import java.io.IOException;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record FloorConfig(String name, String spritePath, Boolean isWalkable) {
+
+    /**
+     * Constructor del record.
+     * realiza las validaciones correspondiente, si alguna falla lanza excepcion
+     */
     public FloorConfig {
         Assert.notNull(name, "name no puede ser nulo");
         Assert.notNull(spritePath, "spritePath no puede ser nulo");
@@ -39,6 +44,11 @@ public record FloorConfig(String name, String spritePath, Boolean isWalkable) {
         return new Floor(name, isWalkable);
     }
 
+    /**
+     * Compara esta configuración con otra por nombre.
+     * @param o objeto con el que se compara
+     * @return true si o es un FloorConfig con el mismo nombre, false en caso contrario
+     */
     @Override
     public boolean equals(Object o) {
         return o instanceof FloorConfig && ((FloorConfig) o).name.equals(name);

@@ -32,8 +32,7 @@ public record WallConfig(String name, String spritePath, Boolean isClimbable) {
     }
 
     /**
-     * Carga y devuelve el Bitmap asociado a la ruta de la imagen de la pared.
-     * @return el Bitmap cargado desde spritePath
+     * @return Devuelve el bitmap cargado correspondiente a la pared
      * @throws IOException si ocurre un error al leer el archivo de imagen
      */
     @JsonIgnore
@@ -42,8 +41,7 @@ public record WallConfig(String name, String spritePath, Boolean isClimbable) {
     }
 
     /**
-     * Crea y devuelve un objeto Wall del mundo a partir de esta configuración.
-     * @return un nuevo objeto Wall basado en esta configuración
+     * @return Devuelve una nueva instancia de Wall segun la configuracion
      */
     @JsonIgnore
     public Wall getWall() {
