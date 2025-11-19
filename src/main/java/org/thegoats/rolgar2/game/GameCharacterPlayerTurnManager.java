@@ -29,9 +29,9 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
 
     private enum MovementDirectionEnum {
         Norte,
-        Oeste,
         Sur,
-        Este
+        Este,
+        Oeste
     }
 
     private final Selection<TurnActionEnum> turnSelection;
@@ -111,7 +111,7 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
             case RealizarMovimiento -> move();
             case Atacar -> atacar();
             case AgarrarCarta -> pickCard();
-            case UsarCarta -> usarCarta();
+            case UsarCarta -> useCard();
             case GestionarAlianzas -> gestionarAlianzas();
         };
     }
@@ -150,11 +150,7 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         return false;
     }
 
-    private boolean agarrarCarta() {
-        return false;
-    }
-
-    private boolean usarCarta() {
+    private boolean useCard() {
         Assert.isTrue(!gameCharacter.getCharacterData().getDeck().isEmpty(), "El jugador tiene que tener cartas");
 
         useCardSelection.select()
