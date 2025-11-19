@@ -14,17 +14,24 @@ public final class MapLoader {
 
     private MapLoader() {}
 
-      /**
-     * Carga todas las configuraciones de mapas,
-     * cada mapa cargado se almacena en un conjunto que luego se devuelve
-     * @param path ruta al directorio que contiene los archivos de mapas
-     * @return Devuelve un conjunto de objetos MapConfig
-     * @throws IOException si ocurre un error al acceder al directorio o al leer alguno de los archivos
+    /**
+     * Carga todos los mapas (MapConfig) ubicados en el directorio indicado.
+     * @param path nombre o ruta del directorio de recursos donde se encuentran los JSON de mapas
+     * @return un conjunto de objetos MapConfig cargados desde ese directorio
+     * @throws IOException si ocurre un error de lectura de archivos
+     * @throws URISyntaxException si hay problemas al convertir la URL del recurso a URI
      */
     public static Set<MapConfig> loadMaps(String path) throws IOException, URISyntaxException {
         return loadFromResourceDirectory(path);
     }
 
+    /**
+     * Carga todos los MapConfig que se encuentran dentro de un directorio de recursos
+     * @param resourceDirName  nombre del directorio de recursos
+     * @return un conjunto de objetos MapConfig leídos desde los archivos JSON del directorio
+     * @throws IOException  si ocurre un error de lectura de archivos
+     * @throws URISyntaxException si hay problemas al resolver la ubicación del recurso
+     */
     private static Set<MapConfig> loadFromResourceDirectory(String resourceDirName) throws IOException, URISyntaxException {
         Set<MapConfig> configs = new HashSet<>();
 
@@ -64,15 +71,21 @@ public final class MapLoader {
     }
 
     /**
-     * Carga y devuelve un mapa desde un archivo específico
-     * @param path ruta del archivo que contiene la configuración del mapa
-     * @return Devuelve un objeto MapConfig construido a partir del contenido del archivo
-     * @throws IOException si ocurre un error al leer el archivo
+     * Carga un único MapConfig desde el archivo JSON indicado por la ruta.
+     * @param path Ruta del archivo JSON que contiene la configuración del mapa
+     * @return un objeto MapConfig generado a partir del contenido del archivo
+     * @throws IOException si ocurre un error de lectura o el JSON es inválido
      */
     private static MapConfig loadOne(Path path) throws IOException {
         return mapper.readValue(path.toFile(), MapConfig.class);
     }
 
+    /**
+     * Devuelve un FileSystem asociado al JAR desde el que se está ejecutando la clase MapLoader.
+     * @return un FileSystem que representa el JAR actual
+     * @throws IOException si ocurre un error al abrir o crear el FileSystem
+     * @throws URISyntaxException si hay problemas al obtener la URI del JAR
+     */
     private static FileSystem getJarFileSystem() throws IOException, URISyntaxException {
         try {
             return FileSystems.getFileSystem(MapLoader.class.getProtectionDomain()

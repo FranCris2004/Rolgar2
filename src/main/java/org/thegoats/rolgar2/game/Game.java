@@ -29,6 +29,14 @@ public final class Game {
     private final CharacterFactory playerCharacterFactory;
     private final CharacterFactory enemyCharacterFactory;
 
+
+    /**
+     * Construye una nueva partida del juego.
+     * @param logger logger a utilizar para registrar mensajes
+     * @param random generador de números aleatorios
+     * @param players conjunto de jugadores que participarán
+     * @param config configuración del juego (dificultad + mapa)
+     */
     public Game(Logger logger, Random random, Set<Player> players, GameConfig config) {
         Assert.notNull(logger, "Logger");
         Assert.notNull(config, "random");

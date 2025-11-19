@@ -19,6 +19,10 @@ public record CardConfigBundle(
         StrengthCardConfig strengthCardConfig,
         TeleportCardConfig teleportCardConfig
 ) {
+    /**
+     * Constructor del record.
+     * Valida que ninguna de las configuraciones de cartas sea nula. Si es asi lanza excepcion
+     */
     public CardConfigBundle {
         Assert.notNull(doubleMoveCardConfig, "doubleMoveCardConfig");
         Assert.notNull(fireballCardConfig, "fireballCardConfig");
@@ -31,6 +35,11 @@ public record CardConfigBundle(
         Assert.notNull(teleportCardConfig, "teleportCardConfig");
     }
 
+    /**
+     * Crea y devuelve un conjunto de fábricas de cartas basado en esta configuración.
+     * @param random generador de números aleatorios que se pasará a cada fábrica de carta
+     * @return un conjunto de factories, una por cada tipo de carta configurada
+     */
     public Set<Card.Factory<? extends Card>> getFactories(Random random) {
         var factories = new org.thegoats.rolgar2.util.structures.sets.Set<Card.Factory<? extends Card>>();
 
