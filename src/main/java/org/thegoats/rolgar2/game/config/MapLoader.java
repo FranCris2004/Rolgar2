@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public final class MapLoader {
-
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private MapLoader() {}

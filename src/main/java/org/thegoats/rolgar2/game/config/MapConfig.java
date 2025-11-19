@@ -30,6 +30,10 @@ public record MapConfig(
         Assert.positive(mapData[0][0].length, "mapData[0][0].length debe ser positivo");
     }
 
+    /**
+     * Genera un mapa que relaciona el nombre de cada piso con su respectiva configuración
+     * @return Devuelve un Map cuya clave es el nombre del piso y cuyo valor es su FloorConfig
+     */
     @JsonIgnore
     public Map<String, FloorConfig> getFloorConfigsMap() {
         Map<String, FloorConfig> map = new HashMap<>();
@@ -41,6 +45,10 @@ public record MapConfig(
         return map;
     }
 
+    /**
+     * Genera un mapa que relaciona el nombre de cada pared con su respectiva configuración
+     * @return Devuelve un Map cuya clave es el nombre de la pared y cuyo valor es su WallConfig
+     */
     @JsonIgnore
     public Map<String, WallConfig> getWallConfigsMap() {
         Map<String, WallConfig> map = new HashMap<>();
@@ -52,6 +60,11 @@ public record MapConfig(
         return map;
     }
 
+    /**
+     * Carga los bitmaps asociados a las configuraciones de piso
+     * @return Devuelve un Map cuya clave es el nombre del piso y cuyo valor es el Bitmap correspondiente
+     * @throws IOException si ocurre un error al cargar alguno de los archivos de imagen de piso
+     */
     @JsonIgnore
     public Map<String, Bitmap> getFloorBitmapMap() throws IOException {
         Map<String, Bitmap> map = new HashMap<>();
@@ -63,6 +76,11 @@ public record MapConfig(
         return map;
     }
 
+    /**
+     * Carga los bitmaps asociados a las configuraciones de pared
+     * @return Devuelve un Map cuya clave es el nombre de la pared y cuyo valor es el Bitmap correspondiente
+     * @throws IOException si ocurre un error al cargar alguno de los archivos de imagen de pared
+     */
     @JsonIgnore
     public Map<String,Bitmap> getWallBitmapMap() throws IOException {
         Map<String, Bitmap> map = new HashMap<>();
@@ -74,6 +92,10 @@ public record MapConfig(
         return map;
     }
 
+    /**
+     * Genera una instancia completa de World construido a partir de los datos de configuracion del mapa
+     * @return Devuelve dicho objeto World
+     */
     @JsonIgnore
     public World generateWorld() {
         World world = new World(mapData[0][0].length, mapData[0].length, mapData.length);

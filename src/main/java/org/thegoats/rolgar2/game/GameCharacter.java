@@ -45,10 +45,15 @@ public final class GameCharacter {
         }
     }
 
+    /**
+     * Cambia la celda en el mapa en la que se encuentra el personaje
+     * @param worldCell no puede ser nulo
+     */
     public void setWorldCell(WorldCell worldCell) {
         Assert.notNull(worldCell, "worldCell no puede ser nulo.");
         this.worldCell = worldCell;
     }
+
 
     public CharacterData getCharacterData(){
         return characterData;
@@ -69,14 +74,27 @@ public final class GameCharacter {
         return world;
     }
 
+ 
+    /**
+     * @return Devuelve la celda en el mapa en la que se encuentra el personaje
+     */
     public WorldCell getWorldCell() {
         return worldCell;
     }
 
+    /**
+     * Determina si el personaje es un jugador
+     * @return Devuelve True si el es un jugador, False en caso contrario
+     */
     public boolean isPlayerCharacter() {
         return player != null;
     }
 
+    /**
+     * Realiza un ataque al personaje enviado por parametro, lo registra en el logger,
+     * y se le aplica daño en funcion de la fuerza del atacante
+     * @param character no puede ser nulo
+     */
     public void attack(GameCharacter character) {
         Assert.notNull(character, "character no puede ser nulo");
 
