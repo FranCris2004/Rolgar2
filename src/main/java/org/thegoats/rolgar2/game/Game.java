@@ -134,7 +134,7 @@ public final class Game {
                     this.gameCharacters.add(new GameCharacter(
                             this,
                             world,
-                            player,
+                            null,
                             enemyCharacterFactory.create("Enemigo" + i),
                             world.getRandomEmptyCharacterWalkableCell(random),
                             GameCharacterEnemyTurnManager.class
