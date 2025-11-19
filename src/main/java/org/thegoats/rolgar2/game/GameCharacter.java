@@ -46,6 +46,9 @@ public final class GameCharacter {
         this.player = player;
         this.characterData = characterData;
 
+        this.worldCell = initialWorldCell;
+        this.worldCell.setCharacter(this);
+
         try {
             Constructor<?> ctor = gameCharacterTurnManagerClass.getDeclaredConstructor(GameCharacter.class);
             this.turnManager =  (GameCharacterTurnManager) ctor.newInstance(this);
