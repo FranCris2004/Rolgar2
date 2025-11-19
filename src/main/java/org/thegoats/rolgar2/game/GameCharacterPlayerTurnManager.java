@@ -110,7 +110,7 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         return switch (action) {
             case RealizarMovimiento -> move();
             case Atacar -> atacar();
-            case AgarrarCarta -> agarrarCarta();
+            case AgarrarCarta -> pickCard();
             case UsarCarta -> usarCarta();
             case GestionarAlianzas -> gestionarAlianzas();
         };
@@ -186,20 +186,17 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
 
     /**
      * Le pregunta al jugador si quiere recoger la carta que esta ubicada en la celda destino
-     * @param card no null
-     * @return true si se recogio la carta, false si no se recogio
      */
-    public boolean pickCard(Card card) {
-        Assert.notNull(card, "card no puede ser null");
+    public boolean pickCard() {
+        CardDeck deck = gameCharacter.getCharacterData().getDeck();
+        WorldCell cell = gameCharacter.getWorldCell();
 
-        var optionalChoice = pickCardSelection.select();
+        Assert.isTrue(cell.hasCard(), "La celda no contiene una carta");
+        Assert.isTrue(!deck.isFull(), "El mazo está lleno");
 
-        if (optionalChoice.isPresent() && optionalChoice.get()) {
-            gameCharacter.getCharacterData().getDeck().add(card);
-            return true;
-        }
-
-        return false;
+        deck.add(cell.getCard().get());
+        gameCharacter.getWorldCell().setCard(null);
+        return true;
     }
 
     private Position northPosition() {
@@ -251,6 +248,6 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
                 Math.clamp(row, 0, world.getRowCount()),
                 Math.clamp(column, 0, world.getColumnCount()),
                 Math.clamp(layer, 0, world.getLayerCount())
-                );
+        );
     }
 }
