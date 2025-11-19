@@ -89,16 +89,27 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     @Override
     public void doTurn() {
         int remainingMoves = gameCharacter.getCharacterData().getMoves();
-        while(remainingMoves >= 0) {
+        while (remainingMoves >= 0) {
             int layer = gameCharacter.getWorldCell().getPosition().getLayer();
             gameCharacter.getGame().worldViewer.showLayer(gameCharacter.getWorld(), layer);
 
             logger.logInfo("El jugador " + gameCharacter.getCharacterData().getName() + " realiza su turno.");
 
-            var action = (gameCharacter.getCharacterData().isFreezed() ? freezedTurnSelection.select() : turnSelection.select())
+            var action = (gameCharacter.getCharacterData().isFreezed()
+                    ? freezedTurnSelection.select()
+                    : turnSelection.select())
                     .orElseThrow();
 
-            if (doTurnAction(action)) {
+            boolean completed = false;
+            try {
+                // acá se ejecuta mover / usar carta / agarrar carta / etc.
+                completed = doTurnAction(action);
+            } catch (RuntimeException e) {
+                // acá caen los Assert que fallan (sin cartas, sin carta en la celda, mazo lleno, etc.)
+                logger.logWarning(e.getMessage());
+            }
+
+            if (completed) {
                 remainingMoves--;
             } else {
                 logger.logWarning("La accion no se ha completado.");
