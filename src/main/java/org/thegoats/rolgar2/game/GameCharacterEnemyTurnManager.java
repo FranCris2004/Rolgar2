@@ -2,11 +2,20 @@ package org.thegoats.rolgar2.game;
 import org.thegoats.rolgar2.util.Assert;
 
 public class GameCharacterEnemyTurnManager extends GameCharacterTurnManager {
+
+    /**
+     *  Crea un administrador de turnos para un personaje enemigo.
+     * @param gameCharacter personaje del juego cuyo turno se va a administrar. Debe representar a un enemigo.
+     * Se valida que el personaje NO sea un personaje de jugador.
+     */
     public GameCharacterEnemyTurnManager(GameCharacter gameCharacter) {
         super(gameCharacter);
         Assert.isTrue(!gameCharacter.isPlayerCharacter(), "gameCharacter no debe ser un personaje de un jugador.");
     }
 
+    /**
+     * Ejecuta el turno completo del enemigo.
+     */
     @Override
     public void doTurn() {
         gameCharacter.getGame().logger.logDebug("El enemigo " + gameCharacter.getCharacterData().getName() + " realiza su turno.");

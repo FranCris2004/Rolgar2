@@ -19,6 +19,10 @@ public record MapConfig(
         WallConfig[] wallConfigs,
         CellConfig[][][] mapData
 ) {
+    /**
+     * Constructor del record.
+     * Asigna los campos y hace las respectivas validaciones, si alguna falla lanza excepcion
+     */
     public MapConfig {
         Assert.notNull(name, "name no puede ser nulo");
         Assert.notNull(floorConfigs, "floorConfigs no puede ser nulo");

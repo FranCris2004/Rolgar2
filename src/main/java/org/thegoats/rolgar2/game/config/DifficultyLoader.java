@@ -103,9 +103,13 @@ public class DifficultyLoader {
         return mapper.readValue(path.toFile(), DifficultyConfig.class);
     }
 
-    // ------------------------------------------
-    // Lectura desde JAR
-    // ------------------------------------------
+    /**
+     * Carga una única configuración de dificultad leyendo los datos desde
+     * un flujo de entrada (InputStream).
+     * @param in flujo de entrada desde el cual se leen los datos JSON
+     * @return un objeto DifficultyConfig creado a partir del contenido del flujo
+     * @throws IOException si ocurre un error de lectura o el JSON es inválido
+     */
     public static DifficultyConfig loadDifficulty(InputStream in) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(in, DifficultyConfig.class);
