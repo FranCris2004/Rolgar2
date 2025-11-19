@@ -135,10 +135,10 @@ public class WorldCell {
         if (wall == null) {
             this.wall = null;
         } else {
-            if (character != null) {
+            if (hasCharacter()) {
                 throw new IllegalStateException("La celda contiene un personaje actualmente");
             }
-            if (card != null) {
+            if (hasCard()) {
                 throw new IllegalStateException("La celda contiene una carta actualmente");
             }
 
@@ -153,11 +153,11 @@ public class WorldCell {
         if (character == null) {
             this.character = null;
         } else {
-            if (wall != null) {
+            if (hasWall()) {
                 throw new IllegalStateException("La celda contiene un muro actualmente");
             }
-            if (card != null) {
-                throw new IllegalStateException("La celda contiene una carta actualmente");
+            if(hasCharacter()){
+                throw new IllegalStateException("La celda contiene un personaje actualmente");
             }
 
             this.character = character;
@@ -171,10 +171,10 @@ public class WorldCell {
         if (card == null) {
             this.card = null;
         } else {
-            if (wall != null) {
+            if (hasWall()) {
                 throw new IllegalStateException("La celda contiene un muro actualmente");
             }
-            if (character != null) {
+            if (hasCharacter()) {
                 throw new IllegalStateException("La celda contiene un personaje actualmente");
             }
             this.card = card;
@@ -192,7 +192,7 @@ public class WorldCell {
      * @return true si contiene algun cha
      */
     public boolean isOccupied() {
-        return !hasWall() || !hasCharacter();
+        return hasWall() || hasCharacter();
     }
 
     public boolean isFree(){
