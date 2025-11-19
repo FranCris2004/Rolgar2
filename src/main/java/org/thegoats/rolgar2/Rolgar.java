@@ -3,7 +3,6 @@ package org.thegoats.rolgar2;
 import org.thegoats.rolgar2.game.GameBuilder;
 import org.thegoats.rolgar2.util.ConsoleLogger;
 import org.thegoats.rolgar2.util.LogLevel;
-import org.thegoats.rolgar2.util.Options;
 import org.thegoats.rolgar2.util.io.ConsoleSelection;
 
 import java.util.Random;
