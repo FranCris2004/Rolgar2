@@ -4,6 +4,7 @@ import org.thegoats.rolgar2.card.*;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.io.ConsoleSelection;
 import org.thegoats.rolgar2.util.io.Selection;
+import org.thegoats.rolgar2.util.structures.lists.LinkedList;
 import org.thegoats.rolgar2.world.Position;
 import org.thegoats.rolgar2.world.WorldCell;
 
@@ -41,6 +42,8 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     private final Selection<MovementDirectionEnum> directionSelection;
 
     private final Selection<Boolean> pickCardSelection;
+
+    private Selection<GameCharacter> gameCharacterSelection;
 
     private final Selection<Card> useCardSelection;
     /**
@@ -81,6 +84,8 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
                 .maxTries(3)
                 .selectionPrompt("¿Que carta quiere usar?")
                 .selectionRetryMessage("Opcion invalida.");
+
+        gameCharacterSelection = null;
     }
 
     /**
@@ -193,6 +198,24 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         deck.add(cell.getCard().get());
         gameCharacter.getWorldCell().setCard(null);
         return true;
+    }
+
+    /**
+     * @return selector de gameCharacter cuyas opciones son los gameCharacters != this.gameCharacter vivos
+     */
+    private Selection<GameCharacter> updateGameCharacterSelection(){
+        List<GameCharacter> validCharacters =  new LinkedList<>();
+        for(GameCharacter gameCharacter: gameCharacter.getGame().getGameCharacters()){
+            if(!gameCharacter.equals(this.gameCharacter) && gameCharacter.getCharacterData().isAlive()){
+                validCharacters.add(gameCharacter);
+            }
+        }
+
+        return new ConsoleSelection<GameCharacter>()
+                .addAllOptions(validCharacters)
+                .maxTries(3)
+                .selectionPrompt("¿Qué jugador desea teletransportar?")
+                .selectionRetryMessage("Opcion invalida.");
     }
 
     private Position northPosition() {

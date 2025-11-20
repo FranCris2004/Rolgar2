@@ -21,8 +21,6 @@ public class TeleportCard implements Card {
         Assert.isTrue(origin.hasCharacter(), "cell debe tener un personaje para teletransportar");
         destination.setCharacter(character);
         origin.setCharacter(null);
-
-
     }
 
     public static class Factory implements Card.Factory<TeleportCard> {

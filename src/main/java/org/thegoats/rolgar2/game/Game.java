@@ -14,6 +14,7 @@ import org.thegoats.rolgar2.world.WorldViewer;
 import java.awt.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 public final class Game {
     private int turnCount = 0;
@@ -199,5 +200,12 @@ public final class Game {
         for (GameCharacter gameCharacter : gameCharacters) {
             gameCharacter.getTurnManager().doTurn();
         }
+    }
+
+    /**
+     * @return lista inmutable de GameCharacters
+     */
+    public List<GameCharacter> getGameCharacters(){
+        return List.copyOf(gameCharacters);
     }
 }
