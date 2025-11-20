@@ -109,7 +109,7 @@ public final class GameCharacter {
     public void attack(GameCharacter character) {
         Assert.notNull(character, "character no puede ser nulo");
 
-        game.logger.logInfo(this + " ataca a " + character);
+        game.logger.logInfo(this.getCharacterData().getName() + " ataca a " + character.characterData.getName());
         character.characterData.takeDamage(this.characterData.getStrength());
     }
 
