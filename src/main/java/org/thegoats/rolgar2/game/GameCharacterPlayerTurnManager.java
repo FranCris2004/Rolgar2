@@ -9,6 +9,7 @@ import org.thegoats.rolgar2.world.WorldCell;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     private enum TurnActionEnum {
@@ -120,7 +121,7 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     private boolean doTurnAction(TurnActionEnum action) {
         return switch (action) {
             case RealizarMovimiento -> move();
-            case Atacar -> atacar();
+            case Atacar -> attack();
             case AgarrarCarta -> pickCard();
             case UsarCarta -> useCard();
             case GestionarAlianzas -> gestionarAlianzas();
@@ -157,9 +158,58 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         return false;
     }
 
-    private boolean atacar() {
-        return false;
+    private boolean attack() {
+
+        var neighborCells = gameCharacter.getWorldCell().getNeighborsOnSameLayer();
+
+
+        var enemiesAround = neighborCells.stream()
+                .map(WorldCell::getCharacter)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .filter(gc -> !gc.isPlayerCharacter())  // solo enemigos, no jugadores
+                .toList();
+
+        if (enemiesAround.isEmpty()) {
+            logger.logInfo("No hay enemigos alrededor para atacar.");
+            return false;
+        }
+
+        GameCharacter target;
+
+        //si hay un solo enemigo, lo atacamos directo
+        if (enemiesAround.size() == 1) {
+            target = enemiesAround.get(0);
+            logger.logInfo("Atacando a " + target.getCharacterData().getName() + ".");
+        } else {
+            // si hay varios enemigos, mostramos menú para elegir
+            var selection = new ConsoleSelection<GameCharacter>()
+                    .addAllOptions(enemiesAround)
+                    .maxTries(3)
+                    .selectionPrompt("¿A qué enemigo quiere atacar?")
+                    .selectionRetryMessage("Opcion invalida.");
+
+            var chosen = selection.select();
+            if (chosen.isEmpty()) {
+                logger.logInfo("No se seleccionó enemigo para atacar.");
+                return false;
+            }
+
+            target = chosen.get();
+        }
+
+
+        gameCharacter.attack(target);
+
+        if (target.getCharacterData().getHealth() <= 0) {
+            target.getWorldCell().setCharacter(null);
+            logger.logInfo("El enemigo " + target.getCharacterData().getName() + " ha sido derrotado.");
+        }
+
+        return true;
     }
+
+
 
     private boolean useCard() {
         Assert.isTrue(!gameCharacter.getCharacterData().getDeck().isEmpty(), "El jugador tiene que tener cartas");
