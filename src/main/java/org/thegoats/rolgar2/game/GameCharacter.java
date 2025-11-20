@@ -121,15 +121,10 @@ public final class GameCharacter {
         Assert.notNull(position, "la nueva position no puede ser null");
 
         var newCell = world.getCell(position);
-        Assert.isTrue(newCell.characterCanMove(), "El personaje no puede moverse a la posicion: " + position);
-
+        newCell.setCharacter(this);
         world.getCell(this.worldCell.getPosition()).setCharacter(null);
-        try{
-            newCell.setCharacter(this);
-            setWorldCell(newCell);
-        } catch (IllegalStateException e){
-            System.out.println(e.getMessage());
-        }
+        setWorldCell(newCell);
+
     }
 
     // TODO: TELEPORT CHARACTER URGENTE !!!!!!!!!!

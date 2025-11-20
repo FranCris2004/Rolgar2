@@ -78,7 +78,7 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         cardSelection = new ConsoleSelection<Card>()
                 .maxTries(3)
                 .selectionPrompt("¿Que carta quiere usar?")
-                .selectionRetryMessage("Opcion invalida.");;
+                .selectionRetryMessage("Opcion invalida.");
 
         setCardTargetSelection = null;
         stolenDeckSelection = null;
@@ -89,8 +89,12 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
      */
     @Override
     public void doTurn() {
+        if(gameCharacter.getCharacterData().isDead()){
+            logger.logDebug(gameCharacter.getCharacterData().getName() + " esta muerto");
+            return;
+        }
         int remainingMoves = gameCharacter.getCharacterData().getMoves();
-        while (remainingMoves >= 0) {
+        while (remainingMoves > 0 && gameCharacter.getGame().getAlivePlayersCount().size() > 1) {
             int layer = gameCharacter.getWorldCell().getPosition().getLayer();
             gameCharacter.getGame().worldViewer.showLayer(gameCharacter.getWorld(), layer);
 
@@ -154,7 +158,6 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
             gameCharacter.moveCharacter(newCell.getPosition());
             return true;
         }
-
         return false;
     }
 
@@ -167,7 +170,6 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
                 .map(WorldCell::getCharacter)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
-                .filter(gc -> !gc.isPlayerCharacter())  // solo enemigos, no jugadores
                 .toList();
 
         if (enemiesAround.isEmpty()) {
@@ -225,7 +227,6 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
                                 cardWithCharacterTarget.getName(),
                                 cardWithCharacterTarget.getTarget().getName()));
                     }
-                    // TODO: agregar lo que requiera teleport card
 
                     if (card instanceof StealingCard stealingCard) {
                         Assert.isTrue(!gameCharacter.getCharacterData().getDeck().isFull(), "El mazo está lleno");
@@ -247,6 +248,7 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
                             gameCharacter.getGame().logger.logWarning(e.getMessage());
                         }
                     }
+                    // TODO: agregar lo que requiera teleport card
 
                     if (card instanceof TeleportCard teleportCard) {
                         gameCharacter.getGame().logger.logWarning("el uso de TeleportCard aun no esta implementado.");
@@ -271,24 +273,31 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     }
 
     private void updateCardTargetSelection(){
+        List<CharacterData> aliveCharacters = new LinkedList<>();
+        for(CharacterData character: gameCharacter.getGame().getAllCharacterData()){
+            if(character.isAlive()){
+                aliveCharacters.add(character);
+            }
+        }
         setCardTargetSelection = new ConsoleSelection<CharacterData>()
-                .addAllOptions(gameCharacter.getGame().getAllCharacterData()) // TODO: ver si se puede hacer de una mejor manera quiza cambiando el toString o no haciendolo con estos metodos.
+                .addAllOptions(aliveCharacters)
                 .maxTries(3)
                 .selectionPrompt("¿A quién se la quiere aplicar?")
                 .selectionRetryMessage("Opcion invalida.");
     }
 
     private void updateStolenDeckSelection(){
-        List<CharacterData> characterDatas = new LinkedList<>();
+        List<CharacterData> validCharacters = new LinkedList<>();
         for(CharacterData character: gameCharacter.getGame().getAllCharacterData()){
             if(!character.equals(this.gameCharacter.getCharacterData()) &&
-                    !character.getDeck().isEmpty()){
-                characterDatas.add(character);
+                    !character.getDeck().isEmpty() &&
+                    character.isAlive()){
+                validCharacters.add(character);
             }
         }
-        Assert.positive(characterDatas.size(), "No hay ninguna carta disponible para robar");
+        Assert.positive(validCharacters.size(), "No hay ninguna carta disponible para robar");
         stolenDeckSelection = new ConsoleSelection<CharacterData>()
-                .addAllOptions(characterDatas)
+                .addAllOptions(validCharacters)
                 .maxTries(3)
                 .selectionPrompt("¿A quién le desea robar una carta??")
                 .selectionRetryMessage("Opcion invalida.");

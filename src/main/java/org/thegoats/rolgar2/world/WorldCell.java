@@ -250,7 +250,7 @@ public class WorldCell {
     }
 
     public boolean characterCanMove() {
-        return !hasCharacter() && (hasWalkableFloor() || hasClimbableWall());
+        return !hasCharacter() && hasWalkableFloor() && (!hasWall() || hasClimbableWall());
     }
 
     //

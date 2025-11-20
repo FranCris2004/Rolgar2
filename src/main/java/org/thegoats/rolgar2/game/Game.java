@@ -180,6 +180,7 @@ public final class Game {
         while (hasNextTurn()) {
             nextTurn();
         }
+        // TODO: decir quién ganó la partida
     }
 
     /**
@@ -188,8 +189,15 @@ public final class Game {
      */
     private boolean hasNextTurn()
     {
-        // en el futuro debera comprobar las condiciones para que el juego siga corriendo
-        return turnCount < 5;
+        int aliveCharacters = 0;
+        for(GameCharacter gameCharacter: gameCharacters){
+            if(gameCharacter.getCharacterData().isAlive() && gameCharacter.isPlayerCharacter()){
+                aliveCharacters++;
+            }
+        }
+        // TODO: en el futuro el juego deberia terminar si los que quedan vivos son una alianza.
+        // TODO: cuando queda solo un jugador, sigue el juego hasta que finalice la ronda. deberia terminar
+        return aliveCharacters > 1;
     }
 
     /**
@@ -199,7 +207,7 @@ public final class Game {
     {
         logger.logDebug("Turn " + ++turnCount);
         for (GameCharacter gameCharacter : gameCharacters) {
-            gameCharacter.getTurnManager().doTurn();
+                gameCharacter.getTurnManager().doTurn();
         }
     }
 
@@ -210,5 +218,16 @@ public final class Game {
         List<CharacterData> characterDataList = new LinkedList<>();
         for(GameCharacter gameCharacter: gameCharacters){
             characterDataList.add(gameCharacter.getCharacterData());}
-        return characterDataList;}
+        return characterDataList;
+    }
+
+    public List<CharacterData> getAlivePlayersCount(){
+        List<CharacterData> characterDataList = new LinkedList<>();
+        for(GameCharacter gameCharacter: gameCharacters){
+            if(gameCharacter.isPlayerCharacter() && gameCharacter.getCharacterData().isAlive()){
+                characterDataList.add(gameCharacter.getCharacterData());
+            }
+        }
+        return characterDataList;
+    }
 }
