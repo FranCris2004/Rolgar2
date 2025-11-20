@@ -1,6 +1,7 @@
 package org.thegoats.rolgar2.game;
 
 import org.thegoats.rolgar2.card.*;
+import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.character.CharacterFactory;
 import org.thegoats.rolgar2.game.config.GameConfig;
 import org.thegoats.rolgar2.player.Player;
@@ -14,6 +15,7 @@ import org.thegoats.rolgar2.world.WorldViewer;
 import java.awt.*;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 public final class Game {
     private int turnCount = 0;
@@ -200,4 +202,13 @@ public final class Game {
             gameCharacter.getTurnManager().doTurn();
         }
     }
+
+    /**
+     *@return devuelve una lista con los CharacterData de todos los GameCharacter actuales
+     */
+    public List<CharacterData> getAllCharacterData(){
+        List<CharacterData> characterDataList = new LinkedList<>();
+        for(GameCharacter gameCharacter: gameCharacters){
+            characterDataList.add(gameCharacter.getCharacterData());}
+        return characterDataList;}
 }
