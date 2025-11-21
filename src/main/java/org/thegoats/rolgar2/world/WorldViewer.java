@@ -13,6 +13,7 @@ public class WorldViewer {
     private Map<String, Bitmap> wallBitmapMap;
     private Map<String, Bitmap> cardBitmapMap;
     private Bitmap characterBitmap;
+    private Bitmap enemyCharacterBitmap;
     private int cellWidth;
     private int cellHeight;
     private Color backgroundColor;
@@ -23,6 +24,7 @@ public class WorldViewer {
                         Map<String, Bitmap> wallBitmapMap,
                         Map<String, Bitmap> cardBitmapMap,
                         Bitmap characterBitmap,
+                        Bitmap enemyCharacterBitmap,
                         Color backgroundColor,
                         Color gradientFrom,
                         Color gradientTo,
@@ -37,6 +39,7 @@ public class WorldViewer {
         setWallBitmapMap(wallBitmapMap);
         setCardBitmapMap(cardBitmapMap);
         setCharacterBitmap(characterBitmap);
+        setEnemyCharacterBitmap(enemyCharacterBitmap);
     }
 
     /**
@@ -156,6 +159,16 @@ public class WorldViewer {
     }
 
     /**
+     * Establece el bitmap utilizado para representar al personaje enemigo
+     * @param enemyCharacterBitmap no puede ser nulo
+     */
+    public void setEnemyCharacterBitmap(Bitmap enemyCharacterBitmap) {
+        Assert.notNull(enemyCharacterBitmap, "'enemyCharacterBitmap' no puede ser nulo.");
+        this.enemyCharacterBitmap = enemyCharacterBitmap;
+    }
+
+
+    /**
      * Muestra las capas del mundo
      * @param world no puede ser nulo
      * @param layer debe ser positivo
@@ -192,7 +205,7 @@ public class WorldViewer {
                 cell.getWall().ifPresent(wall -> {
                     var bmp = wallBitmapMap.get(wall.name());
                     if (bmp != null) {
-                        var scaled = bmp.scaled(cellWidth, cellHeight);
+                        var scaled = bmp.scaled(cellWidth-20, cellHeight-20);
                         layerBitmap.pasteBitmap(scaled, x, y);
                     }
                 });
@@ -206,9 +219,11 @@ public class WorldViewer {
                     }
                 });
 
-                // character
+                // character (jugador/enemigo)
                 cell.getCharacter().ifPresent(character -> {
-                    var scaled = characterBitmap.scaled(cellWidth, cellHeight);
+                    Bitmap bmp = character.isPlayerCharacter() ? characterBitmap : enemyCharacterBitmap;
+
+                    var scaled = bmp.scaled(cellWidth, cellHeight);
                     layerBitmap.pasteBitmap(scaled, x, y);
                 });
             }

@@ -66,7 +66,11 @@ public final class Game {
         try{
             Map<String, Bitmap> cardBitmapMap = new SetMap<>();
 
-        // Cartas: cargar imágenes desde resources (SIN "src/main/resources/")
+            // sprites de personajes
+            Bitmap playerCharacterBitmap = Bitmap.loadFromFile("sprites/characters/player.png");
+            Bitmap enemyCharacterBitmap  = Bitmap.loadFromFile("sprites/characters/playerEnemy.png");
+
+            // Cartas: cargar imágenes desde resources
             Bitmap doubleMoveCardBitmap   = Bitmap.loadFromFile("sprites/cards/doubleMove.png");
             Bitmap fireBallCardBitmap     = Bitmap.loadFromFile("sprites/cards/fireBall.png");
             Bitmap healingCardBitmap      = Bitmap.loadFromFile("sprites/cards/healing.png");
@@ -87,18 +91,16 @@ public final class Game {
             cardBitmapMap.put(ShieldCard.class.getName(), shieldCardBitmap);
             cardBitmapMap.put(StealingCard.class.getName(), stealingCardBitmap);
             cardBitmapMap.put(TeleportCard.class.getName(), teleportCardBitmap);
+            cardBitmapMap.put(StrengthCard.class.getName(), strengthCardBitmap);
 
-            var characterBitmap = new Bitmap(32, 32);
-            characterBitmap.fill(Color.WHITE);
-            characterBitmap.drawLine(0, 0, characterBitmap.getWidth(), characterBitmap.getHeight(), Color.BLACK);
-            characterBitmap.drawLine(0, characterBitmap.getHeight(), characterBitmap.getWidth(), 0, Color.BLACK);
 
 
             this.worldViewer = new WorldViewer(
                     config.mapConfig().getFloorBitmapMap(),
                     config.mapConfig().getWallBitmapMap(),
                     cardBitmapMap,
-                    characterBitmap,
+                    playerCharacterBitmap,
+                    enemyCharacterBitmap,
                     Color.BLACK,
                     new Color(0, 0, 0, 0),
                     new Color(0, 0, 0, 180),
