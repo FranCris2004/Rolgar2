@@ -254,7 +254,16 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
                     // TODO: agregar lo que requiera teleport card
 
                     if (card instanceof TeleportCard teleportCard) {
-                        gameCharacter.getGame().logger.logWarning("el uso de TeleportCard aun no esta implementado.");
+                        try{
+                            teleportCard.setCharacter(gameCharacter);
+                            teleportCard.setOrigin(gameCharacter.getWorldCell());
+                            gameCharacter.getWorldCell().getUpperNeighbor().ifPresent( t -> {
+                                teleportCard.setDestination(t);
+                            });
+                            gameCharacter.getGame().logger.logWarning("se movio "+gameCharacter.getCharacterData().getName()+"al piso de arriba");
+                        }catch (Exception e){
+                            System.out.println(e.getMessage());
+                        }
                     }
 
                     card.use();
@@ -340,12 +349,12 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     }
 
     /**
-     * @return selector de gameCharacter cuyas opciones son los gameCharacters != this.gameCharacter vivos
+     * @return selector de gameCharacter cuyas opciones son los gameCharacters vivos
      */
     private Selection<GameCharacter> updateGameCharacterSelection(){
         List<GameCharacter> validCharacters =  new LinkedList<>();
         for(GameCharacter gameCharacter: gameCharacter.getGame().getGameCharacters()){
-            if(!gameCharacter.equals(this.gameCharacter) && gameCharacter.getCharacterData().isAlive()){
+            if(gameCharacter.getCharacterData().isAlive()){
                 validCharacters.add(gameCharacter);
             }
         }

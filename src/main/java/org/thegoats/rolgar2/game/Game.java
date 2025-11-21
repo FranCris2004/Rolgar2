@@ -136,7 +136,7 @@ public final class Game {
                     this.gameCharacters.add(new GameCharacter(
                             this,
                             world,
-                            player,
+                            null,
                             enemyCharacterFactory.create("Enemigo" + i),
                             world.getRandomEmptyCharacterWalkableCell(random),
                             GameCharacterEnemyTurnManager.class
@@ -152,7 +152,7 @@ public final class Game {
         this.cardFactories = config.difficultyConfig().cardConfig().getFactories(random);
 
         // TODO: configurar la cantidad de cartas que aparecen
-        int cardCount = 10;
+        int cardCount = 30;
         for (int i = 0; i < cardCount; i++) {
             world.getRandomEmptyCharacterWalkableCell(random).setCard(
                     ((Card.Factory<? extends Card>) cardFactories.toArray()[random.nextInt(cardFactories.size())])
