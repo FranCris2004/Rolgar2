@@ -22,8 +22,9 @@ public class CardDeck {
 
 
     /**
-     *
-     * @param card no null
+     * Agrega una carta al CardDeck
+     * @param card no puede ser nulo
+     * @throws IllegalStateException si el mazo ya se encuentra lleno
      */
     public void add(Card card) {
         Assert.notNull(card, "La carta a agregar no puede ser null");
@@ -70,7 +71,6 @@ public class CardDeck {
     }
 
     /**
-     *
      * @return maximo tamaño que puede tomar el mazo
      */
     public int getMaxSize() {
@@ -84,10 +84,16 @@ public class CardDeck {
         return maxSize == cards.size();
     }
 
+    /**
+     * @return true si el mazo se encuentra vacio
+     */
     public boolean isEmpty(){
         return cards.isEmpty();
     }
 
+    /**
+     * @return Devuelve el nombre de una carta
+     */
     public String[] getCardNames(){
         String[] cardNames = new String[cards.size()];
         int i=0;
