@@ -38,7 +38,6 @@ public final class GameCharacter {
     ) {
         Assert.notNull(game, "game no puede ser nulo");
         Assert.notNull(characterData, "characterData no puede ser nulo");
-        Assert.notNull(player, "player no puede ser nulo");
         Assert.notNull(world, "world no puede ser nulo");
         setWorldCell(initialWorldCell);
         this.world = world;
@@ -110,7 +109,7 @@ public final class GameCharacter {
     public void attack(GameCharacter character) {
         Assert.notNull(character, "character no puede ser nulo");
 
-        game.logger.logInfo(this + " ataca a " + character);
+        game.logger.logInfo(this.getCharacterData().getName() + " ataca a " + character.characterData.getName());
         character.characterData.takeDamage(this.characterData.getStrength());
     }
 
@@ -122,15 +121,10 @@ public final class GameCharacter {
         Assert.notNull(position, "la nueva position no puede ser null");
 
         var newCell = world.getCell(position);
-        Assert.isTrue(newCell.characterCanMove(), "El personaje no puede moverse a la posicion: " + position);
-
+        newCell.setCharacter(this);
         world.getCell(this.worldCell.getPosition()).setCharacter(null);
-        try{
-            newCell.setCharacter(this);
-            setWorldCell(newCell);
-        } catch (IllegalStateException e){
-            System.out.println(e.getMessage());
-        }
+        setWorldCell(newCell);
+
     }
 
     // TODO: TELEPORT CHARACTER URGENTE !!!!!!!!!!
