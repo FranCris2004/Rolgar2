@@ -20,6 +20,7 @@ public class TeleportCard implements Card {
         Assert.isTrue(!destination.isOccupied(), "la celda destino tiene un muro o un personaje");
         Assert.isTrue(origin.hasCharacter(), "cell debe tener un personaje para teletransportar");
         destination.setCharacter(character);
+        character.setWorldCell(destination);
         origin.setCharacter(null);
     }
 
