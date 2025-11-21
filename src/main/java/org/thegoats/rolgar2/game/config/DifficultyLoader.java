@@ -25,6 +25,13 @@ public class DifficultyLoader {
         return loadDifficulties(directoryPath.toString());
     }
 
+    /**
+     * Carga las configuraciones de dificultad ubicadas dentro del directorio
+     * @param resourceDirectory ruta donde estan cargados los archivos de dificultad
+     * @return Devuelve un conjunto con todas las instancias de DifficultyConfig cargadas
+     * @throws IOException si el directorio no existe, el protocolo del recurso no es soportado,
+     * algun archivo JSON no puede ser leido, o ocurre algun error accediendo al JAR
+     */
     public static Set<DifficultyConfig> loadDifficulties(String resourceDirectory) throws IOException {
         Set<DifficultyConfig> difficulties =
                 new org.thegoats.rolgar2.util.structures.sets.Set<>();
