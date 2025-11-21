@@ -27,6 +27,9 @@ public class HealingCard extends CardWithCharacterTarget {
         getTarget().recoverHealth(healingPoints);
     }
 
+    /**
+     * @return Devuelve el nombre del efecto
+     */
     public String getName(){
         return "Curacion";
     }

@@ -24,6 +24,9 @@ public class ShieldCard extends CardWithStatusEffect {
         getTarget().applyEffect(new HalfDamageEffect(getTarget(), getDuration()));
     }
 
+    /**
+     * @return Devuelve el nombre del efecto
+     */
     public String getName(){
         return "Escudo";
     }
