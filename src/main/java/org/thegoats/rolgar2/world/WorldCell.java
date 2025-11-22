@@ -121,10 +121,13 @@ public class WorldCell {
     }
 
 
-    public Optional<WorldCell> getUpperNeighbor(){
+    public Optional<WorldCell> getUpperNeighbor() {
         return getNeighbors().stream()
-                .filter(neighbor -> neighbor.position.getLayer() == position.getLayer() +1)
-                .findFirst();
+                .filter(neighbor ->
+                        neighbor.position.getLayer() == position.getLayer() + 1 &&
+                        neighbor.position.getColumn() == position.getColumn() &&
+                        neighbor.position.getRow() == position.getRow()
+                ).findFirst();
     }
 
     //

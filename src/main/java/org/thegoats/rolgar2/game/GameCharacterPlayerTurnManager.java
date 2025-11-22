@@ -3,10 +3,12 @@ package org.thegoats.rolgar2.game;
 import org.thegoats.rolgar2.card.*;
 import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.util.Assert;
+import org.thegoats.rolgar2.util.Keyboard;
 import org.thegoats.rolgar2.util.io.ConsoleSelection;
 import org.thegoats.rolgar2.util.io.Selection;
 import org.thegoats.rolgar2.util.structures.lists.LinkedList;
 import org.thegoats.rolgar2.world.Position;
+import org.thegoats.rolgar2.world.World;
 import org.thegoats.rolgar2.world.WorldCell;
 
 import java.util.Arrays;
@@ -49,6 +51,7 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
 
     private Selection<Card> cardSelection;
 
+    private Selection<GameCharacter> gameCharacterSelection;
     /**
      * Construye el GameCharacterTurnManager
      * @param gameCharacter no null
@@ -82,6 +85,8 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
 
         setCardTargetSelection = null;
         stolenDeckSelection = null;
+
+        gameCharacterSelection = null;
     }
 
     /**
@@ -255,7 +260,18 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
                     // TODO: agregar lo que requiera teleport card
 
                     if (card instanceof TeleportCard teleportCard) {
-                        gameCharacter.getGame().logger.logWarning("el uso de TeleportCard aun no esta implementado.");
+                        try {
+                            updateGameCharacterSelection();
+                            gameCharacterSelection.select().ifPresent(character -> {
+                                teleportCard.setCharacter(character);
+                                teleportCard.setOrigin(character.getWorldCell());
+                                teleportCard.setDestination(gameCharacter.getWorld().getCell(pickPosition()));
+                                gameCharacter.getGame().logger.logWarning("se movio a "+character.getPlayer().getName());
+                            });
+                        }catch (Exception e){
+                            System.out.println(e.getMessage());
+                            return false;
+                        }
                     }
 
                     card.use();
@@ -357,6 +373,38 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         return true;
     }
 
+    /**
+     * @return selector de gameCharacter cuyas opciones son los gameCharacters vivos
+     */
+    private void updateGameCharacterSelection(){
+        List<GameCharacter> validCharacters =  new LinkedList<>();
+        for(GameCharacter gameCharacter: gameCharacter.getGame().getGameCharacters()){
+            if(gameCharacter.getCharacterData().isAlive()){
+                validCharacters.add(gameCharacter);
+            }
+        }
+        Assert.positive(validCharacters.size(), "No hay personajes validos");
+
+        gameCharacterSelection = new ConsoleSelection<GameCharacter>()
+                .addAllOptions(validCharacters)
+                .maxTries(3)
+                .selectionPrompt("¿Qué jugador desea teletransportar?")
+                .selectionRetryMessage("Opcion invalida.");
+    }
+
+    private Position pickPosition(){
+        System.out.println("Ingrese la coordenada del eje X");
+        int row = Keyboard.readInteger();
+
+        System.out.println("Ingrese la coordenada del eje Y");
+        int column = Keyboard.readInteger();
+
+        System.out.println("Ingrese la coordenada del eje Z");
+        int layer = Keyboard.readInteger();
+
+        return clampedPosition(row, column, layer);
+    }
+
     private Position northPosition() {
         var position = gameCharacter.getWorldCell().getPosition();
         return clampedPosition(
@@ -403,8 +451,8 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     private Position clampedPosition(int row, int column, int layer) {
         var world = gameCharacter.getWorld();
         return new Position(
-                Math.clamp(row, 0, world.getRowCount()),
-                Math.clamp(column, 0, world.getColumnCount()),
+                Math.clamp(row, 0, world.getRowCount()-2),
+                Math.clamp(column, 0, world.getColumnCount()-2),
                 Math.clamp(layer, 0, world.getLayerCount())
         );
     }

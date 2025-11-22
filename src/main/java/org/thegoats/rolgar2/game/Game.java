@@ -152,7 +152,7 @@ public final class Game {
         this.cardFactories = config.difficultyConfig().cardConfig().getFactories(random);
 
         // TODO: configurar la cantidad de cartas que aparecen
-        int cardCount = 10;
+        int cardCount = 30;
         for (int i = 0; i < cardCount; i++) {
             world.getRandomEmptyCharacterWalkableCell(random).setCard(
                     ((Card.Factory<? extends Card>) cardFactories.toArray()[random.nextInt(cardFactories.size())])
@@ -209,6 +209,13 @@ public final class Game {
         for (GameCharacter gameCharacter : gameCharacters) {
                 gameCharacter.getTurnManager().doTurn();
         }
+    }
+
+    /**
+     * @return lista inmutable de GameCharacters
+     */
+    public List<GameCharacter> getGameCharacters(){
+        return List.copyOf(gameCharacters);
     }
 
     /**
