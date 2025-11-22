@@ -63,47 +63,47 @@ public final class Game {
         //
 
         // TODO: implementar algun tipo de configuracion para estos bitmaps (quizas como packs de texturas)
-        Map<String, Bitmap> cardBitmapMap = new SetMap<>();
+        try{
+            Map<String, Bitmap> cardBitmapMap = new SetMap<>();
 
-        var doubleMoveCardBitmap = new Bitmap(32, 32);
-        var fireBallCardBitmap = new Bitmap(32, 32);
-        var healingCardBitmap = new Bitmap(32, 32);
-        var iceCardBitmap = new Bitmap(32, 32);
-        var invisibilityCardBitmap = new Bitmap(32, 32);
-        var shieldCardBitmap = new Bitmap(32, 32);
-        var stealingCardBitmap = new Bitmap(32, 32);
-        var teleportCardBitmap = new Bitmap(32, 32);
+            //sprite enemigos
+            Bitmap enemyBitmap = Bitmap.loadFromFile("sprites/characters/enemy.png");
+            // sprites de personajes
+            Bitmap playerCharacterBitmap = Bitmap.loadFromFile("sprites/characters/player.png");
+            Bitmap enemyCharacterBitmap  = Bitmap.loadFromFile("sprites/characters/playerEnemy.png");
 
-        doubleMoveCardBitmap.fill(Color.LIGHT_GRAY);
-        fireBallCardBitmap.fill(Color.ORANGE);
-        healingCardBitmap.fill(Color.GREEN);
-        iceCardBitmap.fill(Color.CYAN);
-        invisibilityCardBitmap.fill(Color.WHITE);
-        shieldCardBitmap.fill(Color.BLUE);
-        stealingCardBitmap.fill(Color.YELLOW);
-        teleportCardBitmap.fill(Color.MAGENTA);
+            // Cartas: cargar imágenes desde resources
+            Bitmap doubleMoveCardBitmap   = Bitmap.loadFromFile("sprites/cards/doubleMove.png");
+            Bitmap fireBallCardBitmap     = Bitmap.loadFromFile("sprites/cards/fireBall.png");
+            Bitmap healingCardBitmap      = Bitmap.loadFromFile("sprites/cards/healing.png");
+            Bitmap iceCardBitmap          = Bitmap.loadFromFile("sprites/cards/iceBall.png");
+            Bitmap invisibilityCardBitmap = Bitmap.loadFromFile("sprites/cards/invisibility.png");
+            Bitmap shieldCardBitmap       = Bitmap.loadFromFile("sprites/cards/shield.png");
+            Bitmap stealingCardBitmap     = Bitmap.loadFromFile("sprites/cards/stealing.png");
+            Bitmap teleportCardBitmap     = Bitmap.loadFromFile("sprites/cards/teleport.png");
+            Bitmap strengthCardBitmap     = Bitmap.loadFromFile("sprites/cards/strength.png");
 
-        cardBitmapMap.put(DoubleMoveCard.class.getName(), doubleMoveCardBitmap);
-        cardBitmapMap.put(FireballCard.class.getName(), fireBallCardBitmap);
-        cardBitmapMap.put(HealingCard.class.getName(), healingCardBitmap);
-        cardBitmapMap.put(HealingCard.class.getName(), healingCardBitmap);
-        cardBitmapMap.put(IceballCard.class.getName(), iceCardBitmap);
-        cardBitmapMap.put(InvisibilityCard.class.getName(), invisibilityCardBitmap);
-        cardBitmapMap.put(ShieldCard.class.getName(), shieldCardBitmap);
-        cardBitmapMap.put(StealingCard.class.getName(), stealingCardBitmap);
-        cardBitmapMap.put(TeleportCard.class.getName(), teleportCardBitmap);
 
-        var characterBitmap = new Bitmap(32, 32);
-        characterBitmap.fill(Color.WHITE);
-        characterBitmap.drawLine(0, 0, characterBitmap.getWidth(), characterBitmap.getHeight(), Color.BLACK);
-        characterBitmap.drawLine(0, characterBitmap.getHeight(), characterBitmap.getWidth(), 0, Color.BLACK);
+            cardBitmapMap.put(DoubleMoveCard.class.getName(), doubleMoveCardBitmap);
+            cardBitmapMap.put(FireballCard.class.getName(), fireBallCardBitmap);
+            cardBitmapMap.put(HealingCard.class.getName(), healingCardBitmap);
+            cardBitmapMap.put(HealingCard.class.getName(), healingCardBitmap);
+            cardBitmapMap.put(IceballCard.class.getName(), iceCardBitmap);
+            cardBitmapMap.put(InvisibilityCard.class.getName(), invisibilityCardBitmap);
+            cardBitmapMap.put(ShieldCard.class.getName(), shieldCardBitmap);
+            cardBitmapMap.put(StealingCard.class.getName(), stealingCardBitmap);
+            cardBitmapMap.put(TeleportCard.class.getName(), teleportCardBitmap);
+            cardBitmapMap.put(StrengthCard.class.getName(), strengthCardBitmap);
 
-        try {
+
+
             this.worldViewer = new WorldViewer(
                     config.mapConfig().getFloorBitmapMap(),
                     config.mapConfig().getWallBitmapMap(),
                     cardBitmapMap,
-                    characterBitmap,
+                    playerCharacterBitmap,
+                    enemyCharacterBitmap,
+                    enemyBitmap,
                     Color.BLACK,
                     new Color(0, 0, 0, 0),
                     new Color(0, 0, 0, 180),
