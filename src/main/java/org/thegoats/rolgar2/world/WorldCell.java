@@ -210,12 +210,15 @@ public class WorldCell {
     }
 
     /**
-     * @return true si contiene algun cha
+     * @return true si contiene algun character
      */
     public boolean isOccupied() {
         return hasWall() || hasCharacter();
     }
 
+    /**
+     * @return true si no esta ocupada
+     */
     public boolean isFree(){
         return !isOccupied();
     }
@@ -241,14 +244,23 @@ public class WorldCell {
         return character != null;
     }
 
+    /**
+     * @return true si tiene suelo y es caminable
+     */
     public boolean hasWalkableFloor(){
         return hasFloor() && floor.isWalkable();
     }
 
+    /**
+     * @return true si tiene pared y es escalable
+     */
     public boolean hasClimbableWall(){
         return hasWall() && wall.isClimbable();
     }
 
+    /**
+     * @return true si el character se puede mover a la celda
+     */
     public boolean characterCanMove() {
         return !hasCharacter() && hasWalkableFloor() && (!hasWall() || hasClimbableWall());
     }

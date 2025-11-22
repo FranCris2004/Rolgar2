@@ -19,6 +19,9 @@ public class FireballCard extends CardWithCharacterTarget {
         this.damage = damage;
     }
 
+    /**
+     * @return Devuelve el nombre del efecto
+     */
     public String getName(){
         return "Bola de fuego";
     }

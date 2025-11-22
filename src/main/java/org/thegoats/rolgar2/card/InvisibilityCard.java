@@ -38,6 +38,9 @@ public class InvisibilityCard extends CardWithStatusEffect {
                 getDuration());
     }
 
+    /**
+     * @return Devuelve el nombre del efecto
+     */
     public String getName(){
         return "Invisibilidad";
     }

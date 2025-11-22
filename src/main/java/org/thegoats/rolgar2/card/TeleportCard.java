@@ -13,7 +13,9 @@ public class TeleportCard implements Card {
         }
     }
 
-
+    /**
+     * @return Devuelve el nombre del efecto
+     */
     public String getName(){
         return "teletransporte";
     }

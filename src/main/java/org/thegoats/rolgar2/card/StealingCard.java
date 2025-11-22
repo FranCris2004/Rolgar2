@@ -58,6 +58,9 @@ public class StealingCard implements Card {
         stolenDeck.remove(stolenCard);
     }
 
+    /**
+     * @return Devuelve el nombre del efecto
+     */
     public String getName(){
         return "Robo de carta";
     }

@@ -65,21 +65,29 @@ public final class GameCharacter {
         this.worldCell = worldCell;
     }
 
-
+    /**
+     * @return Devuelve characterData
+     */
     public CharacterData getCharacterData(){
         return characterData;
     }
 
+    /**
+     * @return Devuelve al jugador
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * @return Devuelve la instancia del juego
+     */
     public Game getGame(){
         return game;
     }
 
     /**
-     * @return mundo
+     * @return Devuelve la instancia del mundo
      */
     public World getWorld() {
         return world;

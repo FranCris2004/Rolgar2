@@ -24,6 +24,9 @@ public class StrengthCard extends CardWithStatusEffect {
         getTarget().applyEffect(new DoubleStrengthEffect(getTarget(), getDuration()));
     }
 
+    /**
+     * @return Devuelve el nombre del efecto
+     */
     public String getName(){
         return "Fuerza";
     }
