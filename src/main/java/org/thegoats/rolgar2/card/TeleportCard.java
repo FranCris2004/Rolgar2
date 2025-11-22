@@ -20,4 +20,11 @@ public class TeleportCard implements Card {
         return "teletransporte";
     }
 
+    /**
+     *@return devuelve una version en formato String de la carta
+     */
+    @Override
+    public String toString(){
+        return "TeleportCard";
+    }
 }

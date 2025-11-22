@@ -14,7 +14,7 @@ public class StealingCard implements Card {
      * Dado un mazo, si es valido lo setea como 'mazo del ladron'
      * @param thiefDeck no null, mazo del jugador 'ladron'
      */
-    public void setThiefInventory(CardDeck thiefDeck) {
+    public void setThiefDeck(CardDeck thiefDeck) {
         Assert.notNull(thiefDeck, "el mazo ladron no puede ser null");
         this.thiefDeck = thiefDeck;
     }
@@ -81,4 +81,14 @@ public class StealingCard implements Card {
             return new StealingCard();
         }
     }
+
+    /**
+     *
+     * @return devuelve una version en formato String de la carta
+     */
+    public String toString(){
+        return String.format("StealingCard[thiefDeck=%s, stolenDeck=%s, stolenCard=%s]",
+                thiefDeck,
+                stolenDeck,
+                stolenCard);}
 }
