@@ -66,6 +66,8 @@ public final class Game {
         try{
             Map<String, Bitmap> cardBitmapMap = new SetMap<>();
 
+            //sprite enemigos
+            Bitmap enemyBitmap = Bitmap.loadFromFile("sprites/characters/enemy.png");
             // sprites de personajes
             Bitmap playerCharacterBitmap = Bitmap.loadFromFile("sprites/characters/player.png");
             Bitmap enemyCharacterBitmap  = Bitmap.loadFromFile("sprites/characters/playerEnemy.png");
@@ -101,6 +103,7 @@ public final class Game {
                     cardBitmapMap,
                     playerCharacterBitmap,
                     enemyCharacterBitmap,
+                    enemyBitmap,
                     Color.BLACK,
                     new Color(0, 0, 0, 0),
                     new Color(0, 0, 0, 180),

@@ -1,5 +1,7 @@
 package org.thegoats.rolgar2.world;
 
+import org.thegoats.rolgar2.game.GameCharacterEnemyTurnManager;
+import org.thegoats.rolgar2.game.GameCharacterPlayerTurnManager;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.io.Bitmap;
 import org.thegoats.rolgar2.util.io.BitmapViewer;
@@ -14,6 +16,7 @@ public class WorldViewer {
     private Map<String, Bitmap> cardBitmapMap;
     private Bitmap characterBitmap;
     private Bitmap enemyCharacterBitmap;
+    private Bitmap enemyBitmap;
     private int cellWidth;
     private int cellHeight;
     private Color backgroundColor;
@@ -25,6 +28,7 @@ public class WorldViewer {
                         Map<String, Bitmap> cardBitmapMap,
                         Bitmap characterBitmap,
                         Bitmap enemyCharacterBitmap,
+                        Bitmap enemyBitmap,
                         Color backgroundColor,
                         Color gradientFrom,
                         Color gradientTo,
@@ -40,6 +44,7 @@ public class WorldViewer {
         setCardBitmapMap(cardBitmapMap);
         setCharacterBitmap(characterBitmap);
         setEnemyCharacterBitmap(enemyCharacterBitmap);
+        setEnemyBitmap(enemyBitmap);
     }
 
     /**
@@ -167,6 +172,11 @@ public class WorldViewer {
         this.enemyCharacterBitmap = enemyCharacterBitmap;
     }
 
+    public void setEnemyBitmap(Bitmap enemy){
+        Assert.notNull(enemy, "'enemyBitmap' no puede ser nulo.");
+        this.enemyBitmap = enemy;
+    }
+
 
     /**
      * Muestra las capas del mundo
@@ -219,13 +229,24 @@ public class WorldViewer {
                     }
                 });
 
-                // character (jugador/enemigo)
+                // character (jugador/jugadores enemigos/enemigos)
                 cell.getCharacter().ifPresent(character -> {
-                    Bitmap bmp = character.isPlayerCharacter() ? characterBitmap : enemyCharacterBitmap;
+                    Bitmap bmp;
 
+                    if (character.getTurnManager() instanceof GameCharacterPlayerTurnManager) {
+                        if (character.isPlayerCharacter()) {
+                            bmp = characterBitmap;
+                        } else {
+                            bmp = enemyCharacterBitmap;
+                        }
+                    }
+                    else {
+                        bmp = enemyBitmap;
+                    }
                     var scaled = bmp.scaled(cellWidth, cellHeight);
                     layerBitmap.pasteBitmap(scaled, x, y);
                 });
+
             }
         }
 
