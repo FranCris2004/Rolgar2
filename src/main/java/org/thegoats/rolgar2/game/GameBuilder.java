@@ -61,20 +61,28 @@ public class GameBuilder {
         return this;
     }
 
+    /**
+     * Establece la instancia de Random que utilizara el juego
+     * @param random no puede ser nulo
+     * @return Devuelve esta misma instancia de GameBuilder
+     */
     public GameBuilder setRandom(Random random) {
         Assert.notNull(random, "El random no puede ser nulo.");
         this.random = random;
         return this;
     }
 
+    /**
+     * Asigna la dificultad que utilizara el juego
+     * @param difficultyConfig configuracion de dificultad que sera aplicada al juego
+     * @return Devuelve esta misma instancia de GameBuilder
+     */
     public GameBuilder setDifficultyConfig(DifficultyConfig difficultyConfig) {
         Assert.notNull(difficultyConfig, "difficultyConfig");
         this.difficultyConfig = difficultyConfig;
         return this;
     }
 
-
-  
     /**
      * Permite al usuario seleccionar una dificultad desde un directorio que contiene las configuraciones válidas de dificultad
      * @param difficultiesDirectoryPath ruta al directorio que contiene los archivos de dificultad
@@ -139,8 +147,11 @@ public class GameBuilder {
         return this;
     }
 
-
-
+    /**
+     * Establece el conjunto de jugadores que jugaran en la partida
+     * @param players conjunto de jugadores que formaran parte del juego
+     * @return Devueve esta misma intancia de GameBuilder
+     */
     public GameBuilder setPlayers(Set<Player> players) {
         Assert.notNull(players, "players");
         Assert.isTrue(!players.isEmpty(), "players no debe estar vacio.");
