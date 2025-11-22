@@ -3,7 +3,9 @@ package org.thegoats.rolgar2.world;
 import org.thegoats.rolgar2.card.Card;
 import org.thegoats.rolgar2.game.GameCharacter;
 import org.thegoats.rolgar2.util.Assert;
+import org.thegoats.rolgar2.util.structures.lists.LinkedList;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -99,6 +101,25 @@ public class WorldCell {
     public List<WorldCell> getNeighbors() {
         return List.copyOf(neighbors);
     }
+
+    /**
+     * Devuelve las celdas vecinas en la misma capa (2D).
+     * Es decir, las celdas adyacentes alrededor de esta celda,
+     * incluyendo diagonales, pero sin contar esta misma celda.
+     */
+    public List<WorldCell> getNeighborsOnSameLayer() {
+        Assert.notNull(neighbors, "'neighbors' debe estar inicializado.");
+
+        List<WorldCell> sameLayerNeighbors = new LinkedList<>();
+
+        for (WorldCell neighbor : neighbors) {
+            if (neighbor.position.getLayer() == this.position.getLayer()) {
+                sameLayerNeighbors.add(neighbor);
+            }
+        }
+        return List.copyOf(sameLayerNeighbors);
+    }
+
 
     public Optional<WorldCell> getUpperNeighbor(){
         return getNeighbors().stream()
@@ -229,7 +250,7 @@ public class WorldCell {
     }
 
     public boolean characterCanMove() {
-        return !hasCharacter() && (hasWalkableFloor() || hasClimbableWall());
+        return !hasCharacter() && hasWalkableFloor() && (!hasWall() || hasClimbableWall());
     }
 
     //

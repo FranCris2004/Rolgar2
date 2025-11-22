@@ -1,5 +1,7 @@
 package org.thegoats.rolgar2.card;
 import org.thegoats.rolgar2.util.Assert;
+
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -95,5 +97,9 @@ public class CardDeck {
             cardNames[i] = card.getName();
         }
         return cardNames;
+    }
+    @Override
+    public String toString(){
+        return String.format("CardDeck[%s/%s, %s]", getSize(), getMaxSize(), Arrays.toString(getCardNames()));
     }
 }

@@ -1,14 +1,17 @@
 package org.thegoats.rolgar2.game;
 
 import org.thegoats.rolgar2.card.*;
+import org.thegoats.rolgar2.character.CharacterData;
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.io.ConsoleSelection;
 import org.thegoats.rolgar2.util.io.Selection;
+import org.thegoats.rolgar2.util.structures.lists.LinkedList;
 import org.thegoats.rolgar2.world.Position;
 import org.thegoats.rolgar2.world.WorldCell;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     private enum TurnActionEnum {
@@ -40,9 +43,12 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
 
     private final Selection<MovementDirectionEnum> directionSelection;
 
-    private final Selection<Boolean> pickCardSelection;
+    private Selection<CharacterData> stolenDeckSelection;
 
-    private final Selection<Card> useCardSelection;
+    private  Selection<CharacterData> setCardTargetSelection;
+
+    private Selection<Card> cardSelection;
+
     /**
      * Construye el GameCharacterTurnManager
      * @param gameCharacter no null
@@ -69,18 +75,13 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
                 .selectionPrompt("¿Hacia que direccion se desea mover?")
                 .selectionRetryMessage("Opcion invalida.");
 
-        pickCardSelection = new ConsoleSelection<Boolean>()
-                .addOption("Si", true)
-                .addOption("No", false)
-                .maxTries(3)
-                .selectionPrompt("¿Desea tomar la carta?")
-                .selectionRetryMessage("Opcion invalida.");
-
-        useCardSelection = new ConsoleSelection<Card>()
-                .addAllOptions(gameCharacter.getCharacterData().getDeck().getCards())
+        cardSelection = new ConsoleSelection<Card>()
                 .maxTries(3)
                 .selectionPrompt("¿Que carta quiere usar?")
                 .selectionRetryMessage("Opcion invalida.");
+
+        setCardTargetSelection = null;
+        stolenDeckSelection = null;
     }
 
     /**
@@ -88,8 +89,12 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
      */
     @Override
     public void doTurn() {
+        if(gameCharacter.getCharacterData().isDead()){
+            logger.logDebug(gameCharacter.getCharacterData().getName() + " esta muerto");
+            return;
+        }
         int remainingMoves = gameCharacter.getCharacterData().getMoves();
-        while (remainingMoves >= 0) {
+        while (remainingMoves > 0 && gameCharacter.getGame().getAlivePlayersCount().size() > 1) {
             int layer = gameCharacter.getWorldCell().getPosition().getLayer();
             gameCharacter.getGame().worldViewer.showLayer(gameCharacter.getWorld(), layer);
 
@@ -120,7 +125,7 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     private boolean doTurnAction(TurnActionEnum action) {
         return switch (action) {
             case RealizarMovimiento -> move();
-            case Atacar -> atacar();
+            case Atacar -> attack();
             case AgarrarCarta -> pickCard();
             case UsarCarta -> useCard();
             case GestionarAlianzas -> gestionarAlianzas();
@@ -153,28 +158,101 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
             gameCharacter.moveCharacter(newCell.getPosition());
             return true;
         }
-
         return false;
     }
 
-    private boolean atacar() {
-        return false;
+    /**
+     * Realiza un ataque a un enemigo adyacete al personaje
+     * @return Devuelve true si se realizo el ataque con exito y false si no ocurrio
+     */
+    private boolean attack() {
+
+        var neighborCells = gameCharacter.getWorldCell().getNeighborsOnSameLayer();
+
+
+        var enemiesAround = neighborCells.stream()
+                .map(WorldCell::getCharacter)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
+
+        if (enemiesAround.isEmpty()) {
+            logger.logInfo("No hay enemigos alrededor para atacar.");
+            return false;
+        }
+
+        GameCharacter target;
+
+        //si hay un solo enemigo, lo atacamos directo
+        if (enemiesAround.size() == 1) {
+            target = enemiesAround.get(0);
+            logger.logInfo("Atacando a " + target.getCharacterData().getName() + ".");
+        } else {
+            // si hay varios enemigos, mostramos menú para elegir
+            var selection = new ConsoleSelection<GameCharacter>()
+                    .addAllOptions(enemiesAround)
+                    .maxTries(3)
+                    .selectionPrompt("¿A qué enemigo quiere atacar?")
+                    .selectionRetryMessage("Opcion invalida.");
+
+            var chosen = selection.select();
+            if (chosen.isEmpty()) {
+                logger.logInfo("No se seleccionó enemigo para atacar.");
+                return false;
+            }
+
+            target = chosen.get();
+        }
+
+
+        gameCharacter.attack(target);
+
+        if (target.getCharacterData().getHealth() <= 0) {
+            target.getWorldCell().setCharacter(null);
+            logger.logInfo("El enemigo " + target.getCharacterData().getName() + " ha sido derrotado.");
+        }
+
+        return true;
     }
+
+
 
     private boolean useCard() {
         Assert.isTrue(!gameCharacter.getCharacterData().getDeck().isEmpty(), "El jugador tiene que tener cartas");
+        updateCardSelection(gameCharacter.getCharacterData().getDeck(), "¿Que carta quiere usar?");
 
-        useCardSelection.select()
-                .ifPresent(card -> {
+        return cardSelection.select()
+                .map(card -> {
                     if (card instanceof CardWithCharacterTarget cardWithCharacterTarget) {
-                        cardWithCharacterTarget.setTarget(gameCharacter.getCharacterData());
+                        updateCardTargetSelection();
+                        setCardTargetSelection.select().ifPresent(t -> cardWithCharacterTarget.setTarget(t));
+                        gameCharacter.getGame().logger.logDebug(String.format("%s usa la carta %s sobre %s",
+                                gameCharacter.getCharacterData().getName(),
+                                cardWithCharacterTarget.getName(),
+                                cardWithCharacterTarget.getTarget().getName()));
                     }
-
-                    // TODO: agregar lo que requieran stealcard y teleport card
 
                     if (card instanceof StealingCard stealingCard) {
-                        gameCharacter.getGame().logger.logWarning("el uso de StealingCard aun no esta implementado.");
+                        Assert.isTrue(!gameCharacter.getCharacterData().getDeck().isFull(), "El mazo está lleno");
+                        try{
+                            updateStolenDeckSelection();
+                            stealingCard.setThiefDeck(gameCharacter.getCharacterData().getDeck());
+                            stolenDeckSelection.select().ifPresent(character -> {
+                                stealingCard.setStolenDeck(character.getDeck());
+                                updateCardSelection(character.getDeck(), "¿Que carta quiere robar?");
+                                cardSelection.select().ifPresent(card1 -> {
+                                    stealingCard.setStolenCard(card1);
+                                    gameCharacter.getGame().logger.logDebug(String.format("El jugador %s le roba %s a %s,",
+                                            gameCharacter.getCharacterData().getName(),
+                                            card1,
+                                            character.getName()));
+                                });
+                            });
+                        }catch (Exception e){
+                            gameCharacter.getGame().logger.logWarning(e.getMessage());
+                        }
                     }
+                    // TODO: agregar lo que requiera teleport card
 
                     if (card instanceof TeleportCard teleportCard) {
                         gameCharacter.getGame().logger.logWarning("el uso de TeleportCard aun no esta implementado.");
@@ -182,9 +260,79 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
 
                     card.use();
                     gameCharacter.getCharacterData().getDeck().remove(card);
-                });
+                    return true;
+                })
+                .orElse(false);
 
-        return false;
+    }
+
+    /**
+     * Actualiza la seleccion de cartas disponibles para el jugador
+     * @param deck mazo desde el cual se obtendran las cartas, no puede ser nulo
+     * @param prompt mensaje que se le muestra al usuario al solicitar la eleccion de carta, no puede ser nulo
+     */
+    private void updateCardSelection(CardDeck deck, String prompt) {
+        Assert.notNull(deck, "deck no puede ser null");
+        Assert.notNull(prompt, "prompt no puede ser null");
+        cardSelection = new ConsoleSelection<Card>()
+                .addAllOptions(deck.getCards())
+                .maxTries(3)
+                .selectionPrompt(prompt)
+                .selectionRetryMessage("Opcion invalida.");
+    }
+
+    /**
+     * Actualiza la lista de los personajes a los que se les puede aplicar una carta
+     */
+    private void updateCardTargetSelection(){
+        List<CharacterData> aliveCharacters = new LinkedList<>();
+        for(CharacterData character: gameCharacter.getGame().getAllCharacterData()){
+            if(character.isAlive()){
+                aliveCharacters.add(character);
+            }
+        }
+        setCardTargetSelection = new ConsoleSelection<CharacterData>()
+                .addAllOptions(aliveCharacters)
+                .maxTries(3)
+                .selectionPrompt("¿A quién se la quiere aplicar?")
+                .selectionRetryMessage("Opcion invalida.");
+    }
+
+    /**
+     * Actualiza la lista de los personajes a los que se les puede robar una carta
+     */
+    private void updateStolenDeckSelection(){
+        List<CharacterData> validCharacters = new LinkedList<>();
+        for(CharacterData character: gameCharacter.getGame().getAllCharacterData()){
+            if(!character.equals(this.gameCharacter.getCharacterData()) &&
+                    !character.getDeck().isEmpty() &&
+                    character.isAlive()){
+                validCharacters.add(character);
+            }
+        }
+        Assert.positive(validCharacters.size(), "No hay ninguna carta disponible para robar");
+        stolenDeckSelection = new ConsoleSelection<CharacterData>()
+                .addAllOptions(validCharacters)
+                .maxTries(3)
+                .selectionPrompt("¿A quién le desea robar una carta??")
+                .selectionRetryMessage("Opcion invalida.");
+    }
+
+    /**
+     * Crea una seleccion booleana de dos opciones: si y no
+     * @param prompt mensaje que se le mostrara al usuario para solicitar la eleccion, no debe ser nulo
+     * @param retryMessage mensaje que se mostrara cuando la eleccion sea invalida, no debe ser nulo
+     * @return Devuelve la seleccion creada
+     */
+    private Selection<Boolean> booleanSelection(String prompt, String retryMessage){
+        Assert.notNull(prompt, "Prompt no debe ser null");
+        Assert.notNull(retryMessage, "retryMessage no debe ser null");
+        return new ConsoleSelection<Boolean>()
+                .addOption("Si", true)
+                .addOption("No", false)
+                .maxTries(3)
+                .selectionPrompt(prompt)
+                .selectionRetryMessage(retryMessage);
     }
 
     private boolean gestionarAlianzas() {
@@ -197,10 +345,13 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
     public boolean pickCard() {
         CardDeck deck = gameCharacter.getCharacterData().getDeck();
         WorldCell cell = gameCharacter.getWorldCell();
-
         Assert.isTrue(cell.hasCard(), "La celda no contiene una carta");
         Assert.isTrue(!deck.isFull(), "El mazo está lleno");
 
+        Selection<Boolean> election = booleanSelection("¿Desea tomar la carta "+cell.getCard().get()+"?", "Opcion invalida");
+        if(!election.select().get()){
+            return false;
+        }
         deck.add(cell.getCard().get());
         gameCharacter.getWorldCell().setCard(null);
         return true;

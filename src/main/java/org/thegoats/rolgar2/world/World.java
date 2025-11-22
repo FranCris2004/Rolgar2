@@ -2,6 +2,7 @@ package org.thegoats.rolgar2.world;
 
 import org.thegoats.rolgar2.util.Assert;
 import org.thegoats.rolgar2.util.collections.Board3d;
+import org.thegoats.rolgar2.util.structures.lists.LinkedList;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -102,9 +103,9 @@ public class World implements Iterable<WorldCell> {
      * Inicializa los vecinos de las celdas (26 vecinos)
      */
     private void initWorldCells() {
-        List<WorldCell> neighbors = new ArrayList<>();
 
         for (WorldCell worldCell : board) {
+            List<WorldCell> neighbors = new LinkedList<>();
             for (int dz = -1; dz <= 1; dz++) {
                 int layer = worldCell.getPosition().getLayer() + dz;
 

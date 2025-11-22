@@ -21,11 +21,11 @@ public final class GameCharacter {
 
     /**
      * Crea un GameCharacter con toda la información necesaria.
-     * @param game instancia del juego
-     * @param world  mundo en el que se mueve el personaje
-     * @param player  jugador
-     * @param characterData datos del personaje
-     * @param initialWorldCell  celda inicial del mundo donde estará el personaje
+     * @param game instancia del juego, no puede ser nulo
+     * @param world mundo en el que se mueve el personaje, no puede ser nulo
+     * @param player jugador
+     * @param characterData datos del personaje, no puede ser nulo
+     * @param initialWorldCell celda inicial del mundo donde estará el personaje
      * @param gameCharacterTurnManagerClass clase concreta que administrará el turno de este personaje
      */
     public GameCharacter(
@@ -109,7 +109,7 @@ public final class GameCharacter {
     public void attack(GameCharacter character) {
         Assert.notNull(character, "character no puede ser nulo");
 
-        game.logger.logInfo(this + " ataca a " + character);
+        game.logger.logInfo(this.getCharacterData().getName() + " ataca a " + character.characterData.getName());
         character.characterData.takeDamage(this.characterData.getStrength());
     }
 
@@ -121,15 +121,10 @@ public final class GameCharacter {
         Assert.notNull(position, "la nueva position no puede ser null");
 
         var newCell = world.getCell(position);
-        Assert.isTrue(newCell.characterCanMove(), "El personaje no puede moverse a la posicion: " + position);
-
+        newCell.setCharacter(this);
         world.getCell(this.worldCell.getPosition()).setCharacter(null);
-        try{
-            newCell.setCharacter(this);
-            setWorldCell(newCell);
-        } catch (IllegalStateException e){
-            System.out.println(e.getMessage());
-        }
+        setWorldCell(newCell);
+
     }
 
     // TODO: TELEPORT CHARACTER URGENTE !!!!!!!!!!
