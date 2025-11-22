@@ -161,6 +161,10 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         return false;
     }
 
+    /**
+     * Realiza un ataque a un enemigo adyacete al personaje
+     * @return Devuelve true si se realizo el ataque con exito y false si no ocurrio
+     */
     private boolean attack() {
 
         var neighborCells = gameCharacter.getWorldCell().getNeighborsOnSameLayer();
@@ -262,6 +266,11 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
 
     }
 
+    /**
+     * Actualiza la seleccion de cartas disponibles para el jugador
+     * @param deck mazo desde el cual se obtendran las cartas, no puede ser nulo
+     * @param prompt mensaje que se le muestra al usuario al solicitar la eleccion de carta, no puede ser nulo
+     */
     private void updateCardSelection(CardDeck deck, String prompt) {
         Assert.notNull(deck, "deck no puede ser null");
         Assert.notNull(prompt, "prompt no puede ser null");
@@ -272,6 +281,9 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
                 .selectionRetryMessage("Opcion invalida.");
     }
 
+    /**
+     * Actualiza la lista de los personajes a los que se les puede aplicar una carta
+     */
     private void updateCardTargetSelection(){
         List<CharacterData> aliveCharacters = new LinkedList<>();
         for(CharacterData character: gameCharacter.getGame().getAllCharacterData()){
@@ -286,6 +298,9 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
                 .selectionRetryMessage("Opcion invalida.");
     }
 
+    /**
+     * Actualiza la lista de los personajes a los que se les puede robar una carta
+     */
     private void updateStolenDeckSelection(){
         List<CharacterData> validCharacters = new LinkedList<>();
         for(CharacterData character: gameCharacter.getGame().getAllCharacterData()){
@@ -303,6 +318,12 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
                 .selectionRetryMessage("Opcion invalida.");
     }
 
+    /**
+     * Crea una seleccion booleana de dos opciones: si y no
+     * @param prompt mensaje que se le mostrara al usuario para solicitar la eleccion, no debe ser nulo
+     * @param retryMessage mensaje que se mostrara cuando la eleccion sea invalida, no debe ser nulo
+     * @return Devuelve la seleccion creada
+     */
     private Selection<Boolean> booleanSelection(String prompt, String retryMessage){
         Assert.notNull(prompt, "Prompt no debe ser null");
         Assert.notNull(retryMessage, "retryMessage no debe ser null");

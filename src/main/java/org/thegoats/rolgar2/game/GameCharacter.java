@@ -21,11 +21,11 @@ public final class GameCharacter {
 
     /**
      * Crea un GameCharacter con toda la información necesaria.
-     * @param game instancia del juego
-     * @param world  mundo en el que se mueve el personaje
-     * @param player  jugador
-     * @param characterData datos del personaje
-     * @param initialWorldCell  celda inicial del mundo donde estará el personaje
+     * @param game instancia del juego, no puede ser nulo
+     * @param world mundo en el que se mueve el personaje, no puede ser nulo
+     * @param player jugador
+     * @param characterData datos del personaje, no puede ser nulo
+     * @param initialWorldCell celda inicial del mundo donde estará el personaje
      * @param gameCharacterTurnManagerClass clase concreta que administrará el turno de este personaje
      */
     public GameCharacter(

@@ -221,6 +221,9 @@ public final class Game {
         return characterDataList;
     }
 
+    /**
+     * @return devuelve una lista con los jugadores vivos
+     */
     public List<CharacterData> getAlivePlayersCount(){
         List<CharacterData> characterDataList = new LinkedList<>();
         for(GameCharacter gameCharacter: gameCharacters){
