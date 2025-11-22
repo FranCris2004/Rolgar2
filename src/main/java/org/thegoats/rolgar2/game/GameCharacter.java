@@ -38,7 +38,6 @@ public final class GameCharacter {
     ) {
         Assert.notNull(game, "game no puede ser nulo");
         Assert.notNull(characterData, "characterData no puede ser nulo");
-        Assert.notNull(player, "player no puede ser nulo");
         Assert.notNull(world, "world no puede ser nulo");
         setWorldCell(initialWorldCell);
         this.world = world;

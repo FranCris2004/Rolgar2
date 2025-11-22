@@ -56,4 +56,16 @@ public class ShieldCard extends CardWithStatusEffect {
             return new ShieldCard(getRandomDuration());
         }
     }
+    /**
+     * Devuelve la carta en formato string
+     * @return formato en String de la carta, con el formato:
+     * NombreDeCarta[atributo1=valor1, atributo2=valor2, ..., atributoN=valorN
+     */
+    @Override
+    public String toString(){
+        return String.format("ShieldCard[target=%s, Duration=%d]",
+                getTarget(),
+                getDuration());
+    }
+
 }
