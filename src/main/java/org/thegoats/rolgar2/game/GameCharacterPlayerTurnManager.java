@@ -106,6 +106,11 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         }
     }
 
+    /**
+     * Ejecuta el metodo correspondiente a la accion que elije el usuario
+     * @param action Es la accion que elije el usuario para que haga el personaje en su turno
+     * @return El resultado del switch dependiendo de la accion enviada
+     */
     private boolean doTurnAction(TurnActionEnum action) {
         return switch (action) {
             case RealizarMovimiento -> move();
@@ -150,6 +155,10 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         return false;
     }
 
+    /**
+     * Verifica que el usuario tenga cartas, usa la carta y se la quita al usuario del inventario
+     * @return
+     */
     private boolean useCard() {
         Assert.isTrue(!gameCharacter.getCharacterData().getDeck().isEmpty(), "El jugador tiene que tener cartas");
 
@@ -195,6 +204,9 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         return true;
     }
 
+    /**
+     * @return Devuelve la posicion directamente al norte de la posicion actual
+     */
     private Position northPosition() {
         var position = gameCharacter.getWorldCell().getPosition();
         return clampedPosition(
@@ -204,6 +216,9 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         );
     }
 
+    /**
+     * @return Devuelve la posicion directamente al sur de la posicion actual
+     */
     private Position southPosition() {
         var position = gameCharacter.getWorldCell().getPosition();
         return clampedPosition(
@@ -213,6 +228,9 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         );
     }
 
+    /**
+     * @return Devuelve la posicion directamente al oeste de la posicion actual
+     */
     private Position westPosition() {
         var position = gameCharacter.getWorldCell().getPosition();
         return clampedPosition(
@@ -222,6 +240,9 @@ public class GameCharacterPlayerTurnManager extends GameCharacterTurnManager {
         );
     }
 
+    /**
+     * @return Devuelve la posicion directamente al este de la posicion actual
+     */
     private Position eastPosition() {
         var position = gameCharacter.getWorldCell().getPosition();
         return clampedPosition(
